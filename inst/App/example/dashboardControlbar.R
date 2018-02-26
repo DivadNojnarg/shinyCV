@@ -25,9 +25,36 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-pane active" id="control-sidebar-home-tab">
       <h3 class="control-sidebar-heading">Parameters</h3>
 
+
+      <div class="form-group shiny-input-container">
+        <label>Choose a picture</label>
+        <div class="input-group">
+          <label class="input-group-btn">
+            <span class="btn btn-default btn-file">
+              Browse...
+              <input id="my_picture" name="my_picture" type="file" style="display: none;" accept="image/png,image/jpeg"/>
+            </span>
+          </label>
+          <input type="text" class="form-control" placeholder="No file selected" readonly="readonly"/>
+        </div>
+        <div id="my_picture_progress" class="progress progress-striped active shiny-file-input-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+
       <div class="form-group shiny-input-container">
         <label for="name">Enter your name</label>
         <input id="name" type="text" class="form-control" value=""/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="position">Enter your current job</label>
+        <input id="position" type="text" class="form-control" value=""/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="website_url">Personal Website</label>
+        <input id="website_url" type="text" class="form-control" value=""/>
       </div>
 
 
@@ -43,21 +70,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
 
 
-      <div data-step="7" data-intro="Here you can change the global &lt;b&gt;theme&lt;/b&gt; &#10;of the dashboard" data-position="left">
-      <div class="form-group shiny-input-container">
-      <label class="control-label" for="skin">Select a skin:</label>
-      <div>
-      <select id="skin"><option value="blue">blue</option>
-      <option value="black" selected>black</option>
-      <option value="purple">purple</option>
-      <option value="green">green</option>
-      <option value="red">red</option>
-      <option value="yellow">yellow</option>
-      </select>
-      <script type="application/json" data-for="skin" data-nonempty="">{}</script>
-      </div>
-      </div>
-      </div>
+
 
 
       </div>

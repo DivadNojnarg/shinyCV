@@ -7,43 +7,41 @@ shinyServer(function(input, output, session) {
   #  Useful reactive expressions ...
   #
   #-------------------------------------------------------------------------
+
+  output$image <- renderImage({
+    req(input$my_picture)
+    inFile <- input$my_picture
+    path <- inFile$datapath
+    list(src = path,
+         # very important to keep the adminLTE image border
+         class = "profile-user-img img-responsive img-circle",
+         alt = "User profile picture")
+  }, deleteFile = FALSE)
+
   output$name <- renderText({
     req(input$name)
     input$name
     })
 
+  output$position <- renderText({
+    req(input$position)
+    input$position
+  })
+
+  output$website <- renderUI({
+    req(input$website_url)
+    website_url <- input$website_url
+    tagList(
+      a(href = website_url, class = "btn btn-primary btn-block",
+        target = "_blank", "website")
+    )
+  })
 
   #-------------------------------------------------------------------------
   #
   #  Useful tasks such as save, reset, load ...
   #
   #-------------------------------------------------------------------------
-
-
-  # change the dashboard skin
-  current_skin <- reactiveValues(color = NULL)
-  previous_skin <- reactiveValues(color = NULL)
-  observeEvent(input$skin,{
-    # the first time, previous_skin$color is set to the first
-    # skin value at opening. Same thing for current value
-    if (is.null(previous_skin$color)) {
-      previous_skin$color <- current_skin$color <- input$skin
-    } else {
-      current_skin$color <- input$skin
-      # if the old skin is the same as the current selected skin
-      # then, do nothing
-      if (previous_skin$color == current_skin$color) {
-        NULL
-      } else {
-        # otherwise, remove the old CSS class and add the new one
-        shinyjs::removeClass(selector = "body", class = paste("skin", previous_skin$color, sep = "-"))
-        shinyjs::addClass(selector = "body", class = paste("skin", current_skin$color, sep = "-"))
-        # the current skin is added to previous_skin to be ready for
-        # the next change
-        previous_skin$color <- c(previous_skin$color, current_skin$color)[-1]
-      }
-    }
-  })
 
   # Custom footer
   output$dynamicFooter <- renderFooter({

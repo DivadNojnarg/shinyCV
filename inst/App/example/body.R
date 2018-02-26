@@ -11,11 +11,12 @@ body <- dashboardBody(
                paste0('<!-- Profile Image -->
                       <div class="box box-danger">
                         <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+
+                        <div id="image" class="shiny-image-output" style="width: 100%"></div>
 
                         <h3 class="profile-username text-center"><div id="name" class="shiny-text-output"></div></h3>
 
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <div id="position" class="text-muted text-center shiny-text-output"></div>
 
                         <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
@@ -29,7 +30,7 @@ body <- dashboardBody(
                         </li>
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                        <div id="website" class="shiny-html-output"></div>
                         </div>
                         <!-- /.box-body -->
                         </div>
@@ -217,150 +218,191 @@ body <- dashboardBody(
              )
       ),
       column(8,
-             box(
-               title = "Timeline Box - Title", footer = NULL,
-               status = "danger", background = NULL, width = 12, # height = 400,
-               collapsible = TRUE, collapsed = FALSE,
+             tabBox(id = "main_body", width = 12,
+                    tabPanel(title = "Formation",
 
-               timelineBox(
+                             timelineBox(
 
-                 timelineLabel(
-                   text = HTML("<b>&nbsp;2016-07-02&nbsp;</b>"), color = "purple"
-                 ),
+                               timelineLabel(
+                                 text = HTML("<b>&nbsp;2016-07-02&nbsp;</b>"), color = "purple"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("github bg-purple"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Git push ygdashboard and ygdashboard/app.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-07-02 05:14:22"
-                 ),
+                               timelineItem(
+                                 icon = shiny::icon("github bg-purple"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Git push ygdashboard and ygdashboard/app.",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-07-02 05:14:22"
+                               ),
 
-                 timelineLabel(
-                   text = HTML("<b>&nbsp;2016-06-26&nbsp;</b>"), color = "red"
-                 ),
+                               timelineLabel(
+                                 text = HTML("<b>&nbsp;2016-06-26&nbsp;</b>"), color = "red"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("code bg-red"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Fix sidebarUserPanel background conflict with leaflet
-                     in ygdashboard (shinydashboard).",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-26 23:22:48"
-                 ),
+                               timelineItem(
+                                 icon = shiny::icon("code bg-red"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Fix sidebarUserPanel background conflict with leaflet
+                                        in ygdashboard (shinydashboard).",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-26 23:22:48"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("file-text bg-red"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Add Map Tabl on ygdashboard/app.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-26 23:22:48"
-                 ),
+                               timelineItem(
+                                 icon = shiny::icon("envelope bg-red"),
+                                 header = HTML('<strong><a href="#">Ex Machina</strong>'),
+                                 body = "Request on adding chatBox - I would like to chat!",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-23 17:22:54"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("file-text bg-red"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Add chatBox Tabl and timelineBox Tab on ygdashboard/app.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-26 22:34:58"
-                 ),
+                               timelineLabel(
+                                 text = HTML("<b>&nbsp;2016-06-22&nbsp;</b>"), color = "yellow"),
 
-                 timelineItem(
-                   icon = shiny::icon("code bg-red"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Add chatBox and timelineBox in ygdashboard.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-26 14:23:46"
-                 ),
+                               timelineItem(
+                                 icon = shiny::icon("file-text bg-yellow"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Create a template dashboard using ygdashboard in ygdashboard/app",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-22 05:22:14"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("envelope bg-red"),
-                   header = HTML('<strong><a href="#">Ex Machina</strong>'),
-                   body = "Request on adding chatBox - I would like to chat!",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-23 17:22:54"
-                 ),
+                               timelineItem(
+                                 icon = shiny::icon("code bg-yellow"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Add dashboardUser, dashboardFooter and dashboardControlbar in ygdashboard.",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-22 14:23:46"
+                               ),
 
-                 timelineLabel(
-                   text = HTML("<b>&nbsp;2016-06-22&nbsp;</b>"), color = "yellow"),
+                               timelineItem(
+                                 icon = shiny::icon("cloud bg-yellow"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Request on an user info panel on header.",
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-22 04:22:54"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("file-text bg-yellow"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Create a template dashboard using ygdashboard in ygdashboard/app",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-22 05:22:14"
-                 ),
+                               timelineLabel(
+                                 text = HTML("<b>&nbsp;2016-06-16&nbsp;</b>"), color = "green"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("code bg-yellow"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Add dashboardUser, dashboardFooter and dashboardControlbar in ygdashboard.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-22 14:23:46"
-                 ),
-
-                 timelineItem(
-                   icon = shiny::icon("cloud bg-yellow"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Request on an user info panel on header.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-22 04:22:54"
-                 ),
-
-                 timelineLabel(
-                   text = HTML("<b>&nbsp;2016-06-16&nbsp;</b>"), color = "green"
-                 ),
-
-                 timelineItem(
-                   icon = shiny::icon("code bg-green"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Create ygdashboard with modifying shinydashboard source
+                               timelineItem(
+                                 icon = shiny::icon("code bg-green"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Create ygdashboard with modifying shinydashboard source
                      code so that a collapse sidebar showing menuItem icons
                      when collapsed.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-16 17:23:46"
-                 ),
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-16 17:23:46"
+                               ),
 
-                 timelineItem(
-                   icon = shiny::icon("cloud bg-green"),
-                   header = HTML('<strong><a href="#">Guang Yang</strong>'),
-                   body = "Request on a collapse sidebar showing menuItem icons
+                               timelineItem(
+                                 icon = shiny::icon("cloud bg-green"),
+                                 header = HTML('<strong><a href="#">Guang Yang</strong>'),
+                                 body = "Request on a collapse sidebar showing menuItem icons
                      when collapsed.",
-                   footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                                 '<a class="btn btn-danger btn-xs">Delete</a>'),
-                   itemText = "2016-06-16 14:22:54"
-                 )
-               )
+                                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                                               '<a class="btn btn-danger btn-xs">Delete</a>'),
+                                 itemText = "2016-06-16 14:22:54"
+                               )
+                             )
+                    ),
+                    tabPanel(title = "Experience"
+
+                    ),
+                    tabPanel(title = "Teaching"
+
+                    )
              )
       ),
       fluidRow(
-        column(4
+        column(3,
+               HTML(
+                 paste0('<!-- small box -->
+                        <div class="small-box bg-aqua">
+                        <div class="inner">
+                        <h3>150</h3>
 
+                        <p>New Orders</p>
+                        </div>
+                        <div class="icon">
+                        <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                        ')
+               )
+
+        ),
+        column(3,
+               HTML(
+                 paste0('<div class="small-box bg-green">
+                        <div class="inner">
+                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                        <p>Bounce Rate</p>
+                        </div>
+                        <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                        ')
+               )
+        ),
+        column(3,
+               HTML(
+                 paste0('<div class="small-box bg-yellow">
+                   <div class="inner">
+                   <h3>44</h3>
+
+                   <p>User Registrations</p>
+                   </div>
+                   <div class="icon">
+                   <i class="ion ion-person-add"></i>
+                   </div>
+                   <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                   </div>
+                   ')
+               )
+        ),
+        column(3,
+               HTML(
+                 paste0('<div class="small-box bg-red">
+                        <div class="inner">
+                        <h3>65</h3>
+
+                        <p>Unique Visitors</p>
+                        </div>
+                        <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                        ')
+               )
         )
-      )
+      )#,
+      # tabItem(
+      #   tabName = "info",
+      #   box(
+      #     title = tagList(shiny::icon("info"), "Infos"), width = 12,
+      #     collapsible = T, solidHeader = TRUE,
+      #     p("In this app you can:"),
+      #     tags$ol(tags$li(""),
+      #             tags$li("Make a beautiful CV using adminLTE2"),
+      #             tags$li("Export the result as a web page or pdf document")
+      #     )
+      #   )
+      # )
     )
-  )#,
-  # tabItem(
-  #   tabName = "info",
-  #   box(
-  #     title = tagList(shiny::icon("info"), "Infos"), width = 12,
-  #     collapsible = T, solidHeader = TRUE,
-  #     p("In this app you can:"),
-  #     tags$ol(tags$li(""),
-  #             tags$li("Make a beautiful CV using adminLTE2"),
-  #             tags$li("Export the result as a web page or pdf document")
-  #     )
-  #   )
-  # )
+  )
 )
