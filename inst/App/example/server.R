@@ -7,7 +7,10 @@ shinyServer(function(input, output, session) {
   #  Useful reactive expressions ...
   #
   #-------------------------------------------------------------------------
-
+  output$name <- renderText({
+    req(input$name)
+    input$name
+    })
 
 
   #-------------------------------------------------------------------------

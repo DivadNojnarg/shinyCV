@@ -25,6 +25,10 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-pane active" id="control-sidebar-home-tab">
       <h3 class="control-sidebar-heading">Parameters</h3>
 
+      <div class="form-group shiny-input-container">
+        <label for="name">Enter your name</label>
+        <input id="name" type="text" class="form-control" value=""/>
+      </div>
 
 
       <!-- /.control-sidebar-menu -->
