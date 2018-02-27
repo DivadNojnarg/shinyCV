@@ -6,7 +6,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "main",
-      column(4,
+      column(4, offset = 0, style = 'padding:0px;',
              HTML(
                paste0('<!-- Profile Image -->
                       <div class="box box-danger">
@@ -213,11 +213,10 @@ body <- dashboardBody(
                         <!-- /.box-footer -->
                         </div>
                         <!-- /.box -->
-                        </div>
                         ')
              )
       ),
-      column(8,
+      column(8, offset = 0, style = 'padding:0px;',
              tabBox(id = "main_body", width = 12,
                     tabPanel(title = "Formation",
 
@@ -324,7 +323,7 @@ body <- dashboardBody(
              )
       ),
       fluidRow(
-        column(3,
+        column(3, offset = 0, style = 'padding:0px;',
                HTML(
                  paste0('<!-- small box -->
                         <div class="small-box bg-aqua">
@@ -342,7 +341,7 @@ body <- dashboardBody(
                )
 
         ),
-        column(3,
+        column(3, offset = 0, style = 'padding:0px;',
                HTML(
                  paste0('<div class="small-box bg-green">
                         <div class="inner">
@@ -358,7 +357,7 @@ body <- dashboardBody(
                         ')
                )
         ),
-        column(3,
+        column(3, offset = 0, style = 'padding:0px;',
                HTML(
                  paste0('<div class="small-box bg-yellow">
                    <div class="inner">
@@ -374,7 +373,7 @@ body <- dashboardBody(
                    ')
                )
         ),
-        column(3,
+        column(3, offset = 0, style = 'padding:0px;',
                HTML(
                  paste0('<div class="small-box bg-red">
                         <div class="inner">
