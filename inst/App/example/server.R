@@ -37,6 +37,11 @@ shinyServer(function(input, output, session) {
     )
   })
 
+  output$age <- renderText({
+    req(input$age)
+    input$age
+  })
+
   #-------------------------------------------------------------------------
   #
   #  Useful tasks such as save, reset, load ...

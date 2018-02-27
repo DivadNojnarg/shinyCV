@@ -57,6 +57,11 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
         <input id="website_url" type="text" class="form-control" value=""/>
       </div>
 
+      <div class="form-group shiny-input-container">
+        <label for="age">Age</label>
+        <input id="age" type="text" class="form-control" value=""/>
+      </div>
+
 
       <!-- /.control-sidebar-menu -->
       </div>
