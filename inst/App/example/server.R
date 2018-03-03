@@ -4,7 +4,7 @@ shinyServer(function(input, output, session) {
 
   #-------------------------------------------------------------------------
   #
-  #  Useful reactive expressions ...
+  #  Profil section ...
   #
   #-------------------------------------------------------------------------
 
@@ -41,6 +41,31 @@ shinyServer(function(input, output, session) {
     req(input$age)
     input$age
   })
+
+
+  #-------------------------------------------------------------------------
+  #
+  #  About section ...
+  #
+  #-------------------------------------------------------------------------
+
+  output$cellphone <- renderText({
+    req(input$phone_number)
+    input$phone_number
+    })
+
+  output$mailadress <- renderUI({
+    req(input$mail)
+    tagList(
+      a(href = paste0("mailto:", input$mail), target = "_top", "Contact me!")
+    )
+  })
+
+  output$location <- renderText({
+    req(input$location)
+    input$location
+  })
+
 
   #-------------------------------------------------------------------------
   #

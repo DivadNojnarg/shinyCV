@@ -23,7 +23,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-content">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-home-tab">
-      <h3 class="control-sidebar-heading">Parameters</h3>
+      <h3 class="control-sidebar-heading">Profile section</h3>
 
 
       <div class="form-group shiny-input-container">
@@ -71,11 +71,23 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
       <div class="tab-pane" id="control-sidebar-settings-tab">
-      <h3 class="control-sidebar-heading">Other Options</h3>
+      <h3 class="control-sidebar-heading">About Section</h3>
+
+      <div class="form-group shiny-input-container">
+        <label for="phone_number">Your phone number</label>
+      <input id="phone_number" type="text" class="form-control" value=""/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="mail">Your mail adress</label>
+      <input id="mail" type="text" class="form-control" value=""/>
+      </div>
 
 
-
-
+      <div class="form-group shiny-input-container">
+        <label for="location">Your current location</label>
+      <input id="location" type="text" class="form-control" value=""/>
+      </div>
 
 
       </div>

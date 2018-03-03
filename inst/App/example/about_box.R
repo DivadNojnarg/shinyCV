@@ -14,26 +14,23 @@ about_box <- function() {
            <div class="box-body">
            <strong><i class="fa fa-at margin-r-5"></i> Tel/Mail & Web</strong>
 
-           <p class="text-muted">+41 79 606 34 39</p>
-           <p class="text-muted">dgranjon@ymail.com</p>
-           <p class="text-muted">Linkedin Profil</p>
+           <p class="text-muted"><div id="cellphone" class="shiny-text-output"></div></p>
+           <p class="text-muted"><div id="mailadress" class="shiny-html-output"></div></p>
 
            <hr>
 
            <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
 
-           <p class="text-muted">Malibu, California</p>
+           <p class="text-muted"><div id="location" class="shiny-text-output"></div></p>
 
            <hr>
 
-           <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+           <strong><i class="fa fa-pencil margin-r-5"></i> Social Networks</strong>
 
            <p>
-           <span class="label label-danger">UI Design</span>
-           <span class="label label-success">Coding</span>
-           <span class="label label-info">Javascript</span>
-           <span class="label label-warning">PHP</span>
-           <span class="label label-primary">Node.js</span>
+           <span class="label label-danger">Google +</span>
+           <span class="label label-info">Twitter</span>
+           <span class="label label-primary">Facebook</span>
            </p>
 
            <hr>

@@ -12,7 +12,7 @@ profile_box <- function() {
 
            <ul class="list-group list-group-unbordered">
            <li class="list-group-item">
-           <b>Date of Birth</b> <a class="pull-right"><div id="age" class="shiny-text-output"></div></a>
+           <b>Age</b> <a class="pull-right"><div id="age" class="shiny-text-output"></div></a>
            </li>
            <li class="list-group-item">
            <b>Following</b> <a class="pull-right">543</a>
