@@ -3,7 +3,7 @@ skills_box <- function() {
     paste0('
            <div class="box box-danger">
            <div class="box-header with-border">
-           <h3 class="box-title">Monthly Recap Report</h3>
+           <h3 class="box-title">My skills</h3>
 
            <div class="box-tools pull-right">
            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -27,70 +27,54 @@ skills_box <- function() {
            <div class="row">
            <div class="col-md-8">
            <p class="text-center">
-           <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+           <strong>Skills</strong>
            </p>
 
            <div class="chart">
            <!-- Sales Chart Canvas -->
-           <canvas id="salesChart" style="height: 180px;"></canvas>
+          <div id="skillsradar" class="shiny-plot-output" style="width: 100% ; height: 200px"></div>
            </div>
            <!-- /.chart-responsive -->
            </div>
            <!-- /.col -->
            <div class="col-md-4">
            <p class="text-center">
-           <strong>Goal Completion</strong>
+           <strong>Languages</strong>
            </p>
 
-           <div class="progress-group">
-           <span class="progress-text">Add Products to Cart</span>
-           <span class="progress-number"><b>160</b>/200</span>
+           <div id="languagelevel" class="shiny-html-output"></div>
 
-           <div class="progress sm">
-           <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
-           </div>
-           </div>
-           <!-- /.progress-group -->
-           <div class="progress-group">
-           <span class="progress-text">Complete Purchase</span>
-           <span class="progress-number"><b>310</b>/400</span>
 
-           <div class="progress sm">
-           <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-           </div>
-           </div>
-           <!-- /.progress-group -->
-           <div class="progress-group">
-           <span class="progress-text">Visit Premium Page</span>
-           <span class="progress-number"><b>480</b>/800</span>
-
-           <div class="progress sm">
-           <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-           </div>
-           </div>
-           <!-- /.progress-group -->
-           <div class="progress-group">
-           <span class="progress-text">Send Inquiries</span>
-           <span class="progress-number"><b>250</b>/500</span>
-
-           <div class="progress sm">
-           <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
-           </div>
-           </div>
-           <!-- /.progress-group -->
            </div>
            <!-- /.col -->
            </div>
            <!-- /.row -->
+
+           <hr>
+
+          <p class="text-center">
+           <strong>Github Contribution</strong>
+           </p>
+
+           <div class="calendar">
+            <!-- Loading stuff -->
+           Loading the data just for you.
+           </div>
+
+           <script>
+           GitHubCalendar(".calendar", "DivadNojnarg", {responsive: true});
+           </script>
+
+
            </div>
            <!-- ./box-body -->
            <div class="box-footer">
            <div class="row">
            <div class="col-sm-3 col-xs-6">
            <div class="description-block border-right">
-           <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-           <h5 class="description-header">$35,210.43</h5>
-           <span class="description-text">TOTAL REVENUE</span>
+
+           <div id="plt1" class="shiny-html-output"></div>
+
            </div>
            <!-- /.description-block -->
            </div>

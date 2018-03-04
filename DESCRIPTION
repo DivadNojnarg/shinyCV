@@ -13,6 +13,8 @@ Imports:
   shinycssloaders
   shinyfeedback
   shinyWidgets
+  ggplot2
+  purrr
   bsplus
   stringr
 License: GPL-3

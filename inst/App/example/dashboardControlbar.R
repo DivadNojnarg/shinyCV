@@ -17,7 +17,8 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <!-- Create the tabs -->
       <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+      <li><a href="#control-sidebar-about-tab" data-toggle="tab"><i class="fa fa-info-circle"></i></a></li>
+      <li><a href="#control-sidebar-skills-tab" data-toggle="tab"><i class="fa fa-wrench"></i></a></li>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
@@ -70,7 +71,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
+      <div class="tab-pane" id="control-sidebar-about-tab">
       <h3 class="control-sidebar-heading">About Section</h3>
 
       <div class="form-group shiny-input-container">
@@ -112,6 +113,40 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       </div>
       <!-- /.tab-pane -->
+
+
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-skills-tab">
+      <h3 class="control-sidebar-heading">Skills Section</h3>
+
+      <div class="form-group shiny-input-container">
+        <div class="material-switch">
+          <span style="padding-right: 10px;">Open Skills Editor</span>
+          <input id="add_skill" type="checkbox"/>
+          <label for="add_skill" class="label-success"></label>
+        </div>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <div class="material-switch">
+          <span style="padding-right: 10px;">Open Languages Editor</span>
+          <input id="add_language" type="checkbox"/>
+          <label for="add_language" class="label-success"></label>
+        </div>
+      </div>
+
+      <div id="skillsUI" class="shiny-html-output"></div>
+      <div id="languagesUI" class="shiny-html-output"></div>
+
+
+
+      </div>
+      <!-- /.tab-pane -->
+
+
       </div>
       </aside>
       <!-- /.control-sidebar -->
