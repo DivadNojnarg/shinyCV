@@ -67,6 +67,51 @@ shinyServer(function(input, output, session) {
   })
 
 
+  output$linkedinprofile <- renderUI({
+    req(input$twitterlink)
+    tagList(
+      a(href = input$linkedinlink, target = "_blank",
+        tags$span(class = "label label-info",
+                  HTML(paste(icon("linkedin"),"Linkedin"))
+        )
+      )
+    )
+  })
+
+  output$twitterprofile <- renderUI({
+    req(input$twitterlink)
+    tagList(
+      a(href = input$twitterlink, target = "_blank",
+        tags$span(class = "label label-info",
+                  HTML(paste(icon("twitter-square"),"Twitter"))
+        )
+      )
+    )
+  })
+
+  output$facebookprofile <- renderUI({
+    req(input$facebooklink)
+    tagList(
+      a(href = input$facebooklink, target = "_blank",
+        tags$span(class = "label label-primary",
+                  HTML(paste(icon("facebook-square"),"Facebook"))
+        )
+      )
+    )
+  })
+
+  output$githubprofile <- renderUI({
+    req(input$githublink)
+    tagList(
+      a(href = input$githublink, target = "_blank",
+        tags$span(class = "label label-success",
+                  HTML(paste(icon("github-square"),"Github"))
+        )
+      )
+    )
+  })
+
+
   #-------------------------------------------------------------------------
   #
   #  Useful tasks such as save, reset, load ...

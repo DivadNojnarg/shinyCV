@@ -44,17 +44,17 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <div class="form-group shiny-input-container">
         <label for="name">Enter your name</label>
-        <input id="name" type="text" class="form-control" value=""/>
+        <input id="name" type="text" class="form-control" value="My name"/>
       </div>
 
       <div class="form-group shiny-input-container">
         <label for="position">Enter your current job</label>
-        <input id="position" type="text" class="form-control" value=""/>
+        <input id="position" type="text" class="form-control" value="My current job"/>
       </div>
 
       <div class="form-group shiny-input-container">
         <label for="website_url">Personal Website</label>
-        <input id="website_url" type="text" class="form-control" value=""/>
+        <input id="website_url" type="text" class="form-control" value="https://divadnojnarg.github.io"/>
       </div>
 
       <div class="form-group shiny-input-container">
@@ -80,13 +80,33 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <div class="form-group shiny-input-container">
         <label for="mail">Your mail adress</label>
-      <input id="mail" type="text" class="form-control" value=""/>
+        <input id="mail" type="text" class="form-control" value=""/>
       </div>
 
 
       <div class="form-group shiny-input-container">
         <label for="location">Your current location</label>
-      <input id="location" type="text" class="form-control" value=""/>
+        <input id="location" type="text" class="form-control" value=""/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="linkedinlink">My Linkedin profil</label>
+        <input id="linkedinlink" type="text" class="form-control" value="https://www.linkedin.com/uas/login"/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="twitterlink">My Twitter page</label>
+        <input id="twitterlink" type="text" class="form-control" value="https://twitter.com"/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="facebooklink">My Facebook page</label>
+        <input id="facebooklink" type="text" class="form-control" value="https://www.facebook.com"/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label for="githublink">My Github profil</label>
+        <input id="githublink" type="text" class="form-control" value="https://github.com"/>
       </div>
 
 

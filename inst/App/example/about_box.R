@@ -28,16 +28,13 @@ about_box <- function() {
            <strong><i class="fa fa-pencil margin-r-5"></i> Social Networks</strong>
 
            <p>
-           <span class="label label-danger">Google +</span>
-           <span class="label label-info">Twitter</span>
-           <span class="label label-primary">Facebook</span>
+           <div class="col-sm-3"><div id="linkedinprofile" class="shiny-html-output"></div></div>
+           <div class="col-sm-3"><div id="twitterprofile" class="shiny-html-output"></div></div>
+           <div class="col-sm-3"><div id="facebookprofile" class="shiny-html-output"></div></div>
+           <div class="col-sm-3"><div id="githubprofile" class="shiny-html-output"></div></div>
            </p>
 
-           <hr>
 
-           <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
            </div>
            <!-- /.box-body -->
            </div>
