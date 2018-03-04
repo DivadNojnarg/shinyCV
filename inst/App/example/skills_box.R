@@ -1,7 +1,7 @@
 skills_box <- function() {
   HTML(
     paste0('
-           <div class="box box-danger">
+           <div class="box box-danger" style = "overflow-x: scroll;">
            <div class="box-header with-border">
            <h3 class="box-title">My skills</h3>
 
@@ -52,17 +52,17 @@ skills_box <- function() {
 
            <hr>
 
-          <p class="text-center">
-           <strong>Github Contribution</strong>
+           <p class="text-center">
+            <strong>Github Contribution</strong>
            </p>
 
            <div class="calendar">
             <!-- Loading stuff -->
-           Loading the data just for you.
+            Loading the data just for you.
            </div>
 
            <script>
-           GitHubCalendar(".calendar", "DivadNojnarg", {responsive: true});
+            GitHubCalendar(".calendar", "DivadNojnarg", {responsive: true});
            </script>
 
 

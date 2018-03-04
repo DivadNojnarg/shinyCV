@@ -5,7 +5,7 @@ body <- dashboardBody(
 
   tags$script(src = "https://cdn.rawgit.com/IonicaBizau/github-calendar/gh-pages/dist/github-calendar.min.js"),
   tags$link(rel = "stylesheet",
-            href = "https://cdn.rawgit.com/IonicaBizau/github-calendar/gh-pages/dist/github-calendar-responsive.css"),
+            href = "https://cdn.rawgit.com/IonicaBizau/github-calendar/gh-pages/dist/github-calendar.css"),
 
   tabItems(
     tabItem(
