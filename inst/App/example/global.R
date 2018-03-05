@@ -7,6 +7,7 @@ library(shinyFeedback)
 library(shinyWidgets)
 library(ggplot2)
 library(purrr)
+library(googleVis)
 library(bsplus)
 library(stringr)
 

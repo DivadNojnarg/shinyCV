@@ -1,7 +1,7 @@
 about_box <- function() {
   HTML(
     paste0('
-           <div class="box box-danger">
+           <div class="box box-primary">
            <div class="box-header with-border">
            <h3 class="box-title">About Me</h3>
            <div class="box-tools pull-right">

@@ -1,7 +1,7 @@
 profile_box <- function() {
   HTML(
     paste0('<!-- Profile Image -->
-           <div class="box box-danger">
+           <div class="box box-primary">
            <div class="box-body box-profile">
 
            <div id="image" class="shiny-image-output" style="width: 100%"></div>

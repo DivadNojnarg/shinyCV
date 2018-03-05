@@ -1,7 +1,7 @@
 skills_box <- function() {
   HTML(
     paste0('
-           <div class="box box-danger" style = "overflow-x: scroll;">
+           <div class="box box-primary" style = "overflow-x: auto;">
            <div class="box-header with-border">
            <h3 class="box-title">My skills</h3>
 
@@ -50,20 +50,17 @@ skills_box <- function() {
            </div>
            <!-- /.row -->
 
-           <hr>
 
-           <p class="text-center">
-            <strong>Github Contribution</strong>
-           </p>
-
-           <div class="calendar">
-            <!-- Loading stuff -->
-            Loading the data just for you.
-           </div>
+           <div id="calendar_githubUI" class="shiny-html-output calendarUI"></div>
 
            <script>
-            GitHubCalendar(".calendar", "DivadNojnarg", {responsive: true});
+            Shiny.addCustomMessageHandler("myCallbackHandler",
+              function(github_name) {
+                GitHubCalendar(".calendarUI", github_name, {responsive: false});
+                });
            </script>
+
+
 
 
            </div>

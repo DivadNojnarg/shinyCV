@@ -118,8 +118,10 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
-  # initialization skills and languages dataframe reactiveValues
-  df <- reactiveValues(skills = data.frame(), language = data.frame())
+  # initialization skills, languages and users dataframe reactiveValues
+  df <- reactiveValues(skills = data.frame(),
+                       language = data.frame(),
+                       users = data.frame())
 
   # Generate the skills UI
   # if and only if the editor
@@ -228,12 +230,111 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  # Github part
+  output$github_username <- renderUI({
+    if (input$allow_github_calendar == TRUE) {
+      tagList(
+        textInput("github_name", "Your Github username", "")
+      )
+    }
+  })
+
+  # send github_name to javascript
+  # using sendCustomMessage
+  # Shiny will need Shiny.addCustomMessageHandler("myCallbackHandler"
+  # in the UI part to receive this value in javascript
+  observeEvent(input$github_name,{
+    github_name <- input$github_name
+    session$sendCustomMessage(type = "myCallbackHandler", github_name)
+  })
+
+  # Show the github calendar only if the user wants to do it!
+  output$calendar_githubUI <- renderUI({
+    if (!is.null(input$github_name) & input$allow_github_calendar == TRUE) {
+      tagList(
+        tags$hr(),
+        tags$p(class = "text-center", tags$strong("Github Contribution")),
+        tags$div(class = "calendar", "Loading the data just for you")
+      )
+    }
+  })
+
+
+  # experimental
   output$plt1 <- renderGvis({
     gvisGauge(as.data.frame(CityPopularity[1,]),
               options=list(min=0, max=800, greenFrom=500,
                            greenTo=800, yellowFrom=300, yellowTo=500,
-                           redFrom=0, redTo=300, width=100, height=100))
+                           redFrom=0, redTo=300, width=75, height=75))
 
+  })
+
+
+  #-------------------------------------------------------------------------
+  #
+  #  network section ...
+  #
+  #-------------------------------------------------------------------------
+
+
+  # Generate the skills UI
+  # if and only if the editor
+  # switchInput is on TRUE
+  output$networkUI <- renderUI({
+    if (input$add_user == TRUE) {
+      tagList(
+        selectInput("user_title", label = "Title:", choices = c("", "Dr.", "Pr.")),
+        pickerInput(inputId = "user_sex",
+                    label = "Sex:", choices = c("male", "female"),
+                    choicesOpt = list(icon = c("fa fa-man", "fa fa-woman"))),
+        textInput(inputId = "user_name", label = "Name:"),
+        textInput(inputId = "user_mail", label = "Mail:"),
+        textInput(inputId = "user_phone", label = "Phone Number:"),
+        actionBttn(inputId = "submit_user", "Add User")
+      )
+    }
+  })
+
+  # each time submit skill is pressed
+  # add the new skill name and its value
+  # to the skills dataframe
+  observeEvent(input$submit_user,{
+    req(input$user_name)
+    temp_user <- data.frame(
+      title = input$user_title,
+      sex = input$user_sex,
+      name = input$user_name,
+      mail = input$user_mail,
+      phone = input$user_phone
+    )
+    df$users <- rbind(df$users, temp_user)
+  })
+
+  # generate the radar plot of skills
+  # Secure if skill dataframe is empty
+  output$userlist <- renderUI({
+    data <- df$users
+    if (!is_empty(data)) {
+      tagList(
+        lapply(seq_along(data$title), FUN = function(i) {
+          title <- data$title[i]
+          name <- data$name[i]
+          mail <- data$mail[i]
+          phone <- data$phone[i]
+          image <- ifelse(data$sex[i] == "male", "man.png", "girl-2.png")
+          column(4, align = "center",
+          tags$li(
+            tags$img(src = image, alt = "User Image"),
+            tags$br(),
+            tags$a(class = "users-list-name", href = "#", paste(title, name)),
+            tags$span(
+              class = "users-list-date",
+              a(href = paste0("mailto:", mail), target = "_top", mail)),
+            tags$span(class = "users-list-date", phone)
+          ))
+        })
+      )
+    }
   })
 
   #-------------------------------------------------------------------------

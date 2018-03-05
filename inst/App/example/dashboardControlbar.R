@@ -19,6 +19,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
       <li><a href="#control-sidebar-about-tab" data-toggle="tab"><i class="fa fa-info-circle"></i></a></li>
       <li><a href="#control-sidebar-skills-tab" data-toggle="tab"><i class="fa fa-wrench"></i></a></li>
+      <li><a href="#control-sidebar-network-tab" data-toggle="tab"><i class="fa fa-user-plus"></i></a></li>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
@@ -140,6 +141,40 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <div id="skillsUI" class="shiny-html-output"></div>
       <div id="languagesUI" class="shiny-html-output"></div>
+
+
+      <div class="form-group shiny-input-container">
+        <div class="material-switch">
+      <span style="padding-right: 10px;">Allow Github Calendar</span>
+      <input id="allow_github_calendar" type="checkbox"/>
+      <label for="allow_github_calendar" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="github_username" class="shiny-html-output"></div>
+
+
+      </div>
+      <!-- /.tab-pane -->
+
+
+
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-network-tab">
+      <h3 class="control-sidebar-heading">Network Section</h3>
+
+      <div class="form-group shiny-input-container">
+      <div class="material-switch">
+      <span style="padding-right: 10px;">Open Network Editor</span>
+      <input id="add_user" type="checkbox"/>
+      <label for="add_user" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="networkUI" class="shiny-html-output"></div>
 
 
 
