@@ -1,6 +1,18 @@
 # define server function
 shinyServer(function(input, output, session) {
 
+  # initialization skills, languages and users dataframe reactiveValues
+  df <- reactiveValues(skills = data.frame(),
+                       language = data.frame(),
+                       users = data.frame(),
+                       formations = data.frame())
+
+  # take random adminLTE colors (I remove black)
+  col <- sample(
+    c("light-blue", "aqua", "green", "orange",
+      "purple", "maroon", "gray", "teal",
+      "navy", "red", "yellow")
+  )
 
   #-------------------------------------------------------------------------
   #
@@ -40,6 +52,22 @@ shinyServer(function(input, output, session) {
   output$age <- renderText({
     req(input$age)
     input$age
+  })
+
+  output$interests <- renderUI({
+    req(input$interests)
+    tagList(
+      lapply(seq_along(input$interests), FUN = function(i) {
+        interest <- input$interests[[i]]
+        tags$span(class = paste0("bg-", col[i], "-active color-palette"), interest)
+      })
+    )
+  })
+
+  # add a description to tease yourself
+  output$teaser <- renderText({
+    req(input$teaser)
+    input$teaser
   })
 
 
@@ -117,11 +145,6 @@ shinyServer(function(input, output, session) {
   #  skills section ...
   #
   #-------------------------------------------------------------------------
-
-  # initialization skills, languages and users dataframe reactiveValues
-  df <- reactiveValues(skills = data.frame(),
-                       language = data.frame(),
-                       users = data.frame())
 
   # Generate the skills UI
   # if and only if the editor
@@ -284,9 +307,8 @@ shinyServer(function(input, output, session) {
     if (input$add_user == TRUE) {
       tagList(
         selectInput("user_title", label = "Title:", choices = c("", "Dr.", "Pr.")),
-        pickerInput(inputId = "user_sex",
-                    label = "Sex:", choices = c("male", "female"),
-                    choicesOpt = list(icon = c("fa fa-man", "fa fa-woman"))),
+        selectInput(inputId = "user_sex",
+                    label = "Sex:", choices = c("male", "female")),
         textInput(inputId = "user_name", label = "Name:"),
         textInput(inputId = "user_mail", label = "Mail:"),
         textInput(inputId = "user_phone", label = "Phone Number:"),
@@ -295,9 +317,9 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  # each time submit skill is pressed
-  # add the new skill name and its value
-  # to the skills dataframe
+  # each time submit user is pressed
+  # add the new user name as well as
+  # other informations
   observeEvent(input$submit_user,{
     req(input$user_name)
     temp_user <- data.frame(
@@ -310,8 +332,7 @@ shinyServer(function(input, output, session) {
     df$users <- rbind(df$users, temp_user)
   })
 
-  # generate the radar plot of skills
-  # Secure if skill dataframe is empty
+  # generate the user list
   output$userlist <- renderUI({
     data <- df$users
     if (!is_empty(data)) {
@@ -342,7 +363,7 @@ shinyServer(function(input, output, session) {
     nb_users <- nrow(df$users)
     if (!is_empty(nb_users)) {
       tagList(
-          tags$span(class = "label label-danger", paste(nb_users, "members")),
+          tags$span(class = "label label-danger", HTML(paste(icon("users"), nb_users, "members"))),
           tags$button(type = "button", class = "btn btn-box-tool",
                       `data-widget` = "collapse", tags$i(class = "fa fa-minus")),
           tags$button(type = "button", class = "btn btn-box-tool",
@@ -350,6 +371,111 @@ shinyServer(function(input, output, session) {
       )
     }
   })
+
+
+  #-------------------------------------------------------------------------
+  #
+  #  formation section ...
+  #
+  #-------------------------------------------------------------------------
+
+  # Generate the formation UI
+  # if and only if the editor
+  # switchInput is on TRUE
+  output$formationUI <- renderUI({
+    if (input$add_formation == TRUE) {
+      tagList(
+        textInput("formation_title", label = "Title:"),
+        pickerInput(
+          inputId = "formation_topic",
+          label = "Main Topic:",
+          choices = c(
+            "Industry",
+            "Law",
+            "Computer Sciences",
+            "Lab work",
+            "health Sciences",
+            "Singing",
+            "Economy",
+            "Veterinarian",
+            "Art",
+            "Game development"),
+          choicesOpt = list(
+            icon = c(
+              "fa fa-industry",
+              "fa fa-balance-scale",
+              "fa fa-database",
+              "fa fa-eyedropper",
+              "fa fa-heartbeat",
+              " fa-music",
+              "fa fa-money",
+              "fa fa-paw",
+              "fa fa-paint-brush",
+              "fa fa-gamepad")
+          ),
+          options = list(`icon-base` = "font-awesome")
+        ),
+        dateRangeInput("formation_date", "Date range:",
+                       min    = "1900-01-01",
+                       max    = Sys.Date(),
+                       format = "mm/dd/yy",
+                       separator = " - "),
+        textAreaInput("formation_summary", "Formation descirption",
+                      "Describe your formation here", width = "200px"),
+        textInput("formation_location", "Place"),
+        textInput("formation_extra", label = "More details here", "Put a web link"),
+        actionBttn(inputId = "submit_formation", "Add Formation")
+      )
+    }
+  })
+
+  # each time submit formation is pressed
+  # add the new formation name and its value
+  # to the formations dataframe
+  observeEvent(input$submit_formation,{
+    req(input$formation_date, input$formation_title, input$formation_summary,
+        input$formation_location)
+    temp_formation <- data.frame(
+      title = input$formation_title,
+      from = input$formation_date[1],
+      to = input$formation_date[2],
+      summary = input$formation_summary,
+      place = input$formation_location,
+      extra = input$formation_extra
+    )
+    df$formations <- rbind(df$formations, temp_formation)
+    print(df$formations)
+  })
+
+  # Render the formation timeLine
+  output$formation_timeline <- renderUI({
+    formations <- df$formations
+    if (!is_empty(formations)) {
+      tagList(
+        timelineBox(
+          lapply(seq_along(formations$title), FUN = function(i) {
+            from <- formations$from[i]
+            to <- formations$to[i]
+            title <- formations$title[i]
+            summary <- formations$summary[i]
+            place <- formations$place[i]
+            timelineLabel(
+              text = paste0(from, "-", to), color = col[i]
+            )
+            timelineItem(
+              icon = shiny::icon("github bg-purple"),
+              header = title,
+              body = summary,
+              footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                            '<a class="btn btn-danger btn-xs">Delete</a>'),
+              itemText = place
+            )
+          })
+        )
+      )
+    }
+  })
+
 
   #-------------------------------------------------------------------------
   #

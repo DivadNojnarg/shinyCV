@@ -27,19 +27,19 @@ skills_box <- function() {
            <div class="row">
            <div class="col-md-8">
            <p class="text-center">
-           <strong>Skills</strong>
+           <i class="fa fa-suitcase margin-r-5"></i><strong>Skills</strong>
            </p>
 
            <div class="chart">
            <!-- Sales Chart Canvas -->
-          <div id="skillsradar" class="shiny-plot-output" style="width: 100% ; height: 200px"></div>
+           <div id="skillsradar" class="shiny-plot-output" style="width: 100% ; height: 200px"></div>
            </div>
            <!-- /.chart-responsive -->
            </div>
            <!-- /.col -->
            <div class="col-md-4">
            <p class="text-center">
-           <strong>Languages</strong>
+           <i class="fa fa-volume-up margin-r-5"></i><strong>Languages</strong>
            </p>
 
            <div id="languagelevel" class="shiny-html-output"></div>

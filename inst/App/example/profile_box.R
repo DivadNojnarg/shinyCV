@@ -12,13 +12,13 @@ profile_box <- function() {
 
            <ul class="list-group list-group-unbordered">
            <li class="list-group-item">
-           <b>Age</b> <a class="pull-right"><div id="age" class="shiny-text-output"></div></a>
+           <i class="fa fa-birthday-cake margin-r-5"></i><b>Age</b> <a class="pull-right"><div id="age" class="shiny-text-output"></div></a>
            </li>
            <li class="list-group-item">
-           <b>Following</b> <a class="pull-right">543</a>
+           <i class="fa fa-heart margin-r-5"></i><b>My interests</b> <div id="interests" class="shiny-html-output"></div>
            </li>
            <li class="list-group-item">
-           <b>Friends</b> <a class="pull-right">13,287</a>
+           <i class="fa fa-commenting-o margin-r-5"></i><b>Teaser</b> <div id="teaser" class="shiny-text-output"></div>
            </li>
            </ul>
 

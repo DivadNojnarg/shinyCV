@@ -20,6 +20,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <li><a href="#control-sidebar-about-tab" data-toggle="tab"><i class="fa fa-info-circle"></i></a></li>
       <li><a href="#control-sidebar-skills-tab" data-toggle="tab"><i class="fa fa-wrench"></i></a></li>
       <li><a href="#control-sidebar-network-tab" data-toggle="tab"><i class="fa fa-user-plus"></i></a></li>
+      <li><a href="#control-sidebar-formation-tab" data-toggle="tab"><i class="fa fa-graduation-cap"></i></a></li>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
@@ -62,6 +63,25 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="form-group shiny-input-container">
         <label for="age">Age</label>
         <input id="age" type="text" class="form-control" value=""/>
+      </div>
+
+      <div class="form-group shiny-input-container">
+        <label class="control-label" for="interests">My Interests</label>
+        <div>
+          <select id="interests" multiple="multiple"><option value="Mathematics">Mathematics</option>
+            <option value="Computer Sciences">Computer Sciences</option>
+            <option value="Biology">Biology</option>
+            <option value="Physiology">Physiology</option>
+            <option value="Neurosciences">Neurosciences</option>
+            <option value="Web-develoment">Web-develoment</option></select>
+          <script type="application/json" data-for="interests">{}</script>
+        </div>
+      </div>
+
+
+      <div class="form-group shiny-input-container">
+        <label for="teaser">Caption</label>
+        <textarea id="teaser" class="form-control" style="width: 200px;">Write your teaser here</textarea>
       </div>
 
 
@@ -177,6 +197,28 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div id="networkUI" class="shiny-html-output"></div>
 
 
+
+      </div>
+      <!-- /.tab-pane -->
+
+
+
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-formation-tab">
+      <h3 class="control-sidebar-heading">Studies Section</h3>
+
+      <div class="form-group shiny-input-container">
+      <div class="material-switch">
+      <span style="padding-right: 10px;">Open Formation Editor</span>
+      <input id="add_formation" type="checkbox"/>
+      <label for="add_formation" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="formationUI" class="shiny-html-output"></div>
 
       </div>
       <!-- /.tab-pane -->

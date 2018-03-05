@@ -2,6 +2,10 @@ main_box <- function() {
   tabBox(id = "main_body", width = 12,
          tabPanel(title = "Formation",
 
+                  uiOutput("formation_timeline")
+         ),
+         tabPanel(title = "Experience",
+
                   timelineBox(
 
                     timelineLabel(
@@ -95,8 +99,6 @@ main_box <- function() {
                       itemText = "2016-06-16 14:22:54"
                     )
                   )
-         ),
-         tabPanel(title = "Experience"
 
          ),
          tabPanel(title = "Teaching"
