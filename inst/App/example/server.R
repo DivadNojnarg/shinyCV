@@ -390,16 +390,16 @@ shinyServer(function(input, output, session) {
           inputId = "formation_topic",
           label = "Main Topic:",
           choices = c(
-            "Industry",
-            "Law",
-            "Computer Sciences",
-            "Lab work",
-            "health Sciences",
-            "Singing",
-            "Economy",
-            "Veterinarian",
-            "Art",
-            "Game development"),
+            "Industry" = "industry",
+            "Law" = "balance-scale",
+            "Computer Sciences" = "database",
+            "Lab work" = "eyedropper",
+            "health Sciences" = "heartbeat",
+            "Singing" = "music",
+            "Economy" = "money",
+            "Veterinarian" = "paw",
+            "Art" = "paint-brush",
+            "Game development" = "gamepad"),
           choicesOpt = list(
             icon = c(
               "fa fa-industry",
@@ -407,7 +407,7 @@ shinyServer(function(input, output, session) {
               "fa fa-database",
               "fa fa-eyedropper",
               "fa fa-heartbeat",
-              " fa-music",
+              "fa fa-music",
               "fa fa-money",
               "fa fa-paw",
               "fa fa-paint-brush",
@@ -433,10 +433,11 @@ shinyServer(function(input, output, session) {
   # add the new formation name and its value
   # to the formations dataframe
   observeEvent(input$submit_formation,{
-    req(input$formation_date, input$formation_title, input$formation_summary,
-        input$formation_location)
+    req(input$formation_date, input$formation_topic, input$formation_title,
+        input$formation_summary, input$formation_location)
     temp_formation <- data.frame(
       title = input$formation_title,
+      topic = input$formation_topic,
       from = input$formation_date[1],
       to = input$formation_date[2],
       summary = input$formation_summary,
@@ -447,6 +448,9 @@ shinyServer(function(input, output, session) {
     print(df$formations)
   })
 
+
+  # remove a formation
+
   # Render the formation timeLine
   output$formation_timeline <- renderUI({
     formations <- df$formations
@@ -454,21 +458,24 @@ shinyServer(function(input, output, session) {
       tagList(
         timelineBox(
           lapply(seq_along(formations$title), FUN = function(i) {
-            from <- formations$from[i]
-            to <- formations$to[i]
             title <- formations$title[i]
+            topic <- formations$topic[i]
+            from <- formations$from[i]
+            to <- ifelse(is.na(formations$to[i]), "Now", formations$to[i])
             summary <- formations$summary[i]
             place <- formations$place[i]
-            timelineLabel(
-              text = paste0(from, "-", to), color = col[i]
-            )
-            timelineItem(
-              icon = shiny::icon("github bg-purple"),
-              header = title,
-              body = summary,
-              footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                            '<a class="btn btn-danger btn-xs">Delete</a>'),
-              itemText = place
+            list(
+              timelineLabel(
+                text = HTML(paste0("<b>", from, "//", "<br/>", to, "</b>")), color = col[i]
+              ),
+              timelineItem(
+                icon = icon(name = topic, class = paste0("bg-", col[i])),
+                header = title,
+                body = summary,
+                footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
+                              '<a class="btn btn-danger btn-xs">Delete</a>'),
+                itemText = place
+              )
             )
           })
         )
