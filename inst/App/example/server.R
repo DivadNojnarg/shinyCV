@@ -425,6 +425,7 @@ shinyServer(function(input, output, session) {
         textInput("formation_location", "Place/Lab"),
         textInput("formation_supervisors", "Supervisor(s):"),
         textInput("formation_extra", label = "More details here", "Put a web link"),
+        sliderInput("formation_grade", label = "Add a grade", min = 0, max = 5, value = 1),
         actionBttn(inputId = "submit_formation", "Add Formation",
                    color = "success", style = "fill", size = "md"),
         br(),
@@ -450,9 +451,14 @@ shinyServer(function(input, output, session) {
       summary = input$formation_summary,
       place = input$formation_location,
       supervisor = input$formation_supervisors,
+      grade = input$formation_grade,
       extra = input$formation_extra
     )
     df$formations <- rbind(df$formations, temp_formation)
+  })
+
+  observe({
+    print(df$formations)
   })
 
 
@@ -466,7 +472,6 @@ shinyServer(function(input, output, session) {
       sendSweetAlert(session, title = "", text = "There is no formation to
                      delete", type = "error")
     }
-    print(df$formations)
   })
 
   # Render the formation timeLine
@@ -483,6 +488,7 @@ shinyServer(function(input, output, session) {
             summary <- formations$summary[i]
             place <- formations$place[i]
             supervisor <- formations$supervisor[i]
+            grade <- formations$grade[i]
             extra <- formations$extra[i]
             list(
               timelineLabel(
@@ -490,7 +496,22 @@ shinyServer(function(input, output, session) {
               ),
               timelineItem(
                 icon = icon(name = topic, class = paste0("bg-", col[i])),
-                header = title,
+                header = if (length(grade) > 0) {
+                  HTML(
+                    paste0(
+                      title,
+                      tags$td(class = "mailbox-star",
+                              tags$a(href = "#",
+                                     res <- lapply(1:grade, FUN = function(i) {
+                                       tags$i(class = "fa fa-star text-yellow pull-right")
+                                     }),
+                                     unlist(res)
+                              )
+                      )
+                    ))
+                } else {
+                  title
+                },
                 body = if (length(supervisor) > 0) {
                   HTML(paste0(summary, tags$br(), tags$br(), "<u>", "Advisors: ",
                               "</u>", "<b>", supervisor, "</b>"))
@@ -498,8 +519,7 @@ shinyServer(function(input, output, session) {
                   summary
                 },
                 itemIcon = shiny::icon("street-view"),
-                footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
-                              '<a class="btn btn-danger btn-xs">Delete</a>'),
+                footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>'),
                 itemText = place
               )
             )
