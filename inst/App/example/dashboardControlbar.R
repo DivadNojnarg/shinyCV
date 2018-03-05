@@ -203,6 +203,8 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
 
 
+
+
       <!-- Stats tab content -->
       <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
       <!-- /.tab-pane -->
@@ -222,6 +224,10 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       </div>
       <!-- /.tab-pane -->
+
+
+
+
 
 
       </div>

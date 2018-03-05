@@ -1,10 +1,10 @@
 main_box <- function() {
   tabBox(id = "main_body", width = 12,
-         tabPanel(title = "Formation",
+         tabPanel(title = HTML(paste0(icon("graduation-cap"), "Formation")),
 
                   uiOutput("formation_timeline")
          ),
-         tabPanel(title = "Experience",
+         tabPanel(title = HTML(paste0(icon("archive"), "Experience")),
 
                   timelineBox(
 
@@ -101,7 +101,10 @@ main_box <- function() {
                   )
 
          ),
-         tabPanel(title = "Teaching"
+         tabPanel(title = HTML(paste0(icon("university"), "Teaching"))
+
+         ),
+         tabPanel(title = HTML(paste0(icon("trophy"), "Awards"))
 
          )
   )

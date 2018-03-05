@@ -422,9 +422,16 @@ shinyServer(function(input, output, session) {
                        separator = " - "),
         textAreaInput("formation_summary", "Formation descirption",
                       "Describe your formation here", width = "200px"),
-        textInput("formation_location", "Place"),
+        textInput("formation_location", "Place/Lab"),
+        textInput("formation_supervisors", "Supervisor(s):"),
         textInput("formation_extra", label = "More details here", "Put a web link"),
-        actionBttn(inputId = "submit_formation", "Add Formation")
+        actionBttn(inputId = "submit_formation", "Add Formation",
+                   color = "success", style = "fill", size = "md"),
+        br(),
+        br(),
+        actionBttn(inputId = "remove_formation", "Remove Formation",
+                   color = "danger", style = "fill", size = "md"),
+        numericInput("formation_id", "Formation to remove", value = 1)
       )
     }
   })
@@ -442,14 +449,25 @@ shinyServer(function(input, output, session) {
       to = input$formation_date[2],
       summary = input$formation_summary,
       place = input$formation_location,
+      supervisor = input$formation_supervisors,
       extra = input$formation_extra
     )
     df$formations <- rbind(df$formations, temp_formation)
-    print(df$formations)
   })
 
 
   # remove a formation
+  observeEvent(input$remove_formation,{
+    req(input$formation_id)
+    idx <- input$formation_id
+    if (nrow(df$formations) > 0) {
+      df$formations <- df$formations[-idx, ]
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no formation to
+                     delete", type = "error")
+    }
+    print(df$formations)
+  })
 
   # Render the formation timeLine
   output$formation_timeline <- renderUI({
@@ -464,6 +482,8 @@ shinyServer(function(input, output, session) {
             to <- ifelse(is.na(formations$to[i]), "Now", formations$to[i])
             summary <- formations$summary[i]
             place <- formations$place[i]
+            supervisor <- formations$supervisor[i]
+            extra <- formations$extra[i]
             list(
               timelineLabel(
                 text = HTML(paste0("<b>", from, "//", "<br/>", to, "</b>")), color = col[i]
@@ -471,7 +491,13 @@ shinyServer(function(input, output, session) {
               timelineItem(
                 icon = icon(name = topic, class = paste0("bg-", col[i])),
                 header = title,
-                body = summary,
+                body = if (length(supervisor) > 0) {
+                  HTML(paste0(summary, tags$br(), tags$br(), "<u>", "Advisors: ",
+                              "</u>", "<b>", supervisor, "</b>"))
+                } else {
+                  summary
+                },
+                itemIcon = shiny::icon("street-view"),
                 footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>',
                               '<a class="btn btn-danger btn-xs">Delete</a>'),
                 itemText = place
