@@ -323,16 +323,30 @@ shinyServer(function(input, output, session) {
           phone <- data$phone[i]
           image <- ifelse(data$sex[i] == "male", "man.png", "girl-2.png")
           column(4, align = "center",
-          tags$li(
-            tags$img(src = image, alt = "User Image"),
-            tags$br(),
-            tags$a(class = "users-list-name", href = "#", paste(title, name)),
-            tags$span(
-              class = "users-list-date",
-              a(href = paste0("mailto:", mail), target = "_top", mail)),
-            tags$span(class = "users-list-date", phone)
-          ))
+                 tags$li(
+                   tags$img(src = image, alt = "User Image"),
+                   tags$br(),
+                   tags$a(class = "users-list-name", href = "#", paste(title, name)),
+                   tags$span(
+                     class = "users-list-date",
+                     a(href = paste0("mailto:", mail), target = "_top", mail)),
+                   tags$span(class = "users-list-date", phone)
+                 ))
         })
+      )
+    }
+  })
+
+  # generate the number of user in the network_box header
+  output$usernumber <- renderUI({
+    nb_users <- nrow(df$users)
+    if (!is_empty(nb_users)) {
+      tagList(
+          tags$span(class = "label label-danger", paste(nb_users, "members")),
+          tags$button(type = "button", class = "btn btn-box-tool",
+                      `data-widget` = "collapse", tags$i(class = "fa fa-minus")),
+          tags$button(type = "button", class = "btn btn-box-tool",
+                      `data-widget` = "remove", tags$i(class = "fa fa-times"))
       )
     }
   })
