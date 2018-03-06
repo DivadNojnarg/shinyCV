@@ -33,7 +33,7 @@ shinyServer(function(input, output, session) {
   output$name <- renderText({
     req(input$name)
     input$name
-    })
+  })
 
   output$position <- renderText({
     req(input$position)
@@ -80,7 +80,7 @@ shinyServer(function(input, output, session) {
   output$cellphone <- renderText({
     req(input$phone_number)
     input$phone_number
-    })
+  })
 
   output$mailadress <- renderUI({
     req(input$mail)
@@ -198,7 +198,7 @@ shinyServer(function(input, output, session) {
   # Generate the language UI
   output$languagesUI <- renderUI({
     if (input$add_language == TRUE) {
-    tagList(
+      tagList(
         textInput(inputId = "language_name", label = "Language:"),
         knobInput(inputId = "language_value",
                   label = tags$span("Level:", style = "color: #FFF;"),
@@ -363,11 +363,11 @@ shinyServer(function(input, output, session) {
     nb_users <- nrow(df$users)
     if (!is_empty(nb_users)) {
       tagList(
-          tags$span(class = "label label-danger", HTML(paste(icon("users"), nb_users, "members"))),
-          tags$button(type = "button", class = "btn btn-box-tool",
-                      `data-widget` = "collapse", tags$i(class = "fa fa-minus")),
-          tags$button(type = "button", class = "btn btn-box-tool",
-                      `data-widget` = "remove", tags$i(class = "fa fa-times"))
+        tags$span(class = "label label-danger", HTML(paste(icon("users"), nb_users, "members"))),
+        tags$button(type = "button", class = "btn btn-box-tool",
+                    `data-widget` = "collapse", tags$i(class = "fa fa-minus")),
+        tags$button(type = "button", class = "btn btn-box-tool",
+                    `data-widget` = "remove", tags$i(class = "fa fa-times"))
       )
     }
   })
@@ -502,13 +502,20 @@ shinyServer(function(input, output, session) {
                       title,
                       tags$td(class = "mailbox-star",
                               tags$a(href = "#",
-                                     res <- lapply(1:grade, FUN = function(i) {
-                                       tags$i(class = "fa fa-star text-yellow pull-right")
-                                     }),
-                                     unlist(res)
+                                     if (grade < 5) {
+                                       empty_star <- lapply(1:(5 - grade), FUN = function(i) {
+                                         tags$i(class = "fa fa-star-o text-yellow pull-right")
+                                       })
+                                     },
+                                     if (grade > 0) {
+                                       full_star <- lapply(1:grade, FUN = function(i) {
+                                         tags$i(class = "fa fa-star text-yellow pull-right")
+                                       })
+                                     }
                               )
                       )
-                    ))
+                    )
+                  )
                 } else {
                   title
                 },
