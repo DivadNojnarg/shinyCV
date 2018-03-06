@@ -15,6 +15,9 @@ main_box <- function() {
          tabPanel(title = HTML(paste0(icon("pencil"), "Publications"))
 
          ),
+         tabPanel(title = HTML(paste0(icon("microphone"), "Conferences/Talks"))
+
+         ),
          tabPanel(title = HTML(paste0(icon("trophy"), "Awards"))
 
          )
