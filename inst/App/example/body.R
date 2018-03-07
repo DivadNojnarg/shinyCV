@@ -17,7 +17,7 @@ body <- dashboardBody(
              network_box()
       ),
       column(8, offset = 0, style = 'padding:0px;',
-             main_box()
+             uiOutput("main_box")
       ),
       fluidRow(
         column(3, offset = 0, style = 'padding:0px;',

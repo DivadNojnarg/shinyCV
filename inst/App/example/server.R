@@ -546,6 +546,16 @@ shinyServer(function(input, output, session) {
     project_box()
   })
 
+  #-------------------------------------------------------------------------
+  #
+  #  main_box section ...
+  #
+  #-------------------------------------------------------------------------
+
+  # need to enable/disable several tabPanels
+  output$main_box <- renderUI({
+    main_box(input)
+  })
 
   #-------------------------------------------------------------------------
   #
