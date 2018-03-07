@@ -2,14 +2,19 @@
 shinyServer(function(input, output, session) {
 
   # initialization skills, languages and users dataframe reactiveValues
-  df <- reactiveValues(skills = data.frame(),
-                       language = data.frame(),
-                       users = data.frame(),
-                       formations = data.frame(),
-                       tasks = list(),
-                       projects = data.frame(),
-                       publications = data.frame(),
-                       screenshots = data.frame())
+  df <- reactiveValues(
+    skills = data.frame(),
+    language = data.frame(),
+    users = data.frame(),
+    formations = data.frame(),
+    tasks = list(),
+    projects = data.frame(),
+    publications = data.frame(),
+    talks = data.frame()
+  )
+
+  # useful for temporary storage
+  temp <- reactiveValues(tasks = data.frame())
 
   # take random adminLTE colors (I remove black)
   col <- sample(
@@ -599,7 +604,6 @@ shinyServer(function(input, output, session) {
   #each time submit task is pressed
   # add the new task name as well as
   # other informations
-  temp <- reactiveValues(tasks = data.frame(), screenshots = data.frame())
   observeEvent(input$submit_task,{
     req(input$task_name, input$task_status)
     current_task <- data.frame(
@@ -700,8 +704,8 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  # # render the screenshot
-  # output$screenshot <- renderImage({
+  # # store screenshot in reactive expression
+  # screenshot <- renderImage({
   #   req(input$publication_screenshot)
   #   inFile <- input$publication_screenshot
   #   path <- inFile$datapath
@@ -710,23 +714,6 @@ shinyServer(function(input, output, session) {
   #        class = "img-responsive pad",
   #        alt = "text-lines.svg")
   # }, deleteFile = FALSE)
-
-  observeEvent(input$publication_screenshot,{
-    req(input$publication_screenshot)
-    inFile <- input$publication_screenshot
-    path <- inFile$datapath
-    name <- inFile$name
-
-    current_screenshot <- data.frame(
-      path = file.path(paste0(getwd(), "/www"), name),
-      name = name
-    )
-    # copy in the shinyapp directory
-    file.copy(from = path, file.path(paste0(getwd(), "/www"), name))
-    # only one screenshot by publication
-    # the last one replace the old one
-    temp$screenshots <- current_screenshot
-  })
 
   # each time submit publication is pressed
   # add the new publication name as well as
@@ -739,9 +726,6 @@ shinyServer(function(input, output, session) {
       pubmed_link = input$publication_pubmed
     )
     df$publications <- rbind(df$publications, temp_publication)
-    df$screenshots <- rbind(df$screenshots, temp$screenshots)
-    print(df$screenshots$name)
-    temp$screenshots <- data.frame()
   })
 
   # remove a publication
@@ -754,10 +738,6 @@ shinyServer(function(input, output, session) {
                        publication in the list!", type = "error")
       } else {
         df$publications <- df$publications[-idx, ]
-        # remove the screenshot element(s) related to
-        # the deleted publication
-        file.remove(df$screenshots[[idx]])
-        df$screenshots <- df$screenshots[-idx, ]
       }
     } else {
       sendSweetAlert(session, title = "", text = "There is no publication to
@@ -774,13 +754,122 @@ shinyServer(function(input, output, session) {
           reference <- publications$refence[i]
           abstract <- publications$abstract[i]
           pubmed_link <- publications$pubmed_link[i]
-          #screenshot <- df$screenshots$src[[i]]
+
           # call the publication_box function and pass it all
           # the previous arguments
-          publication_box(input, reference, abstract,
-                          screenshot = df$screenshots[i],
-                          pubmed_link, box_index = i)
+          publication_box(input, reference, abstract, pubmed_link, box_index = i)
         })
+      )
+    }
+  })
+
+
+
+  #-------------------------------------------------------------------------
+  #
+  #  talks section ...
+  #
+  #-------------------------------------------------------------------------
+
+  # Generate the talks UI
+  # if and only if the editor
+  # switchInput is on TRUE
+  output$talksUI <- renderUI({
+    if (input$add_talk == TRUE) {
+      tagList(
+        textInput("talk_title", label = "Title:"),
+        prettyRadioButtons(inputId = "talk_price", label = "Award:",
+                            choices = c("yes", "no"), animation = "pulse",
+                            thick = TRUE, bigger = TRUE, inline = TRUE),
+        dateRangeInput("talk_date", "Date range:",
+                       min    = "1900-01-01",
+                       max    = Sys.Date(),
+                       format = "mm/dd/yy",
+                       separator = " - "),
+        textAreaInput("talk_summary", "Talks description",
+                      "Describe your conference here", width = "200px"),
+        textInput("talk_location", "Place"),
+        textInput("talk_website", "Conference Website"),
+        actionBttn(inputId = "submit_talk", "Add Talk",
+                   color = "success", style = "fill", size = "md"),
+        br(),
+        br(),
+        actionBttn(inputId = "remove_talk", "Remove Talk",
+                   color = "danger", style = "fill", size = "md"),
+        numericInput("talk_id", "Talk to remove", value = 1)
+      )
+    }
+  })
+
+  # each time submit talk is pressed
+  # add the new talk name and its value
+  # to the talks dataframe
+  observeEvent(input$submit_talk,{
+    req(input$talk_date, input$talk_summary, input$talk_date, input$talk_location)
+    temp_talk <- data.frame(
+      title = input$talk_title,
+      from = input$talk_date[1],
+      to = input$talk_date[2],
+      summary = input$talk_summary,
+      place = input$talk_location,
+      price = input$talk_price,
+      website = input$talk_website
+    )
+    df$talks <- rbind(df$talks, temp_talk)
+  })
+
+  # remove a formation
+  observeEvent(input$remove_talk,{
+    req(input$talk_id)
+    idx <- input$talk_id
+    if (nrow(df$talks) > 0) {
+      if (idx > nrow(df$talks)) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       talk in the list!", type = "error")
+      } else {
+        df$talks <- df$talks[-idx, ]
+      }
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no talk to
+                     delete", type = "error")
+    }
+    })
+
+  # Render the formation timeLine
+  output$talk_timeline <- renderUI({
+    talks <- df$talks
+    if (!is_empty(talks)) {
+      tagList(
+        timelineBox(
+          lapply(seq_along(talks$title), FUN = function(i) {
+            title <- talks$title[i]
+            from <- talks$from[i]
+            to <- ifelse(is.na(talks$to[i]), "Now", talks$to[i])
+            summary <- talks$summary[i]
+            place <- talks$place[i]
+            price <- talks$price[i]
+            website <- talks$website[i]
+            list(
+              timelineLabel(
+                text = HTML(paste0("<b>", from, "//", "<br/>", to, "</b>")), color = "light-blue"
+              ),
+              timelineItem(
+                icon = icon(name = "microphone", class = paste0("bg-", "light-blue")),
+                header = if (length(price) > 0) {
+                  HTML(paste0(title, tags$p(class = "pull-right", icon("trophy"))))
+                } else {
+                  title
+                },
+                body = summary,
+                itemIcon = shiny::icon("street-view"),
+                footer = tags$a(class = "btn btn-primary btn-xs",
+                                href = website, target = "_blank", "Read more"),
+
+                itemText = place
+              )
+            )
+          })
+        )
       )
     }
   })

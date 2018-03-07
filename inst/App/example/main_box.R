@@ -20,7 +20,8 @@ main_box <- function(input) {
              fluidRow(uiOutput("publications"))
            ),
            tabPanel(
-             title = HTML(paste0(icon("microphone"), "Conferences/Talks"))
+             title = HTML(paste0(icon("microphone"), "Conferences/Talks")),
+             uiOutput("talk_timeline")
            ),
            tabPanel(title = HTML(paste0(icon("trophy"), "Awards"))
            )

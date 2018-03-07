@@ -1,5 +1,4 @@
-publication_box <- function(input, reference, abstract, screenshot,
-                            pubmed_link, box_index) {
+publication_box <- function(input, reference, abstract, pubmed_link, box_index) {
 
   # box_index is used to create ID number
   # for each publication box.
@@ -39,9 +38,9 @@ publication_box <- function(input, reference, abstract, screenshot,
              ## Box body ##
              tags$div(
                class = "box-body",
-               # publication screenshot
+               # publication screenshot (does not work with user defined background)
                tags$img(class = "img-responsive pad",
-                        src = ifelse(length(screenshot) > 0, screenshot, "text-lines.svg"),
+                        src = "text-lines.svg",
                         alt = "text-lines.svg"),
                # publication abstract
                tags$ul(class = "nav nav-stacked",

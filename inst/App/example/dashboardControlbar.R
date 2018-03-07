@@ -250,6 +250,20 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div id="publicationsUI" class="shiny-html-output"></div>
 
 
+      <hr/>
+
+      <h3 class="control-sidebar-heading">Conferences Section</h3>
+      <div class="form-group shiny-input-container">
+      <div class="material-switch">
+      <span style="padding-right: 10px;">Open Conferences Editor</span>
+      <input id="add_talk" type="checkbox"/>
+      <label for="add_talk" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="talksUI" class="shiny-html-output"></div>
+
+
       </div>
       <!-- /.tab-pane -->
 
