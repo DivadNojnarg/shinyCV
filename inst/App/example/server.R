@@ -6,7 +6,7 @@ shinyServer(function(input, output, session) {
                        language = data.frame(),
                        users = data.frame(),
                        formations = data.frame(),
-                       tasks = data.frame(),
+                       tasks = list(),
                        projects = data.frame())
 
   # take random adminLTE colors (I remove black)
@@ -574,8 +574,7 @@ shinyServer(function(input, output, session) {
         h5(class = "text-center", "Task submenu"),
         textInput(inputId = "task_name", label = "Task Name:"),
         selectInput(inputId = "task_status", label = "Task Status:",
-                    choices = c("not started" = "not_started",
-                                "Work in progress" = "wip",
+                    choices = c("Work in progress" = "wip",
                                 "Completed" = "completed")),
         actionBttn(inputId = "submit_task", "Add Task",
                    color = "success", style = "fill", size = "md"),
@@ -598,14 +597,15 @@ shinyServer(function(input, output, session) {
   #each time submit task is pressed
   # add the new task name as well as
   # other informations
+  temp <- reactiveValues(tasks = data.frame())
   observeEvent(input$submit_task,{
     req(input$task_name, input$task_status)
-    temp_task <- data.frame(
+    current_task <- data.frame(
       name = input$task_name,
-      status = input$task_status,
+      status = input$task_status
     )
-    df$tasks <- rbind(df$taks, temp_task)
-    print(df$tasks)
+    temp$tasks <- rbind(temp$tasks, current_task)
+    print(temp$tasks)
   })
 
   # each time submit user is pressed
@@ -622,9 +622,10 @@ shinyServer(function(input, output, session) {
       place = input$project_place
     )
     df$projects <- rbind(df$projects, temp_project)
+    df$tasks[[length(df$tasks) + 1]] <- temp$tasks
+    temp$tasks <- data.frame()
     print(df$projects)
   })
-
 
   # remove a project
   observeEvent(input$remove_project,{
@@ -636,6 +637,9 @@ shinyServer(function(input, output, session) {
                        project in the list!", type = "error")
       } else {
         df$projects <- df$projects[-idx, ]
+        # remove the tasks element related to
+        # the deleted project
+        df$tasks[[idx]] <- NULL
       }
     } else {
       sendSweetAlert(session, title = "", text = "There is no project to
@@ -658,7 +662,8 @@ shinyServer(function(input, output, session) {
           # the previous arguments
           project_box(input, images = project_images, background_color = col,
                       title = title, position = position, overview = overview,
-                      supervisors = supervisors, place = place, tasks = df$tasks)
+                      supervisors = supervisors, place = place, tasks = df$tasks[[i]],
+                      box_index = i)
         })
       )
     }
