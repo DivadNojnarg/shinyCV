@@ -1,3 +1,6 @@
+# generate the main box
+# 2 tabPanels if input$academic_cv == FALSE
+# 6 tabPanels if input$academic_cv == TRUE
 main_box <- function(input) {
   if (input$academic_cv == TRUE) {
     tabBox(id = "main_body", width = 12,
@@ -5,7 +8,9 @@ main_box <- function(input) {
                     uiOutput("formation_timeline")
            ),
            tabPanel(title = HTML(paste0(icon("archive"), "Experience")),
-                    uiOutput("experience")
+                    # wrap in fluidRow so that elements
+                    # are added by column
+                    fluidRow(uiOutput("experience"))
            ),
            tabPanel(
              title = HTML(paste0(icon("university"), "Teaching"))
@@ -25,7 +30,9 @@ main_box <- function(input) {
                     uiOutput("formation_timeline")
            ),
            tabPanel(title = HTML(paste0(icon("archive"), "Experience")),
-                    uiOutput("experience")
+                    # wrap in fluidRow so that elements
+                    # are added by column
+                    fluidRow(uiOutput("experience"))
            )
     )
   }

@@ -5,13 +5,26 @@ shinyServer(function(input, output, session) {
   df <- reactiveValues(skills = data.frame(),
                        language = data.frame(),
                        users = data.frame(),
-                       formations = data.frame())
+                       formations = data.frame(),
+                       tasks = data.frame(),
+                       projects = data.frame())
 
   # take random adminLTE colors (I remove black)
   col <- sample(
     c("light-blue", "aqua", "green", "orange",
       "purple", "maroon", "gray", "teal",
       "navy", "red", "yellow")
+  )
+
+  # images for the projects
+  project_images = c(
+    "checklist.svg",
+    "calendar.svg",
+    "bulb.svg",
+    "document.svg",
+    "checklist-2.svg",
+    "checklist-3.svg",
+    "presentation.svg"
   )
 
   #-------------------------------------------------------------------------
@@ -162,7 +175,8 @@ shinyServer(function(input, output, session) {
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
-        actionBttn(inputId = "submit_skill", "Add Skill")
+        actionBttn(inputId = "submit_skill", "Add Skill",
+                   color = "success", style = "fill", size = "md")
       )
     }
   })
@@ -209,7 +223,8 @@ shinyServer(function(input, output, session) {
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
-        actionBttn(inputId = "submit_language", "Add Language")
+        actionBttn(inputId = "submit_language", "Add Language",
+                   color = "success", style = "fill", size = "md")
       )
     }
   })
@@ -312,7 +327,8 @@ shinyServer(function(input, output, session) {
         textInput(inputId = "user_name", label = "Name:"),
         textInput(inputId = "user_mail", label = "Mail:"),
         textInput(inputId = "user_phone", label = "Phone Number:"),
-        actionBttn(inputId = "submit_user", "Add User")
+        actionBttn(inputId = "submit_user", "Add User",
+                   color = "success", style = "fill", size = "md")
       )
     }
   })
@@ -457,17 +473,17 @@ shinyServer(function(input, output, session) {
     df$formations <- rbind(df$formations, temp_formation)
   })
 
-  observe({
-    print(df$formations)
-  })
-
-
   # remove a formation
   observeEvent(input$remove_formation,{
     req(input$formation_id)
     idx <- input$formation_id
     if (nrow(df$formations) > 0) {
-      df$formations <- df$formations[-idx, ]
+      if (idx > nrow(df$formations)) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       formation in the list!", type = "error")
+      } else {
+        df$formations <- df$formations[-idx, ]
+      }
     } else {
       sendSweetAlert(session, title = "", text = "There is no formation to
                      delete", type = "error")
@@ -542,8 +558,110 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
+  # Generate the projects UI
+  # if and only if the editor
+  # switchInput is on TRUE
+  output$projectsUI <- renderUI({
+    if (input$add_project == TRUE) {
+      tagList(
+        textInput(inputId = "project_title", label = "Project Title:"),
+        textInput(inputId = "project_position", label = "Position in the project:"),
+        textAreaInput(inputId = "project_overview", label = "Overview"),
+        textInput(inputId = "project_supervisors", label = "Advisors:"),
+        textInput(inputId = "project_place", label = "Place/Lab:"),
+        br(),
+        br(),
+        h5(class = "text-center", "Task submenu"),
+        textInput(inputId = "task_name", label = "Task Name:"),
+        selectInput(inputId = "task_status", label = "Task Status:",
+                    choices = c("not started" = "not_started",
+                                "Work in progress" = "wip",
+                                "Completed" = "completed")),
+        actionBttn(inputId = "submit_task", "Add Task",
+                   color = "success", style = "fill", size = "md"),
+        br(),
+        br(),
+        h5(class = "text-center", "Project submenu"),
+        actionBttn(inputId = "submit_project", "Add Project",
+                   color = "success", style = "fill", size = "md"),
+        br(),
+        br(),
+        actionBttn(inputId = "remove_project", "Remove project",
+                   color = "danger", style = "fill", size = "md"),
+        br(),
+        br(),
+        numericInput("project_id", "Project to remove", value = 1)
+      )
+    }
+  })
+
+  #each time submit task is pressed
+  # add the new task name as well as
+  # other informations
+  observeEvent(input$submit_task,{
+    req(input$task_name, input$task_status)
+    temp_task <- data.frame(
+      name = input$task_name,
+      status = input$task_status,
+    )
+    df$tasks <- rbind(df$taks, temp_task)
+    print(df$tasks)
+  })
+
+  # each time submit user is pressed
+  # add the new user name as well as
+  # other informations
+  observeEvent(input$submit_project,{
+    req(input$project_title, input$project_position, input$project_overview,
+        input$project_supervisors, input$project_place)
+    temp_project <- data.frame(
+      title = input$project_title,
+      position = input$project_position,
+      overview = input$project_overview,
+      supervisors = input$project_supervisors,
+      place = input$project_place
+    )
+    df$projects <- rbind(df$projects, temp_project)
+    print(df$projects)
+  })
+
+
+  # remove a project
+  observeEvent(input$remove_project,{
+    req(input$project_id)
+    idx <- input$project_id
+    if (nrow(df$projects) > 0) {
+      if (idx > nrow(df$projects)) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       project in the list!", type = "error")
+      } else {
+        df$projects <- df$projects[-idx, ]
+      }
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no project to
+                     delete", type = "error")
+    }
+  })
+
+  # render the project section
   output$experience <- renderUI({
-    project_box()
+    projects <- df$projects
+    if (!is_empty(projects)) {
+      tagList(
+        lapply(seq_along(projects$title), FUN = function(i) {
+          title <- projects$title[i]
+          position <- projects$position[i]
+          overview <- projects$overview[i]
+          supervisors <- projects$supervisors[i]
+          place <- projects$place[i]
+          # call the project_box function and pass it all
+          # the previous arguments
+          project_box(input, images = project_images, background_color = col,
+                      title = title, position = position, overview = overview,
+                      supervisors = supervisors, place = place, tasks = df$tasks)
+        })
+      )
+    }
   })
 
   #-------------------------------------------------------------------------
@@ -553,6 +671,8 @@ shinyServer(function(input, output, session) {
   #-------------------------------------------------------------------------
 
   # need to enable/disable several tabPanels
+  # Some users probably do not need
+  # awards, talks and publications panels
   output$main_box <- renderUI({
     main_box(input)
   })

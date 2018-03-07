@@ -8,7 +8,7 @@
 #-------------------------------------------------------------------------
 
 dashboardControlbar <- function(ctrlHTML = NULL) {
-
+  # be very careful! Only 5 tabs maximum in the navigation
   if ( is.null(ctrlHTML) ) {
 
     HTML(paste0(
@@ -210,8 +210,8 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
       <div class="tab-pane" id="control-sidebar-formation-tab">
-      <h3 class="control-sidebar-heading">Studies Section</h3>
 
+      <h3 class="control-sidebar-heading">Formation Section</h3>
       <div class="form-group shiny-input-container">
       <div class="material-switch">
       <span style="padding-right: 10px;">Open Formation Editor</span>
@@ -222,12 +222,21 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <div id="formationUI" class="shiny-html-output"></div>
 
+      <hr/>
+
+      <h3 class="control-sidebar-heading">Project Section</h3>
+      <div class="form-group shiny-input-container">
+      <div class="material-switch">
+      <span style="padding-right: 10px;">Open Project Editor</span>
+      <input id="add_project" type="checkbox"/>
+      <label for="add_project" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="projectsUI" class="shiny-html-output"></div>
+
       </div>
       <!-- /.tab-pane -->
-
-
-
-
 
 
       </div>
