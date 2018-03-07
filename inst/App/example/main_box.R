@@ -16,7 +16,8 @@ main_box <- function(input) {
              title = HTML(paste0(icon("university"), "Teaching"))
            ),
            tabPanel(
-             title = HTML(paste0(icon("pencil"), "Publications"))
+             title = HTML(paste0(icon("pencil"), "Publications")),
+             fluidRow(uiOutput("publications"))
            ),
            tabPanel(
              title = HTML(paste0(icon("microphone"), "Conferences/Talks"))

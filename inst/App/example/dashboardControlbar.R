@@ -235,6 +235,21 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <div id="projectsUI" class="shiny-html-output"></div>
 
+
+      <hr/>
+
+      <h3 class="control-sidebar-heading">Publications Section</h3>
+      <div class="form-group shiny-input-container">
+      <div class="material-switch">
+      <span style="padding-right: 10px;">Open Publication Editor</span>
+      <input id="add_publication" type="checkbox"/>
+      <label for="add_publication" class="label-success"></label>
+      </div>
+      </div>
+
+      <div id="publicationsUI" class="shiny-html-output"></div>
+
+
       </div>
       <!-- /.tab-pane -->
 

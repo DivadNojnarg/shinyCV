@@ -7,7 +7,9 @@ shinyServer(function(input, output, session) {
                        users = data.frame(),
                        formations = data.frame(),
                        tasks = list(),
-                       projects = data.frame())
+                       projects = data.frame(),
+                       publications = data.frame(),
+                       screenshots = data.frame())
 
   # take random adminLTE colors (I remove black)
   col <- sample(
@@ -597,7 +599,7 @@ shinyServer(function(input, output, session) {
   #each time submit task is pressed
   # add the new task name as well as
   # other informations
-  temp <- reactiveValues(tasks = data.frame())
+  temp <- reactiveValues(tasks = data.frame(), screenshots = data.frame())
   observeEvent(input$submit_task,{
     req(input$task_name, input$task_status)
     current_task <- data.frame(
@@ -605,11 +607,10 @@ shinyServer(function(input, output, session) {
       status = input$task_status
     )
     temp$tasks <- rbind(temp$tasks, current_task)
-    print(temp$tasks)
   })
 
-  # each time submit user is pressed
-  # add the new user name as well as
+  # each time submit project is pressed
+  # add the new project name as well as
   # other informations
   observeEvent(input$submit_project,{
     req(input$project_title, input$project_position, input$project_overview,
@@ -624,7 +625,6 @@ shinyServer(function(input, output, session) {
     df$projects <- rbind(df$projects, temp_project)
     df$tasks[[length(df$tasks) + 1]] <- temp$tasks
     temp$tasks <- data.frame()
-    print(df$projects)
   })
 
   # remove a project
@@ -637,7 +637,7 @@ shinyServer(function(input, output, session) {
                        project in the list!", type = "error")
       } else {
         df$projects <- df$projects[-idx, ]
-        # remove the tasks element related to
+        # remove the tasks element(s) related to
         # the deleted project
         df$tasks[[idx]] <- NULL
       }
@@ -668,6 +668,123 @@ shinyServer(function(input, output, session) {
       )
     }
   })
+
+
+  #-------------------------------------------------------------------------
+  #
+  #  publications section ...
+  #
+  #-------------------------------------------------------------------------
+
+  # Generate the publications UI
+  # if and only if the editor
+  # switchInput is on TRUE
+  output$publicationsUI <- renderUI({
+    if (input$add_publication == TRUE) {
+      tagList(
+        textInput(inputId = "publication_reference", label = "Short Reference:"),
+        fileInput(inputId = "publication_screenshot", label = "Screenshot:"),
+        textAreaInput(inputId = "publication_abstract", label = "Abstract",
+                      "Write your abstract here"),
+        textInput(inputId = "publication_pubmed", label = "Link to pubmed:"),
+        actionBttn(inputId = "submit_publication", "Add Publication",
+                   color = "success", style = "fill", size = "md"),
+        br(),
+        br(),
+        actionBttn(inputId = "remove_publication", "Remove publication",
+                   color = "danger", style = "fill", size = "md"),
+        br(),
+        br(),
+        numericInput("publication_id", "Publication to remove", value = 1)
+      )
+    }
+  })
+
+  # # render the screenshot
+  # output$screenshot <- renderImage({
+  #   req(input$publication_screenshot)
+  #   inFile <- input$publication_screenshot
+  #   path <- inFile$datapath
+  #   list(src = path,
+  #        # very important to keep the adminLTE image border
+  #        class = "img-responsive pad",
+  #        alt = "text-lines.svg")
+  # }, deleteFile = FALSE)
+
+  observeEvent(input$publication_screenshot,{
+    req(input$publication_screenshot)
+    inFile <- input$publication_screenshot
+    path <- inFile$datapath
+    name <- inFile$name
+
+    current_screenshot <- data.frame(
+      path = file.path(paste0(getwd(), "/www"), name),
+      name = name
+    )
+    # copy in the shinyapp directory
+    file.copy(from = path, file.path(paste0(getwd(), "/www"), name))
+    # only one screenshot by publication
+    # the last one replace the old one
+    temp$screenshots <- current_screenshot
+  })
+
+  # each time submit publication is pressed
+  # add the new publication name as well as
+  # other informations
+  observeEvent(input$submit_publication,{
+    req(input$publication_reference, input$publication_pubmed)
+    temp_publication <- data.frame(
+      reference = input$publication_reference,
+      abstract = input$publication_abstract,
+      pubmed_link = input$publication_pubmed
+    )
+    df$publications <- rbind(df$publications, temp_publication)
+    df$screenshots <- rbind(df$screenshots, temp$screenshots)
+    print(df$screenshots$name)
+    temp$screenshots <- data.frame()
+  })
+
+  # remove a publication
+  observeEvent(input$remove_publication,{
+    req(input$publication_id)
+    idx <- input$publication_id
+    if (nrow(df$publications) > 0) {
+      if (idx > nrow(df$publications)) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       publication in the list!", type = "error")
+      } else {
+        df$publications <- df$publications[-idx, ]
+        # remove the screenshot element(s) related to
+        # the deleted publication
+        file.remove(df$screenshots[[idx]])
+        df$screenshots <- df$screenshots[-idx, ]
+      }
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no publication to
+                     delete", type = "error")
+    }
+    })
+
+  # render the project section
+  output$publications <- renderUI({
+    publications <- df$publications
+    if (!is_empty(publications)) {
+      tagList(
+        lapply(seq_along(publications$reference), FUN = function(i) {
+          reference <- publications$refence[i]
+          abstract <- publications$abstract[i]
+          pubmed_link <- publications$pubmed_link[i]
+          #screenshot <- df$screenshots$src[[i]]
+          # call the publication_box function and pass it all
+          # the previous arguments
+          publication_box(input, reference, abstract,
+                          screenshot = df$screenshots[i],
+                          pubmed_link, box_index = i)
+        })
+      )
+    }
+  })
+
 
   #-------------------------------------------------------------------------
   #
