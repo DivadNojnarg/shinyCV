@@ -143,25 +143,35 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-pane" id="control-sidebar-skills-tab">
       <h3 class="control-sidebar-heading">Skills Section</h3>
 
-      <div class="form-group shiny-input-container">
-        <div class="material-switch">
-          <span style="padding-right: 10px;">Open Skills Editor</span>
-          <input id="add_skill" type="checkbox"/>
-          <label for="add_skill" class="label-success"></label>
-        </div>
+      <div id="skills" class="form-group shiny-input-radiogroup shiny-input-container shiny-input-container-inline">
+      <label class="control-label" for="skills">Section to display:</label>
+      <div class="shiny-options-group">
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="skills" value="skills" checked="checked"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-suitcase"></i>
+      <label>
+      <span>skills</span>
+      </label>
       </div>
-
-      <div class="form-group shiny-input-container">
-        <div class="material-switch">
-          <span style="padding-right: 10px;">Open Languages Editor</span>
-          <input id="add_language" type="checkbox"/>
-          <label for="add_language" class="label-success"></label>
-        </div>
+      </div>
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="skills" value="languages"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-volume-up"></i>
+      <label>
+      <span>languages</span>
+      </label>
+      </div>
+      </div>
+      </div>
       </div>
 
       <div id="skillsUI" class="shiny-html-output"></div>
       <div id="languagesUI" class="shiny-html-output"></div>
 
+
+      <hr/>
 
       <div class="form-group shiny-input-container">
         <div class="material-switch">

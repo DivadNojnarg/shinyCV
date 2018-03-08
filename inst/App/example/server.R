@@ -172,7 +172,7 @@ shinyServer(function(input, output, session) {
   # if and only if the editor
   # switchInput is on TRUE
   output$skillsUI <- renderUI({
-    if (input$add_skill == TRUE) {
+    if (input$skills == "skills") {
       tagList(
         textInput(inputId = "skill_name", label = "Competence:"),
         knobInput(inputId = "skill_value",
@@ -180,7 +180,8 @@ shinyServer(function(input, output, session) {
                   min = 0,
                   max = 100,
                   value = 50,
-                  width = 75,
+                  width = "75px",
+                  height = "75px",
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
@@ -220,7 +221,7 @@ shinyServer(function(input, output, session) {
 
   # Generate the language UI
   output$languagesUI <- renderUI({
-    if (input$add_language == TRUE) {
+    if (input$skills == "languages") {
       tagList(
         textInput(inputId = "language_name", label = "Language:"),
         knobInput(inputId = "language_value",
@@ -228,7 +229,8 @@ shinyServer(function(input, output, session) {
                   min = 0,
                   max = 100,
                   value = 50,
-                  width = 75,
+                  width = "75px",
+                  height = "75px",
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
