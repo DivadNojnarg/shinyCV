@@ -323,7 +323,7 @@ shinyServer(function(input, output, session) {
   output$total_courses <- renderText({
     input$submit_course
     input$submit_internship
-    sum(nrow(df$courses, df$internships))
+    sum(nrow(df$courses), nrow(df$internships))
   })
 
 
