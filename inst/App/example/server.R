@@ -121,7 +121,7 @@ shinyServer(function(input, output, session) {
     req(input$twitterlink)
     tagList(
       a(href = input$linkedinlink, target = "_blank",
-        tags$span(class = "label label-info",
+        tags$span(class = "label bg-navy",
                   HTML(paste(icon("linkedin"),"Linkedin"))
         )
       )
@@ -154,7 +154,7 @@ shinyServer(function(input, output, session) {
     req(input$githublink)
     tagList(
       a(href = input$githublink, target = "_blank",
-        tags$span(class = "label label-success",
+        tags$span(class = "label bg-purple",
                   HTML(paste(icon("github-square"),"Github"))
         )
       )
@@ -338,18 +338,16 @@ shinyServer(function(input, output, session) {
   # if and only if the editor
   # switchInput is on TRUE
   output$networkUI <- renderUI({
-    if (input$add_user == TRUE) {
-      tagList(
-        selectInput("user_title", label = "Title:", choices = c("", "Dr.", "Pr.")),
-        selectInput(inputId = "user_sex",
-                    label = "Sex:", choices = c("male", "female")),
-        textInput(inputId = "user_name", label = "Name:"),
-        textInput(inputId = "user_mail", label = "Mail:"),
-        textInput(inputId = "user_phone", label = "Phone Number:"),
-        actionBttn(inputId = "submit_user", "Add User",
-                   color = "success", style = "fill", size = "md")
-      )
-    }
+    tagList(
+      selectInput("user_title", label = "Title:", choices = c("", "Dr.", "Pr.")),
+      selectInput(inputId = "user_sex",
+                  label = "Sex:", choices = c("male", "female")),
+      textInput(inputId = "user_name", label = "Name:"),
+      textInput(inputId = "user_mail", label = "Mail:"),
+      textInput(inputId = "user_phone", label = "Phone Number:"),
+      actionBttn(inputId = "submit_user", "Add User",
+                 color = "success", style = "fill", size = "md")
+    )
   })
 
   # each time submit user is pressed

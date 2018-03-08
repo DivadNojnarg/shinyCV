@@ -186,17 +186,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <div class="tab-pane" id="control-sidebar-network-tab">
       <h3 class="control-sidebar-heading">Network Section</h3>
 
-      <div class="form-group shiny-input-container">
-      <div class="material-switch">
-      <span style="padding-right: 10px;">Open Network Editor</span>
-      <input id="add_user" type="checkbox"/>
-      <label for="add_user" class="label-success"></label>
-      </div>
-      </div>
-
       <div id="networkUI" class="shiny-html-output"></div>
-
-
 
       </div>
       <!-- /.tab-pane -->
