@@ -14,7 +14,7 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
                tags$div(
                  class = "user-block",
                  tags$span(class = "badge bg-black", box_index),
-                 tags$p(class = "text-center", tags$a(href = "#", reference))
+                 tags$p(class = "username text-center", reference)
                ),
                tags$div(
                  class = "box-tools",
@@ -40,11 +40,14 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
                class = "box-body",
                # publication screenshot
                if (is.null(input$publication_screenshot)) {
+                 # show a default image if nothing is uploaded
+                 # by the user
                  tags$img(class = "img-responsive pad",
                           src = "text-lines.svg",
                           style = "height: 200px; display: block;
                                    margin-left: auto; margin-right: auto;")
                } else {
+                 # otherwise display the image provided by the user
                  imageOutput("screenshot", width = "auto", height = "auto")
                },
                # publication abstract

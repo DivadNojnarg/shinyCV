@@ -10,7 +10,9 @@ shinyServer(function(input, output, session) {
     tasks = list(),
     projects = data.frame(),
     publications = data.frame(),
-    talks = data.frame()
+    talks = data.frame(),
+    courses = data.frame(),
+    internships = data.frame()
   )
 
   # useful for temporary storage
@@ -305,13 +307,23 @@ shinyServer(function(input, output, session) {
   })
 
 
-  # experimental
-  output$plt1 <- renderGvis({
-    gvisGauge(as.data.frame(CityPopularity[1,]),
-              options=list(min=0, max=800, greenFrom=500,
-                           greenTo=800, yellowFrom=300, yellowTo=500,
-                           redFrom=0, redTo=300, width=75, height=75))
-
+  # Total number of projects/publications/conferences/courses
+  output$total_projects <- renderText({
+    input$submit_project
+    nrow(df$projects)
+  })
+  output$total_publications <- renderText({
+    input$submit_publication
+    nrow(df$publications)
+  })
+  output$total_conferences <- renderText({
+    input$submit_talk
+    nrow(df$talks)
+  })
+  output$total_courses <- renderText({
+    input$submit_course
+    input$submit_internship
+    sum(nrow(df$courses, df$internships))
   })
 
 
@@ -403,11 +415,11 @@ shinyServer(function(input, output, session) {
   #-------------------------------------------------------------------------
 
   # Generate the formation UI
-  # if and only if the editor
-  # switchInput is on TRUE
+  # if and only if the formation part is selected
   output$formationUI <- renderUI({
-    if (input$add_formation == TRUE) {
+    if (input$section == "formation") {
       tagList(
+        tags$h3("Formation Section"),
         textInput("formation_title", label = "Title:"),
         pickerInput(
           inputId = "formation_topic",
@@ -566,11 +578,12 @@ shinyServer(function(input, output, session) {
   #-------------------------------------------------------------------------
 
   # Generate the projects UI
-  # if and only if the editor
-  # switchInput is on TRUE
+  # if and only if the experience
+  # section is selected
   output$projectsUI <- renderUI({
-    if (input$add_project == TRUE) {
+    if (input$section == "experience") {
       tagList(
+        tags$h3("Experience Section"),
         textInput(inputId = "project_title", label = "Project Title:"),
         textInput(inputId = "project_position", label = "Position in the project:"),
         textAreaInput(inputId = "project_overview", label = "Overview"),
@@ -681,11 +694,12 @@ shinyServer(function(input, output, session) {
   #-------------------------------------------------------------------------
 
   # Generate the publications UI
-  # if and only if the editor
-  # switchInput is on TRUE
+  # if and only if the publications
+  # section is selected
   output$publicationsUI <- renderUI({
-    if (input$add_publication == TRUE) {
+    if (input$section == "publications") {
       tagList(
+        tags$h3("Publications Section"),
         textInput(inputId = "publication_reference", label = "Short Reference:"),
         fileInput(inputId = "publication_screenshot", label = "Screenshot:"),
         textAreaInput(inputId = "publication_abstract", label = "Abstract",
@@ -752,7 +766,7 @@ shinyServer(function(input, output, session) {
     if (!is_empty(publications)) {
       tagList(
         lapply(seq_along(publications$reference), FUN = function(i) {
-          reference <- publications$refence[i]
+          reference <- publications$reference[i]
           abstract <- publications$abstract[i]
           pubmed_link <- publications$pubmed_link[i]
 
@@ -773,11 +787,12 @@ shinyServer(function(input, output, session) {
   #-------------------------------------------------------------------------
 
   # Generate the talks UI
-  # if and only if the editor
-  # switchInput is on TRUE
+  # if and only if the talk
+  # section is selected
   output$talksUI <- renderUI({
-    if (input$add_talk == TRUE) {
+    if (input$section == "conferences") {
       tagList(
+        tags$h3("Conferences Section"),
         textInput("talk_title", label = "Title:"),
         prettyRadioButtons(inputId = "talk_price", label = "Award:",
                             choices = c("yes", "no"), animation = "pulse",
@@ -806,7 +821,7 @@ shinyServer(function(input, output, session) {
   # add the new talk name and its value
   # to the talks dataframe
   observeEvent(input$submit_talk,{
-    req(input$talk_date, input$talk_summary, input$talk_date, input$talk_location)
+    req(input$talk_title, input$talk_summary, input$talk_date, input$talk_location)
     temp_talk <- data.frame(
       title = input$talk_title,
       from = input$talk_date[1],
@@ -817,7 +832,6 @@ shinyServer(function(input, output, session) {
       website = input$talk_website
     )
     df$talks <- rbind(df$talks, temp_talk)
-    print(df$talks)
   })
 
   # remove a talk
@@ -879,6 +893,136 @@ shinyServer(function(input, output, session) {
 
   #-------------------------------------------------------------------------
   #
+  #  Teaching section ...
+  #
+  #-------------------------------------------------------------------------
+
+  # Generate the teaching UI
+  # if and only if the teaching
+  # section is selected
+  output$teachingUI <- renderUI({
+    if (input$section == "teaching") {
+      if (input$teaching_type == "course") {
+        tagList(
+          textInput(inputId = "course_title", label = "Title:"),
+          textInput(inputId = "course_topic", label = "Topic:"),
+          textInput(inputId = "course_location", label = "Location:"),
+          numericInput(inputId = "course_nbstudents", label = "Students number:", value = 1),
+          numericInput(inputId = "course_nbhours", label = "Hours number:", value = 1),
+          dateRangeInput("course_date", "Date range:",
+                         min    = "1900-01-01",
+                         max    = Sys.Date(),
+                         format = "mm/dd/yy",
+                         separator = " - "),
+          textInput(inputId = "course_supervisor", label = "Main Advisor:"),
+          textInput(inputId = "course_syllabus", label = "Syllabus:"),
+          actionBttn(inputId = "submit_course", "Add course",
+                     color = "success", style = "fill", size = "md"),
+          br(),
+          br(),
+          actionBttn(inputId = "remove_course", "Remove course",
+                     color = "danger", style = "fill", size = "md"),
+          br(),
+          br(),
+          numericInput("course_id", "Course to remove", value = 1)
+        )
+      } else {
+        tagList(
+          textInput(inputId = "internship_title", label = "Title:"),
+          textInput(inputId = "internship_topic", label = "Topic:"),
+          textInput(inputId = "internship_location", label = "Location:"),
+          dateRangeInput("internship_date", "Date range:",
+                         min    = "1900-01-01",
+                         max    = Sys.Date(),
+                         format = "mm/dd/yy",
+                         separator = " - "),
+          textInput(inputId = "internship_supervisor", label = "Main Advisor:"),
+          textInput(inputId = "internship_advert", label = "Advert:"),
+          actionBttn(inputId = "submit_internship", "Add internship",
+                     color = "success", style = "fill", size = "md"),
+          br(),
+          br(),
+          actionBttn(inputId = "remove_internship", "Remove internship",
+                     color = "danger", style = "fill", size = "md"),
+          br(),
+          br(),
+          numericInput("internship_id", "internship to remove", value = 1)
+        )
+      }
+    }
+  })
+
+  # each time submit course is pressed
+  # add the new course name and its value
+  # to the courses dataframe
+  observeEvent(input$submit_course,{
+    req(input$course_title, input$course_topic, input$course_location,
+        input$course_nbstudents, input$course_nbhours,
+        input$course_date, input$course_supervisor)
+    temp_course <- data.frame(
+      title = input$course_title,
+      topic = input$course_topic,
+      nb_students = input$course_nbstudents,
+      nb_hours = input$course_nbhours,
+      from = input$course_date[1],
+      to = input$course_date[2],
+      place = input$course_location,
+      supervisor = input$course_supervisor,
+      syllabus = input$course_syllabus
+    )
+    df$courses <- rbind(df$courses, temp_course)
+    print(df$courses)
+  })
+
+  # remove a course
+  observeEvent(input$remove_course,{
+    req(input$course_id)
+    idx <- input$course_id
+    if (nrow(df$courses) > 0) {
+      if (idx > nrow(df$courses)) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       course in the list!", type = "error")
+      } else {
+        df$courses <- df$courses[-idx, ]
+      }
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no course to
+                     delete", type = "error")
+    }
+    })
+
+  # render the teaching boxes
+  output$teaching <- renderUI({
+    if (input$teaching_type == "course") {
+      courses <- df$courses
+      if (!is_empty(courses)) {
+        tagList(
+          lapply(seq_along(courses$title), FUN = function(i) {
+            title <- courses$title[i]
+            topic <- courses$topic[i]
+            nb_students <- courses$nb_students[i]
+            nb_hours <- courses$nb_hours[i]
+            from <- courses$from[i]
+            to <- if (is.na(courses$to[i])) "Now" else courses$to[i]
+            place <- courses$place[i]
+            supervisor <- courses$supervisor[i]
+            syllabus <- if (is.na(courses$syllabus[i])) "No syllabus" else courses$syllabus[i]
+
+            # call the course_box function and pass it all
+            # the previous arguments
+            course_box(input, title, topic, nb_students, nb_hours, from, to,
+                       place, supervisor, syllabus)
+          })
+        )
+      }
+
+    } else {
+      internship_box()
+    }
+  })
+
+  #-------------------------------------------------------------------------
+  #
   #  main_box section ...
   #
   #-------------------------------------------------------------------------
@@ -901,7 +1045,6 @@ shinyServer(function(input, output, session) {
     dashboardFooter(
       mainText = h5(
         "2017, David Granjon, Zurich.",
-        br(),
         "Built with",
         img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png", height = "30"),
         "by",

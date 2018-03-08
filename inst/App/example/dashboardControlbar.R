@@ -211,57 +211,97 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       <!-- Settings tab content -->
       <div class="tab-pane" id="control-sidebar-formation-tab">
 
-      <h3 class="control-sidebar-heading">Formation Section</h3>
-      <div class="form-group shiny-input-container">
-      <div class="material-switch">
-      <span style="padding-right: 10px;">Open Formation Editor</span>
-      <input id="add_formation" type="checkbox"/>
-      <label for="add_formation" class="label-success"></label>
+
+      <div id="section" class="form-group shiny-input-radiogroup shiny-input-container shiny-input-container-inline">
+      <label class="control-label" for="section">Section to display:</label>
+      <div class="shiny-options-group">
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="section" value="formation" checked="checked"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-graduation-cap"></i>
+      <label>
+      <span>formation</span>
+      </label>
       </div>
       </div>
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="section" value="experience"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-archive"></i>
+      <label>
+      <span>experience</span>
+      </label>
+      </div>
+      </div>
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="section" value="publications"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-pencil"></i>
+      <label>
+      <span>publications</span>
+      </label>
+      </div>
+      </div>
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="section" value="conferences"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-microphone"></i>
+      <label>
+      <span>conferences</span>
+      </label>
+      </div>
+      </div>
+      <div class="pretty p-bigger p-round p-thick p-pulse p-icon">
+      <input type="radio" name="section" value="teaching"/>
+      <div class="state p-primary">
+      <i class="icon fa fa-university"></i>
+      <label>
+      <span>teaching</span>
+      </label>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
 
       <div id="formationUI" class="shiny-html-output"></div>
 
-      <hr/>
 
-      <h3 class="control-sidebar-heading">Experience Section</h3>
-      <div class="form-group shiny-input-container">
-      <div class="material-switch">
-      <span style="padding-right: 10px;">Open Project Editor</span>
-      <input id="add_project" type="checkbox"/>
-      <label for="add_project" class="label-success"></label>
-      </div>
-      </div>
 
       <div id="projectsUI" class="shiny-html-output"></div>
 
 
-      <hr/>
-
-      <h3 class="control-sidebar-heading">Publications Section</h3>
-      <div class="form-group shiny-input-container">
-      <div class="material-switch">
-      <span style="padding-right: 10px;">Open Publication Editor</span>
-      <input id="add_publication" type="checkbox"/>
-      <label for="add_publication" class="label-success"></label>
-      </div>
-      </div>
-
       <div id="publicationsUI" class="shiny-html-output"></div>
 
 
+      <div id="talksUI" class="shiny-html-output"></div>
+
       <hr/>
 
-      <h3 class="control-sidebar-heading">Conferences Section</h3>
-      <div class="form-group shiny-input-container">
-      <div class="material-switch">
-      <span style="padding-right: 10px;">Open Conferences Editor</span>
-      <input id="add_talk" type="checkbox"/>
-      <label for="add_talk" class="label-success"></label>
+      <div id="teaching_type" class="form-group shiny-input-radiogroup shiny-input-container shiny-input-container-inline">
+      <label class="control-label" for="teaching_type">Teaching type:</label>
+      <div class="shiny-options-group">
+      <div class="pretty p-default p-bigger p-round p-thick p-pulse">
+      <input type="radio" name="teaching_type" value="course" checked="checked"/>
+      <div class="state p-primary">
+      <label>
+      <span>course</span>
+      </label>
+      </div>
+      </div>
+      <div class="pretty p-default p-bigger p-round p-thick p-pulse">
+      <input type="radio" name="teaching_type" value="internship"/>
+      <div class="state p-primary">
+      <label>
+      <span>internship</span>
+      </label>
+      </div>
+      </div>
       </div>
       </div>
 
-      <div id="talksUI" class="shiny-html-output"></div>
+      <div id="teachingUI" class="shiny-html-output"></div>
 
 
       </div>

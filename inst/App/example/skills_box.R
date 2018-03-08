@@ -66,11 +66,16 @@ skills_box <- function() {
            </div>
            <!-- ./box-body -->
            <div class="box-footer">
+           <h3 class = "text-center">Statistics</h3>
            <div class="row">
            <div class="col-sm-3 col-xs-6">
            <div class="description-block border-right">
 
-           <div id="plt1" class="shiny-html-output"></div>
+           <span class="badge bg-red">
+            <div id="total_projects" class="shiny-text-output"></div>
+           </span>
+           <br/>
+           <span class="description-text">TOTAL PROJECTS</span>
 
            </div>
            <!-- /.description-block -->
@@ -78,27 +83,39 @@ skills_box <- function() {
            <!-- /.col -->
            <div class="col-sm-3 col-xs-6">
            <div class="description-block border-right">
-           <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-           <h5 class="description-header">$10,390.90</h5>
-           <span class="description-text">TOTAL COST</span>
+
+           <span class="badge bg-red">
+            <div id="total_publications" class="shiny-text-output"></div>
+           </span>
+           <br/>
+           <span class="description-text">TOTAL PUBLICATIONS</span>
+
            </div>
            <!-- /.description-block -->
            </div>
            <!-- /.col -->
            <div class="col-sm-3 col-xs-6">
            <div class="description-block border-right">
-           <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-           <h5 class="description-header">$24,813.53</h5>
-           <span class="description-text">TOTAL PROFIT</span>
+
+           <span class="badge bg-red">
+            <div id="total_conferences" class="shiny-text-output"></div>
+           </span>
+           <br/>
+           <span class="description-text">TOTAL CONFERENCES</span>
+
            </div>
            <!-- /.description-block -->
            </div>
            <!-- /.col -->
            <div class="col-sm-3 col-xs-6">
            <div class="description-block">
-           <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-           <h5 class="description-header">1200</h5>
-           <span class="description-text">GOAL COMPLETIONS</span>
+
+           <span class="badge bg-red">
+            <div id="total_courses" class="shiny-text-output"></div>
+           </span>
+           <br/>
+           <span class="description-text">TOTAL COURSES</span>
+
            </div>
            <!-- /.description-block -->
            </div>

@@ -13,7 +13,8 @@ main_box <- function(input) {
                     fluidRow(uiOutput("experience"))
            ),
            tabPanel(
-             title = HTML(paste0(icon("university"), "Teaching"))
+             title = HTML(paste0(icon("university"), "Teaching")),
+             fluidRow(uiOutput("teaching"))
            ),
            tabPanel(
              title = HTML(paste0(icon("pencil"), "Publications")),
@@ -22,9 +23,9 @@ main_box <- function(input) {
            tabPanel(
              title = HTML(paste0(icon("microphone"), "Conferences/Talks")),
              uiOutput("talk_timeline")
-           ),
-           tabPanel(title = HTML(paste0(icon("trophy"), "Awards"))
-           )
+           )#,
+           #tabPanel(title = HTML(paste0(icon("trophy"), "Awards"))
+           #)
     )
   } else {
     tabBox(id = "main_body", width = 12,
