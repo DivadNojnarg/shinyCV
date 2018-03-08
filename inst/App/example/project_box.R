@@ -59,11 +59,11 @@ project_box <- function(input, images, background_color, title = "Project Title"
             tags$li(
               tags$a(
                 `data-toggle` = "collapse", `aria-expanded` = "true",
-                href = paste0("#collapse", box_index + 1),
+                href = paste0("#collapse", box_index + 100),
                 tags$p(class = "text-center", "Main Tasks")
               ),
               tags$div(
-                id = paste0("collapse", box_index + 1), class = "panel-collapse collapse in",
+                id = paste0("collapse", box_index + 100), class = "panel-collapse collapse in",
                 tags$div(
                   class = "box-body",
                   tags$table(

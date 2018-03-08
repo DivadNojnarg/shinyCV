@@ -224,7 +224,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <hr/>
 
-      <h3 class="control-sidebar-heading">Project Section</h3>
+      <h3 class="control-sidebar-heading">Experience Section</h3>
       <div class="form-group shiny-input-container">
       <div class="material-switch">
       <span style="padding-right: 10px;">Open Project Editor</span>
