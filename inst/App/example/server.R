@@ -507,7 +507,7 @@ shinyServer(function(input, output, session) {
             title <- formations$title[i]
             topic <- formations$topic[i]
             from <- formations$from[i]
-            to <- ifelse(is.na(formations$to[i]), "Now", formations$to[i])
+            to <- if (is.na(formations$to[i])) "Now" else formations$to[i]
             summary <- formations$summary[i]
             place <- formations$place[i]
             supervisor <- formations$supervisor[i]
@@ -816,9 +816,10 @@ shinyServer(function(input, output, session) {
       website = input$talk_website
     )
     df$talks <- rbind(df$talks, temp_talk)
+    print(df$talks)
   })
 
-  # remove a formation
+  # remove a talk
   observeEvent(input$remove_talk,{
     req(input$talk_id)
     idx <- input$talk_id
@@ -835,7 +836,7 @@ shinyServer(function(input, output, session) {
     }
     })
 
-  # Render the formation timeLine
+  # Render the conference timeLine
   output$talk_timeline <- renderUI({
     talks <- df$talks
     if (!is_empty(talks)) {
@@ -844,7 +845,7 @@ shinyServer(function(input, output, session) {
           lapply(seq_along(talks$title), FUN = function(i) {
             title <- talks$title[i]
             from <- talks$from[i]
-            to <- ifelse(is.na(talks$to[i]), "Now", talks$to[i])
+            to <- if (is.na(talks$to[i])) "Now" else talks$to[i]
             summary <- talks$summary[i]
             place <- talks$place[i]
             price <- talks$price[i]
