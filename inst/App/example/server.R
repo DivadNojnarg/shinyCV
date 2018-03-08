@@ -704,16 +704,17 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  # # store screenshot in reactive expression
-  # screenshot <- renderImage({
-  #   req(input$publication_screenshot)
-  #   inFile <- input$publication_screenshot
-  #   path <- inFile$datapath
-  #   list(src = path,
-  #        # very important to keep the adminLTE image border
-  #        class = "img-responsive pad",
-  #        alt = "text-lines.svg")
-  # }, deleteFile = FALSE)
+  # render the uploaded image
+  output$screenshot <- renderImage({
+    req(input$publication_screenshot)
+    inFile <- input$publication_screenshot
+    path <- inFile$datapath
+    list(
+      src = path,
+      class = "img-responsive pad"
+    )
+  }, deleteFile = FALSE)
+
 
   # each time submit publication is pressed
   # add the new publication name as well as
