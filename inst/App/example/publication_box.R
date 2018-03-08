@@ -41,7 +41,9 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
                # publication screenshot (does not work with user defined background)
                tags$img(class = "img-responsive pad",
                         src = "text-lines.svg",
-                        alt = "text-lines.svg"),
+                        alt = "text-lines.svg",
+                        style = "height: 200px; display: block;
+                                 margin-left: auto; margin-right: auto;"),
                # publication abstract
                tags$ul(class = "nav nav-stacked",
                        tags$li(
