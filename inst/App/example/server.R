@@ -18,24 +18,6 @@ shinyServer(function(input, output, session) {
   # useful for temporary storage
   temp <- reactiveValues(tasks = data.frame())
 
-  # take random adminLTE colors (I remove black)
-  col <- sample(
-    c("light-blue", "aqua", "green", "orange",
-      "purple", "maroon", "gray", "teal",
-      "navy", "red", "yellow")
-  )
-
-  # images for the projects
-  project_images = c(
-    "checklist.svg",
-    "calendar.svg",
-    "bulb.svg",
-    "document.svg",
-    "checklist-2.svg",
-    "checklist-3.svg",
-    "presentation.svg"
-  )
-
   #-------------------------------------------------------------------------
   #
   #  Profil section ...
@@ -78,66 +60,21 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
-  output$cellphone <- renderText({
-    req(input$phone_number)
-    input$phone_number
-  })
+  # generate the about box
+  output$aboutbox <- renderUI({
+    req(input$mail, input$location)
+    my_phone <- input$phone_number
+    my_mail <- input$mail
+    my_location <- input$location
+    my_linkedin <- input$linkedinlink
+    my_twitter <- input$twitterlink
+    my_facebook <- input$facebooklink
+    my_github <- input$githublink
 
-  output$mailadress <- renderUI({
-    req(input$mail)
-    tagList(
-      a(href = paste0("mailto:", input$mail), target = "_top", "Contact me!")
-    )
-  })
-
-  output$location <- renderText({
-    req(input$location)
-    input$location
-  })
-
-
-  output$linkedinprofile <- renderUI({
-    req(input$twitterlink)
-    tagList(
-      a(href = input$linkedinlink, target = "_blank",
-        tags$span(class = "label bg-navy",
-                  HTML(paste(icon("linkedin"),"Linkedin"))
-        )
-      )
-    )
-  })
-
-  output$twitterprofile <- renderUI({
-    req(input$twitterlink)
-    tagList(
-      a(href = input$twitterlink, target = "_blank",
-        tags$span(class = "label label-info",
-                  HTML(paste(icon("twitter-square"),"Twitter"))
-        )
-      )
-    )
-  })
-
-  output$facebookprofile <- renderUI({
-    req(input$facebooklink)
-    tagList(
-      a(href = input$facebooklink, target = "_blank",
-        tags$span(class = "label label-primary",
-                  HTML(paste(icon("facebook-square"),"Facebook"))
-        )
-      )
-    )
-  })
-
-  output$githubprofile <- renderUI({
-    req(input$githublink)
-    tagList(
-      a(href = input$githublink, target = "_blank",
-        tags$span(class = "label bg-purple",
-                  HTML(paste(icon("github-square"),"Github"))
-        )
-      )
-    )
+    # call the about_box function
+    about_box(phone = my_phone, mail = my_mail, location = my_location,
+              linkedin_link = my_linkedin, twitter_link = my_twitter,
+              facebook_link = my_facebook, github_link = my_github)
   })
 
 

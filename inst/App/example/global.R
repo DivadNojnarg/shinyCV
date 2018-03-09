@@ -24,3 +24,29 @@ source("teaching_box.R")
 source("main_box.R")
 source("body.R")
 source("dashboardControlbar.R")
+
+# take random adminLTE colors (I just removed black)
+col <- c(
+  "light-blue",
+  "aqua",
+  "green",
+  "orange",
+  "purple",
+  "maroon",
+  "gray",
+  "teal",
+  "navy",
+  "red",
+  "yellow"
+)
+
+# images for the projects
+project_images = c(
+  "checklist.svg",
+  "calendar.svg",
+  "bulb.svg",
+  "document.svg",
+  "checklist-2.svg",
+  "checklist-3.svg",
+  "presentation.svg"
+)

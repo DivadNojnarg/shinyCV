@@ -12,7 +12,7 @@ body <- dashboardBody(
       tabName = "main",
       column(4, offset = 0, style = 'padding:0px;',
              uiOutput("profilebox"),
-             about_box(),
+             uiOutput("aboutbox"),
              skills_box(),
              uiOutput("networkbox")
       ),
