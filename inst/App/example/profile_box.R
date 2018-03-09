@@ -1,6 +1,5 @@
 profile_box <- function(name, position, age, interests, website_url, teaser,
                         image, color) {
-
   tags$div(
     class = "box box-primary",
     tags$div(

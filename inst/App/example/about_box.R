@@ -1,6 +1,5 @@
 about_box <- function(phone, mail, location, linkedin_link,
                       twitter_link, facebook_link, github_link) {
-
   tags$div(
     class = "box box-primary",
     ## Box Header ##

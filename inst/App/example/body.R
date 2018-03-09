@@ -13,7 +13,7 @@ body <- dashboardBody(
       column(4, offset = 0, style = 'padding:0px;',
              uiOutput("profilebox"),
              uiOutput("aboutbox"),
-             skills_box(),
+             uiOutput("skillsbox"),
              uiOutput("networkbox")
       ),
       column(8, offset = 0, style = 'padding:0px;',
