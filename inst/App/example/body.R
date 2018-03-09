@@ -14,7 +14,7 @@ body <- dashboardBody(
              profile_box(),
              about_box(),
              skills_box(),
-             network_box()
+             uiOutput("networkbox")
       ),
       column(8, offset = 0, style = 'padding:0px;',
              uiOutput("main_box")

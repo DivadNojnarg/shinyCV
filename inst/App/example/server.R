@@ -4,7 +4,7 @@ shinyServer(function(input, output, session) {
   # initialization skills, languages and users dataframe reactiveValues
   df <- reactiveValues(
     skills = data.frame(),
-    language = data.frame(),
+    languages = data.frame(),
     users = data.frame(),
     formations = data.frame(),
     tasks = list(),
@@ -185,8 +185,17 @@ shinyServer(function(input, output, session) {
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
-        actionBttn(inputId = "submit_skill", "Add Skill",
-                   color = "success", style = "fill", size = "md")
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_skill", "Add Skill",
+                            color = "success", style = "fill", size = "md")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_skill", "Remove Skill",
+                            color = "danger", style = "fill", size = "md")
+          )
+        ),
+        textInput("skill_id", "Skill to remove")
       )
     }
   })
@@ -201,6 +210,26 @@ shinyServer(function(input, output, session) {
       value = input$skill_value
     )
     df$skills <- rbind(df$skills, temp_skills)
+  })
+
+
+  # remove a skills
+  observeEvent(input$remove_skill,{
+    req(input$skill_id)
+    name <- input$skill_id
+    skills <- df$skills
+    idx <- match(name, skills$variable)
+    if (!is.na(idx)) {
+      df$skills <- df$skills[-idx, ]
+    } else {
+      if (nrow(skills) > 0) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       skill in the list!", type = "error")
+      } else {
+        sendSweetAlert(session, title = "",
+                       text = "No more skill to remove!", type = "error")
+      }
+    }
   })
 
   # generate the radar plot of skills
@@ -234,8 +263,17 @@ shinyServer(function(input, output, session) {
                   fgColor = "#ffec03",
                   inputColor = "#ffec03",
                   skin = "tron"),
-        actionBttn(inputId = "submit_language", "Add Language",
-                   color = "success", style = "fill", size = "md")
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_language", "Add Language",
+                            color = "success", style = "fill", size = "md")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_language", "Remove Language",
+                            color = "danger", style = "fill", size = "md")
+          )
+        ),
+        textInput("language_id", "Language to remove")
       )
     }
   })
@@ -249,17 +287,37 @@ shinyServer(function(input, output, session) {
       variable = input$language_name,
       value = input$language_value
     )
-    df$language <- rbind(df$language, temp_language)
+    df$languages <- rbind(df$languages, temp_language)
+  })
+
+
+  # remove a language
+  observeEvent(input$remove_language,{
+    req(input$language_id)
+    name <- input$language_id
+    languages <- df$languages
+    idx <- match(name, languages$variable)
+    if (!is.na(idx)) {
+      df$languages <- df$languages[-idx, ]
+    } else {
+      if (nrow(languages) > 0) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       language in the list!", type = "error")
+      } else {
+        sendSweetAlert(session, title = "",
+                       text = "No more language to remove!", type = "error")
+      }
+    }
   })
 
   # language progress bars are dynamically generated
   output$languagelevel <- renderUI({
-    data <- df$language
-    if (!is_empty(data)) {
+    languages <- df$languages
+    if (!is_empty(languages)) {
       tagList(
-        lapply(seq_along(data$value), FUN = function(i) {
-          val <- data$value[i]
-          name <- data$variable[i]
+        lapply(seq_along(languages$value), FUN = function(i) {
+          val <- languages$value[i]
+          name <- languages$variable[i]
           id <- paste0("language", i)
           progressBar(
             id = id, value = val,
@@ -309,7 +367,7 @@ shinyServer(function(input, output, session) {
   })
 
 
-  # Total number of projects/publications/conferences/courses
+  # Total number of projects/publications/conferences/courses/contacts
   output$total_projects <- renderText({
     input$submit_project
     nrow(df$projects)
@@ -327,7 +385,10 @@ shinyServer(function(input, output, session) {
     input$submit_internship
     sum(nrow(df$courses), nrow(df$internships))
   })
-
+  output$total_users <- renderText({
+    input$submit_user
+    nrow(df$users)
+  })
 
   #-------------------------------------------------------------------------
   #
@@ -347,8 +408,18 @@ shinyServer(function(input, output, session) {
       textInput(inputId = "user_name", label = "Name:"),
       textInput(inputId = "user_mail", label = "Mail:"),
       textInput(inputId = "user_phone", label = "Phone Number:"),
-      actionBttn(inputId = "submit_user", "Add User",
-                 color = "success", style = "fill", size = "md")
+
+      fluidRow(
+        column(6,
+               actionBttn(inputId = "submit_user", "Add User",
+                          color = "success", style = "fill", size = "md")
+        ),
+        column(6,
+               actionBttn(inputId = "remove_user", "Remove User",
+                          color = "danger", style = "fill", size = "md")
+        )
+      ),
+      textInput("user_id", "User to remove")
     )
   })
 
@@ -367,43 +438,32 @@ shinyServer(function(input, output, session) {
     df$users <- rbind(df$users, temp_user)
   })
 
-  # generate the user list
-  output$userlist <- renderUI({
-    data <- df$users
-    if (!is_empty(data)) {
-      tagList(
-        lapply(seq_along(data$title), FUN = function(i) {
-          title <- data$title[i]
-          name <- data$name[i]
-          mail <- data$mail[i]
-          phone <- data$phone[i]
-          image <- ifelse(data$sex[i] == "male", "man.png", "girl-2.png")
-          column(4, align = "center",
-                 tags$li(
-                   tags$img(src = image, alt = "User Image"),
-                   tags$br(),
-                   tags$a(class = "users-list-name", href = "#", paste(title, name)),
-                   tags$span(
-                     class = "users-list-date",
-                     a(href = paste0("mailto:", mail), target = "_top", mail)),
-                   tags$span(class = "users-list-date", phone)
-                 ))
-        })
-      )
+
+  # remove a user
+  observeEvent(input$remove_user,{
+    req(input$user_id)
+    name <- input$user_id
+    users <- df$users
+    idx <- match(name, users$name)
+    if (!is.na(idx)) {
+      df$users <- df$users[-idx, ]
+    } else {
+      if (nrow(users) > 0) {
+        sendSweetAlert(session, title = "", text = "Please select a
+                       user in the list!", type = "error")
+      } else {
+        sendSweetAlert(session, title = "",
+                       text = "No more user to remove!", type = "error")
+      }
     }
   })
 
-  # generate the number of user in the network_box header
-  output$usernumber <- renderUI({
-    nb_users <- nrow(df$users)
-    if (!is_empty(nb_users)) {
-      tagList(
-        tags$span(class = "label label-danger", HTML(paste(icon("users"), nb_users, "members"))),
-        tags$button(type = "button", class = "btn btn-box-tool",
-                    `data-widget` = "collapse", tags$i(class = "fa fa-minus")),
-        tags$button(type = "button", class = "btn btn-box-tool",
-                    `data-widget` = "remove", tags$i(class = "fa fa-times"))
-      )
+  # generate the user box
+  output$networkbox <- renderUI({
+    users <- df$users
+    if (!is_empty(users)) {
+      # call the network_box function
+      network_box(input, data = users, nb_users = nrow(users))
     }
   })
 
@@ -937,6 +997,8 @@ shinyServer(function(input, output, session) {
                          format = "mm/dd/yy",
                          separator = " - "),
           textInput(inputId = "internship_supervisor", label = "Main Advisor:"),
+          selectInput(inputId = "internship_level", label = "Internship Level:",
+                      choices = c("bachelor", "master", "PhD", "PostDoc")),
           textInput(inputId = "internship_advert", label = "Advert:"),
           actionBttn(inputId = "submit_internship", "Add internship",
                      color = "success", style = "fill", size = "md"),
@@ -989,6 +1051,43 @@ shinyServer(function(input, output, session) {
       sendSweetAlert(session, title = "", text = "There is no course to
                      delete", type = "error")
     }
+  })
+
+  # each time submit internship is pressed
+  # add the new course name and its value
+  # to the internships dataframe
+  observeEvent(input$submit_internship,{
+    req(input$internship_title, input$internship_topic, input$internship_location,
+        input$internship_date, input$internship_supervisor, input$internship_level)
+    temp_internship <- data.frame(
+      title = input$internship_title,
+      topic = input$internship_topic,
+      from = input$internship_date[1],
+      to = input$internship_date[2],
+      place = input$internship_location,
+      supervisor = input$internship_supervisor,
+      level = input$internship_level,
+      advert = input$internship_advert
+    )
+    df$internships <- rbind(df$internships, temp_internship)
+    print(df$internships)
+  })
+
+  # remove a course
+  observeEvent(input$remove_internship,{
+    req(input$internship_id)
+    idx <- input$internship_id
+    if (nrow(df$internships) > 0) {
+      if (idx > nrow(df$internships)) {
+        sendSweetAlert(session, title = "", text = "Please select an
+                       internship in the list!", type = "error")
+      } else {
+        df$internships <- df$internships[-idx, ]
+      }
+    } else {
+      sendSweetAlert(session, title = "", text = "There is no internship to
+                     delete", type = "error")
+    }
     })
 
   # render the teaching boxes
@@ -1006,18 +1105,38 @@ shinyServer(function(input, output, session) {
             to <- if (is.na(courses$to[i])) "Now" else courses$to[i]
             place <- courses$place[i]
             supervisor <- courses$supervisor[i]
-            syllabus <- if (is.na(courses$syllabus[i])) "No syllabus" else courses$syllabus[i]
+            syllabus <- if (is.na(courses$syllabus[i])) NULL else courses$syllabus[i]
 
             # call the course_box function and pass it all
             # the previous arguments
             course_box(input, title, topic, nb_students, nb_hours, from, to,
-                       place, supervisor, syllabus)
+                       place, supervisor, syllabus, box_index = i)
           })
         )
       }
 
     } else {
-      internship_box()
+      internships <- df$internships
+      if (!is_empty(internships)) {
+        tagList(
+          lapply(seq_along(internships$title), FUN = function(i) {
+            title <- internships$title[i]
+            topic <- internships$topic[i]
+            from <- internships$from[i]
+            to <- if (is.na(internships$to[i])) "Now" else internships$to[i]
+            place <- internships$place[i]
+            supervisor <- internships$supervisor[i]
+            level <- internships$level[i]
+            advert <- if (is.na(internships$advert[i])) NULL else internships$advert[i]
+
+            # call the internship_box function and pass it all
+            # the previous arguments
+            internship_box(input, title, topic, from , to, place,
+                           supervisor, level, advert, box_index = i)
+          })
+        )
+      }
+
     }
   })
 
