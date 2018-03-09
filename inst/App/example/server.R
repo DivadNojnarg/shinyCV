@@ -42,6 +42,7 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
+  # generate the user image if any
   output$image <- renderImage({
     req(input$my_picture)
     inFile <- input$my_picture
@@ -52,45 +53,23 @@ shinyServer(function(input, output, session) {
          alt = "User profile picture")
   }, deleteFile = FALSE)
 
-  output$name <- renderText({
-    req(input$name)
-    input$name
+  # generate the profile box
+  output$profilebox <- renderUI({
+    req(input$name, input$position, input$age, input$interests)
+    my_name <- input$name
+    my_position <- input$position
+    my_age <- input$age
+    my_interests <- input$interests
+    my_website <- input$website_url
+    my_teaser <- input$teaser
+    my_image <- input$my_picture
+
+    profile_box(name = my_name, position = my_position, age = my_age,
+                interests = my_interests, website_url = my_website, teaser = my_teaser,
+                image = my_image, color = col)
+
   })
 
-  output$position <- renderText({
-    req(input$position)
-    input$position
-  })
-
-  output$website <- renderUI({
-    req(input$website_url)
-    website_url <- input$website_url
-    tagList(
-      a(href = website_url, class = "btn btn-primary btn-block",
-        target = "_blank", "website")
-    )
-  })
-
-  output$age <- renderText({
-    req(input$age)
-    input$age
-  })
-
-  output$interests <- renderUI({
-    req(input$interests)
-    tagList(
-      lapply(seq_along(input$interests), FUN = function(i) {
-        interest <- input$interests[[i]]
-        tags$span(class = paste0("bg-", col[i], "-active color-palette"), interest)
-      })
-    )
-  })
-
-  # add a description to tease yourself
-  output$teaser <- renderText({
-    req(input$teaser)
-    input$teaser
-  })
 
 
   #-------------------------------------------------------------------------

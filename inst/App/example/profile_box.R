@@ -1,32 +1,55 @@
-profile_box <- function() {
-  HTML(
-    paste0('<!-- Profile Image -->
-           <div class="box box-primary">
-           <div class="box-body box-profile">
+profile_box <- function(name, position, age, interests, website_url, teaser,
+                        image, color) {
 
-           <div id="image" class="shiny-image-output" style="width: 100%"></div>
-
-           <h3 class="profile-username text-center"><div id="name" class="shiny-text-output"></div></h3>
-
-           <div id="position" class="text-muted text-center shiny-text-output"></div>
-
-           <ul class="list-group list-group-unbordered">
-           <li class="list-group-item">
-           <i class="fa fa-birthday-cake margin-r-5"></i><b>Age</b> <a class="pull-right"><div id="age" class="shiny-text-output"></div></a>
-           </li>
-           <li class="list-group-item">
-           <i class="fa fa-heart margin-r-5"></i><b>My interests</b> <div id="interests" class="shiny-html-output"></div>
-           </li>
-           <li class="list-group-item">
-           <i class="fa fa-commenting-o margin-r-5"></i><b>Teaser</b> <div id="teaser" class="shiny-text-output"></div>
-           </li>
-           </ul>
-
-           <div id="website" class="shiny-html-output"></div>
-           </div>
-           <!-- /.box-body -->
-           </div>
-           <!-- /.box -->
-           ')
+  tags$div(
+    class = "box box-primary",
+    tags$div(
+      class = "box-body box-profile",
+      if (is.null(image)) {
+        # show a default image if nothing is uploaded
+        # by the user
+        tags$img(class = "profile-user-img img-responsive img-circle",
+                 alt = "User profile picture",
+                 src = "text-lines.svg",
+                 style = "height: 100px; display: block;
+                         margin-left: auto; margin-right: auto;")
+      } else {
+        # otherwise display the image provided by the user
+        imageOutput("image", width = "auto", height = "auto")
+      },
+      tags$h3(class = "profile-username text-center", name),
+      tags$h5(class = "text-muted text-center", position),
+      tags$ul(
+        class = "list-group list-group-unbordered",
+        # user age
+        tags$li(
+          class = "list-group-item",
+          tags$i(class = "fa fa-birthday-cake margin-r-5", " Age"),
+          tags$a(class = "pull-right", age)
+        ),
+        # user interests
+        tags$li(
+          class = "list-group-item",
+          tags$i(class = "fa fa-heart margin-r-5", " Interests"),
+          lapply(seq_along(interests), FUN = function(i) {
+            interest <- interests[[i]]
+            tags$span(class = paste0("bg-", color[[i]], "-active color-palette"), interest)
+          })
+        ),
+        # user teaser
+        if (!is.null(teaser)) {
+          tags$li(
+            class = "list-group-item",
+            tags$i(class = "fa fa-commenting-o margin-r-5", " Teaser"),
+            teaser
+          )}
+      ),
+      # website button
+      if (!is.null(website_url)) {
+        a(href = website_url, class = "btn btn-primary btn-block",
+          target = "_blank", "website")
+      }
     )
+  )
 }
+
