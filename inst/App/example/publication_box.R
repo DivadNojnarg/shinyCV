@@ -55,11 +55,12 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
         tags$ul(class = "nav nav-stacked",
                 tags$li(
                   tags$a(
-                    `data-toggle` = "collapse", `aria-expanded` = "true", href = "#collapse",
+                    `data-toggle` = "collapse", `aria-expanded` = "true",
+                    href = paste0("#collapse", box_index),
                     tags$p(class = "text-center", "Abstract")
                   ),
                   tags$div(
-                    id = "collapse", class = "panel-collapse collapse in",
+                    id = paste0("collapse", box_index), class = "panel-collapse collapse in",
                     tags$div(class = "body",
                              abstract
                     )
