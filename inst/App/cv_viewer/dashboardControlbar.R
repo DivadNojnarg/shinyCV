@@ -85,10 +85,6 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
       </div>
 
 
-      <button class="action-button bttn-fill bttn-md bttn-success bttn-no-outline" id="submit_profile" type="button">Add Profile</button>
-
-
-
       <!-- /.control-sidebar-menu -->
       </div>
       <!-- /.tab-pane -->
@@ -134,10 +130,6 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
         <label for="githublink">My Github profil</label>
         <input id="githublink" type="text" class="form-control" value="https://github.com"/>
       </div>
-
-
-      <button class="action-button bttn-fill bttn-md bttn-success bttn-no-outline" id="submit_about" type="button">Add Info</button>
-
 
 
       </div>

@@ -9,8 +9,6 @@ shinyServer(function(input, output, session) {
     df <- readRDS(data_cv)
   } else {
     df <- reactiveValues(
-      my_profile = list(),
-      about = data.frame(),
       skills = data.frame(),
       languages = data.frame(),
       users = data.frame(),
@@ -45,34 +43,15 @@ shinyServer(function(input, output, session) {
          alt = "User profile picture")
   }, deleteFile = FALSE)
 
-  # each time submit profile is pressed
-  # replace the profile data frame with the
-  # current new one
-  observeEvent(input$submit_profile,{
-    temp_profile <- list(
-      my_name = input$name,
-      my_position = input$position,
-      my_age = input$age,
-      my_interests = input$interests,
-      my_website = input$website_url,
-      my_teaser = input$teaser,
-      my_image = input$my_picture
-    )
-    df$my_profile <- temp_profile
-  })
-
-
   # generate the profile box
   output$profilebox <- renderUI({
-    input$submit_profile
-    my_profile <- df$my_profile
-    my_name <- my_profile$my_name
-    my_position <- my_profile$my_position
-    my_age <- my_profile$my_age
-    my_interests <- my_profile$my_interests
-    my_website <- my_profile$my_website_url
-    my_teaser <- my_profile$my_teaser
-    my_image <- my_profile$my_image
+    my_name <- input$name
+    my_position <- input$position
+    my_age <- input$age
+    my_interests <- input$interests
+    my_website <- input$website_url
+    my_teaser <- input$teaser
+    my_image <- input$my_picture
 
     profile_box(name = my_name, position = my_position, age = my_age,
                 interests = my_interests, website_url = my_website,
@@ -86,22 +65,6 @@ shinyServer(function(input, output, session) {
   #  About section ...
   #
   #-------------------------------------------------------------------------
-
-  # each time submit about is pressed
-  # replace the about data frame with the
-  # current new one
-  observeEvent(input$submit_about,{
-    temp_about <- data.frame(
-      my_phone = input$phone_number,
-      my_mail = input$mail,
-      my_location = input$location,
-      my_linkedin = input$linkedinlink,
-      my_twitter = input$twitterlink,
-      my_facebook = input$facebooklink,
-      my_github = input$githublink
-    )
-    df$about <- temp_about
-  })
 
   # generate the about box
   output$aboutbox <- renderUI({
@@ -1115,19 +1078,9 @@ shinyServer(function(input, output, session) {
 
   #-------------------------------------------------------------------------
   #
-  #  Useful tasks such as save, reset, load ...
+  #  Footer ...
   #
   #-------------------------------------------------------------------------
-
-  # save the cv
-  observeEvent(input$save,{
-    saveRDS(object = reactiveValuesToList(df), file = "www/data_cv.rds")
-  })
-
-  # erase the whole cv
-  observeEvent(input$reset,{
-    file.remove("www/data_cv.rds")
-  })
 
   # Custom footer
   output$dynamicFooter <- renderFooter({

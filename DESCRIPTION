@@ -3,20 +3,9 @@ Type: Package
 Title: Create beautiful HTML CVs with R shiny
 Version: 0.1.0
 Author: David Granjon
-Maintainer: dgranjon@ymail.com
+Maintainer: <dgranjon@ymail.com>
 Description: This app is a shinydashboard allowing you to create amazing html CVs
         by filling some fields such as picture, name, skills, projects, ...
-Imports:
-  shiny
-  ygdashboard
-  shinyjs
-  shinycssloaders
-  shinyfeedback
-  shinyWidgets
-  ggplot2
-  purrr
-  bsplus
-  stringr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

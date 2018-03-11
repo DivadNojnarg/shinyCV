@@ -5,6 +5,6 @@
 #' build_shinyCV()
 
 build_shinyCV <- function() {
-  shiny::runApp(appDir = system.file("App", "example", package = "shinyCV"),
+  shiny::runApp(appDir = system.file("App", "cv_builder", package = "shinyCV"),
                 display.mode = "normal")
 }

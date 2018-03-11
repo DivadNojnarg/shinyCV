@@ -40,7 +40,6 @@ profile_box <- function(name, position, age, interests, website_url, teaser,
           tags$li(
             class = "list-group-item",
             tags$i(class = "fa fa-commenting-o margin-r-5", " Teaser"),
-            tags$br(),
             teaser
           )}
       ),
