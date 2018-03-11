@@ -9,6 +9,8 @@ header <- dashboardHeader(
   tags$li(
     class = "dropdown",
     actionBttn(inputId = "save", label = "Save", icon = icon("save"),
+               style = "fill", color = "royal"),
+    actionBttn(inputId = "reset", label = "Reset", icon = icon("eraser"),
                style = "fill", color = "royal")
   )
 

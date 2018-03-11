@@ -1087,6 +1087,11 @@ shinyServer(function(input, output, session) {
     saveRDS(object = reactiveValuesToList(df), file = "www/data_cv.rds")
   })
 
+  # erase the whole cv
+  observeEvent(input$erase,{
+    file.remove("www/data_cv.rds")
+  })
+
   # Custom footer
   output$dynamicFooter <- renderFooter({
     dashboardFooter(
