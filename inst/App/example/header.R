@@ -4,7 +4,13 @@ header <- dashboardHeader(
     '<img src= "curriculum-vitae.svg">'
   )),
 
-  titleWidth = 300#,
+  titleWidth = 300,
+
+  tags$li(
+    class = "dropdown",
+    actionBttn(inputId = "save", label = "Save", icon = icon("save"),
+               style = "fill", color = "royal")
+  )
 
   # tags$li(
   #   class = "dropdown",

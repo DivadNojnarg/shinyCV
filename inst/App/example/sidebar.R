@@ -16,7 +16,7 @@ sidebar <- dashboardSidebar(
                inputId = "academic_filter",
                label = "Filter academic panels",
                choices = c("teaching", "publications", "talks"),
-               selected = NULL,
+               selected = c("teaching", "publications", "talks"),
                multiple = TRUE),
              # enable network box or not
              prettySwitch(inputId = "enable_network_box",

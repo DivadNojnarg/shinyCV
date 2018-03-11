@@ -1,20 +1,27 @@
 # define server function
 shinyServer(function(input, output, session) {
 
-  # initialization skills, languages and users dataframe reactiveValues
-  df <- reactiveValues(
-    skills = data.frame(),
-    languages = data.frame(),
-    users = data.frame(),
-    formations = data.frame(),
-    tasks = list(),
-    projects = data.frame(),
-    publications = data.frame(),
-    publications_screenshots = list(),
-    talks = data.frame(),
-    courses = data.frame(),
-    internships = data.frame()
-  )
+  # initialization of data cv.
+  # If the cv has been saved previously,
+  # load the last saved state instead
+  data_cv <- "www/data_cv.rds"
+  if (file.exists(data_cv) == TRUE) {
+    df <- readRDS(data_cv)
+  } else {
+    df <- reactiveValues(
+      skills = data.frame(),
+      languages = data.frame(),
+      users = data.frame(),
+      formations = data.frame(),
+      tasks = list(),
+      projects = data.frame(),
+      publications = data.frame(),
+      publications_screenshots = list(),
+      talks = data.frame(),
+      courses = data.frame(),
+      internships = data.frame()
+    )
+  }
 
   # useful for temporary storage
   temp <- reactiveValues(tasks = data.frame())
@@ -1074,6 +1081,11 @@ shinyServer(function(input, output, session) {
   #  Useful tasks such as save, reset, load ...
   #
   #-------------------------------------------------------------------------
+
+  # save the cv
+  observeEvent(input$save,{
+    saveRDS(object = reactiveValuesToList(df), file = "www/data_cv.rds")
+  })
 
   # Custom footer
   output$dynamicFooter <- renderFooter({
