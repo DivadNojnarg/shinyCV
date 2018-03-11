@@ -38,7 +38,6 @@ shinyServer(function(input, output, session) {
 
   # generate the profile box
   output$profilebox <- renderUI({
-    req(input$name, input$position, input$age, input$interests)
     my_name <- input$name
     my_position <- input$position
     my_age <- input$age
@@ -62,7 +61,6 @@ shinyServer(function(input, output, session) {
 
   # generate the about box
   output$aboutbox <- renderUI({
-    req(input$mail, input$location)
     my_phone <- input$phone_number
     my_mail <- input$mail
     my_location <- input$location
@@ -349,7 +347,7 @@ shinyServer(function(input, output, session) {
   # generate the user box
   output$networkbox <- renderUI({
     users <- df$users
-    if (!is_empty(users)) {
+    if (input$enable_network_box == TRUE) {
       # call the network_box function
       network_box(input, data = users, nb_users = nrow(users))
     }
@@ -625,7 +623,7 @@ shinyServer(function(input, output, session) {
           place <- projects$place[i]
           # call the project_box function and pass it all
           # the previous arguments
-          project_box(input, images = project_images, background_color = col,
+          project_box(input, images = project_images, background_color = col[i],
                       title = title, position = position, overview = overview,
                       supervisors = supervisors, place = place, tasks = df$tasks[[i]],
                       box_index = i)

@@ -11,7 +11,7 @@ project_box <- function(input, images, background_color, title, position, overvi
       class = "box box-widget widget-user-2",
       tags$div(
         # background color (random)
-        class = paste0("widget-user-header bg-", sample(background_color)),
+        class = paste0("widget-user-header bg-", background_color),
         tags$div(
           # user image (random)
           class = "widget-user-image",

@@ -26,7 +26,7 @@ source("body.R")
 source("dashboardControlbar.R")
 
 # take random adminLTE colors (I just removed black)
-col <- c(
+col <- rep(c(
   "light-blue",
   "aqua",
   "green",
@@ -38,7 +38,7 @@ col <- c(
   "navy",
   "red",
   "yellow"
-)
+), 10)
 
 # images for the projects
 project_images = c(
