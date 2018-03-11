@@ -6,7 +6,24 @@ shinyServer(function(input, output, session) {
   # load the last saved state instead
   data_cv <- "www/data_cv.rds"
   if (file.exists(data_cv) == TRUE) {
-    df <- readRDS(data_cv)
+    # old df is not reactive
+    old_df <- readRDS(data_cv)
+    # create a new reactive df based on old values
+    df <- reactiveValues(
+      my_profile = old_df$my_profile,
+      about = old_df$about,
+      skills = old_df$skills,
+      languages = old_df$languages,
+      users = old_df$users,
+      formations = old_df$formations,
+      tasks = old_df$tasks,
+      projects = old_df$projects,
+      publications = old_df$publications,
+      publications_screenshots = old_df$publications_screenshots,
+      talks = old_df$talks,
+      courses = old_df$courses,
+      internships = old_df$internships
+    )
   } else {
     df <- reactiveValues(
       my_profile = list(),
@@ -36,13 +53,15 @@ shinyServer(function(input, output, session) {
 
   # generate the user image if any
   output$image <- renderImage({
-    req(input$my_picture)
-    inFile <- input$my_picture
-    path <- inFile$datapath
-    list(src = path,
-         # very important to keep the adminLTE image border
-         class = "profile-user-img img-responsive img-circle",
-         alt = "User profile picture")
+    my_image <- df$my_profile$my_image
+    if (!is_empty(my_image)) {
+      path <- my_image$datapath
+      list(src = path,
+           # very important to keep the adminLTE image border
+           class = "profile-user-img img-responsive img-circle",
+           alt = "User profile picture"
+      )
+    }
   }, deleteFile = FALSE)
 
   # each time submit profile is pressed
@@ -60,7 +79,6 @@ shinyServer(function(input, output, session) {
     )
     df$my_profile <- temp_profile
   })
-
 
   # generate the profile box
   output$profilebox <- renderUI({
@@ -195,10 +213,10 @@ shinyServer(function(input, output, session) {
   output$skillsradar <- renderPlot({
     req(input$skill_name, input$skill_value)
 
-    data <- df$skills
+    skills <- df$skills
 
-    if (!is_empty(data)) {
-      ggplot(data = data, aes(x = variable, y = value, fill = value)) +
+    if (!is_empty(skills)) {
+      ggplot(data = skills, aes(x = variable, y = value, fill = value)) +
         geom_bar(stat = "identity") +
         coord_polar() +
         scale_fill_viridis_c() + xlab("") + ylab("") + theme_bw()
