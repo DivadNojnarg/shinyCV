@@ -10,6 +10,7 @@ shinyServer(function(input, output, session) {
     tasks = list(),
     projects = data.frame(),
     publications = data.frame(),
+    publications_screenshots = list(),
     talks = data.frame(),
     courses = data.frame(),
     internships = data.frame()
@@ -51,7 +52,6 @@ shinyServer(function(input, output, session) {
                 image = my_image, color = col)
 
   })
-
 
 
   #-------------------------------------------------------------------------
@@ -226,32 +226,6 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  # language progress bars are dynamically generated
-  output$languagelevel <- renderUI({
-    languages <- df$languages
-    if (!is_empty(languages)) {
-      tagList(
-        lapply(seq_along(languages$value), FUN = function(i) {
-          val <- languages$value[i]
-          name <- languages$variable[i]
-          id <- paste0("language", i)
-          progressBar(
-            id = id, value = val,
-            # set a status color code
-            status = if (val >= 0 & val < 25) {
-              "danger"
-            } else if (val >= 25 & val < 75) {
-              "warning"
-            } else if (val >= 75 & val <= 100) {
-              "success"
-            },
-            title = name,
-            striped = TRUE,
-            size = "xs")
-        })
-      )
-    }
-  })
 
   # Github part
   output$github_username <- renderUI({
@@ -271,39 +245,37 @@ shinyServer(function(input, output, session) {
     session$sendCustomMessage(type = "myCallbackHandler", github_name)
   })
 
-  # Show the github calendar only if the user wants to do it!
-  output$calendar_githubUI <- renderUI({
-    if (!is.null(input$github_name) & input$allow_github_calendar == TRUE) {
-      tagList(
-        tags$hr(),
-        tags$p(class = "text-center", tags$strong("Github Contribution")),
-        tags$div(class = "calendar", "Loading the data just for you")
-      )
-    }
-  })
 
-
-  # Total number of projects/publications/conferences/courses/contacts
-  output$total_projects <- renderText({
+  # generate the skills box
+  output$skillsbox <- renderUI({
     input$submit_project
-    nrow(df$projects)
-  })
-  output$total_publications <- renderText({
     input$submit_publication
-    nrow(df$publications)
-  })
-  output$total_conferences <- renderText({
     input$submit_talk
-    nrow(df$talks)
-  })
-  output$total_courses <- renderText({
     input$submit_course
     input$submit_internship
-    sum(nrow(df$courses), nrow(df$internships))
-  })
-  output$total_users <- renderText({
     input$submit_user
-    nrow(df$users)
+
+    # skills and languages to pass to the box function
+    my_skills <- df$skills
+    my_languages <- df$languages
+
+    my_github_name <- input$github_name
+    github_calendar_state <- input$allow_github_calendar
+
+    # global statistics
+    total_projects <- nrow(df$projects)
+    total_publications <- nrow(df$publications)
+    total_conferences <- nrow(df$talks)
+    total_courses <- sum(nrow(df$courses), nrow(df$internships))
+    total_users <- nrow(df$users)
+
+    # call the skill_box function
+    skills_box(languages = my_languages,
+               github_name = my_github_name, allow_github_calendar = github_calendar_state,
+               nb_projects = total_projects, nb_publications = total_publications,
+               nb_conferences = total_conferences, nb_courses = total_courses,
+               nb_users = total_users)
+
   })
 
   #-------------------------------------------------------------------------
@@ -694,16 +666,22 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  # render the uploaded image
-  output$screenshot <- renderImage({
-    req(input$publication_screenshot)
-    inFile <- input$publication_screenshot
-    path <- inFile$datapath
-    list(
-      src = path,
-      class = "img-responsive pad"
-    )
-  }, deleteFile = FALSE)
+  # render the uploaded images (works but not really nice)
+  observe({
+    screenshots <- df$publications_screenshots
+    lapply(seq_along(screenshots), FUN = function(i) {
+      output[[paste0("screenshot", i)]] <- renderImage({
+        path <- screenshots[[i]]$src
+        list(
+          src = path,
+          class = "img-responsive pad"
+        )
+      }, deleteFile = FALSE)
+    })
+  })
+
+
+
 
 
   # each time submit publication is pressed
@@ -716,7 +694,30 @@ shinyServer(function(input, output, session) {
       abstract = input$publication_abstract,
       pubmed_link = input$publication_pubmed
     )
+
     df$publications <- rbind(df$publications, temp_publication)
+
+    # add the new publication screenshot if any
+    temp_inFile <- input$publication_screenshot
+    if (!is.null(temp_inFile)) {
+      temp_path <- temp_inFile$datapath
+      temp_screenshot <- list(
+        src = temp_path,
+        class = "img-responsive pad"
+      )
+    } else {
+      temp_screenshot <- list(
+        src = NULL,
+        class = NULL
+      )
+    }
+    len <- length(df$publications_screenshots)
+    df$publications_screenshots[[len + 1]] <- temp_screenshot
+    print(input$publication_screenshot)
+  })
+
+  observeEvent(input$publication_screenshot,{
+    reset("publication_screenshot")
   })
 
   # remove a publication
@@ -729,6 +730,7 @@ shinyServer(function(input, output, session) {
                        publication in the list!", type = "error")
       } else {
         df$publications <- df$publications[-idx, ]
+        df$publications_screenshots[[idx]] <- NULL
       }
     } else {
       sendSweetAlert(session, title = "", text = "There is no publication to
@@ -739,16 +741,19 @@ shinyServer(function(input, output, session) {
   # render the project section
   output$publications <- renderUI({
     publications <- df$publications
+    screenshots <- df$publications_screenshots
     if (!is_empty(publications)) {
       tagList(
         lapply(seq_along(publications$reference), FUN = function(i) {
           reference <- publications$reference[i]
           abstract <- publications$abstract[i]
           pubmed_link <- publications$pubmed_link[i]
+          screenshot <- if (!is.null(screenshots[[i]]$src)) screenshots[[i]]$src else NULL
 
           # call the publication_box function and pass it all
           # the previous arguments
-          publication_box(input, reference, abstract, pubmed_link, box_index = i)
+          publication_box(input, reference, abstract, pubmed_link, screenshot,
+                          box_index = i)
         })
       )
     }

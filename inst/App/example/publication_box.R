@@ -1,4 +1,4 @@
-publication_box <- function(input, reference, abstract, pubmed_link, box_index) {
+publication_box <- function(input, reference, abstract, pubmed_link, screenshot, box_index) {
 
   # box_index is used to create ID number
   # for each publication box.
@@ -40,7 +40,7 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
       tags$div(
         class = "box-body",
         # publication screenshot
-        if (is.null(input$publication_screenshot)) {
+        if (is.null(screenshot)) {
           # show a default image if nothing is uploaded
           # by the user
           tags$img(class = "img-responsive pad",
@@ -49,7 +49,7 @@ publication_box <- function(input, reference, abstract, pubmed_link, box_index) 
                                    margin-left: auto; margin-right: auto;")
         } else {
           # otherwise display the image provided by the user
-          imageOutput("screenshot", width = "auto", height = "auto")
+          imageOutput(paste0("screenshot", box_index), width = "auto", height = "auto")
         },
         # publication abstract
         tags$ul(class = "nav nav-stacked",
