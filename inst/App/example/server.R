@@ -47,8 +47,8 @@ shinyServer(function(input, output, session) {
     my_image <- input$my_picture
 
     profile_box(name = my_name, position = my_position, age = my_age,
-                interests = my_interests, website_url = my_website, teaser = my_teaser,
-                image = my_image, color = col)
+                interests = my_interests, website_url = my_website,
+                teaser = my_teaser, image = my_image, color = col)
 
   })
 
