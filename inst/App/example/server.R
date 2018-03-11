@@ -688,7 +688,8 @@ shinyServer(function(input, output, session) {
   # add the new publication name as well as
   # other informations
   observeEvent(input$submit_publication,{
-    req(input$publication_reference, input$publication_pubmed)
+    req(input$publication_reference, input$publication_pubmed,
+        input$publication_screenshot)
     temp_publication <- data.frame(
       reference = input$publication_reference,
       abstract = input$publication_abstract,
@@ -713,12 +714,8 @@ shinyServer(function(input, output, session) {
     }
     len <- length(df$publications_screenshots)
     df$publications_screenshots[[len + 1]] <- temp_screenshot
-    print(input$publication_screenshot)
   })
 
-  observeEvent(input$publication_screenshot,{
-    reset("publication_screenshot")
-  })
 
   # remove a publication
   observeEvent(input$remove_publication,{

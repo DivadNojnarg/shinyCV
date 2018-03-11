@@ -40,17 +40,17 @@ publication_box <- function(input, reference, abstract, pubmed_link, screenshot,
       tags$div(
         class = "box-body",
         # publication screenshot
-        if (is.null(screenshot)) {
-          # show a default image if nothing is uploaded
-          # by the user
-          tags$img(class = "img-responsive pad",
-                   src = "text-lines.svg",
-                   style = "height: 200px; display: block;
-                                   margin-left: auto; margin-right: auto;")
-        } else {
+        # if (is.null(screenshot)) {
+        #   # show a default image if nothing is uploaded
+        #   # by the user
+        #   tags$img(class = "img-responsive pad",
+        #            src = "text-lines.svg",
+        #            style = "height: 200px; display: block;
+        #                            margin-left: auto; margin-right: auto;")
+        # } else {
           # otherwise display the image provided by the user
-          imageOutput(paste0("screenshot", box_index), width = "auto", height = "auto")
-        },
+        imageOutput(paste0("screenshot", box_index), width = "auto", height = "auto"),
+        #},
         # publication abstract
         tags$ul(class = "nav nav-stacked",
                 tags$li(
