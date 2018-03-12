@@ -1019,14 +1019,16 @@ shinyServer(function(input, output, session) {
                          separator = " - "),
           textInput(inputId = "course_supervisor", label = "Main Advisor:"),
           textInput(inputId = "course_syllabus", label = "Syllabus:"),
-          actionBttn(inputId = "submit_course", "Add course",
-                     color = "success", style = "fill", size = "md"),
-          br(),
-          br(),
-          actionBttn(inputId = "remove_course", "Remove course",
-                     color = "danger", style = "fill", size = "md"),
-          br(),
-          br(),
+          fluidRow(
+            column(6,
+                   actionBttn(inputId = "submit_course", "Add course",
+                              color = "success", style = "fill", size = "md")
+            ),
+            column(6,
+                   actionBttn(inputId = "remove_course", "Remove course",
+                              color = "danger", style = "fill", size = "md")
+            )
+          ),
           numericInput("course_id", "Course to remove", value = 1)
         )
       } else {
@@ -1043,14 +1045,16 @@ shinyServer(function(input, output, session) {
           selectInput(inputId = "internship_level", label = "Internship Level:",
                       choices = c("bachelor", "master", "PhD", "PostDoc")),
           textInput(inputId = "internship_advert", label = "Advert:"),
-          actionBttn(inputId = "submit_internship", "Add internship",
-                     color = "success", style = "fill", size = "md"),
-          br(),
-          br(),
-          actionBttn(inputId = "remove_internship", "Remove internship",
-                     color = "danger", style = "fill", size = "md"),
-          br(),
-          br(),
+          fluidRow(
+            column(6,
+                   actionBttn(inputId = "submit_internship", "Add internship",
+                              color = "success", style = "fill", size = "md")
+            ),
+            column(6,
+                   actionBttn(inputId = "remove_internship", "Remove internship",
+                              color = "danger", style = "fill", size = "md")
+            )
+          ),
           numericInput("internship_id", "internship to remove", value = 1)
         )
       }
