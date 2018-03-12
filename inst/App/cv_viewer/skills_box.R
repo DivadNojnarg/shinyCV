@@ -1,4 +1,4 @@
-skills_box <- function(languages, github_name, allow_github_calendar,
+skills_box <- function(languages, #github_name, allow_github_calendar,
                        nb_projects, nb_publications, nb_conferences, nb_courses,
                        nb_users) {
 
@@ -87,23 +87,23 @@ skills_box <- function(languages, github_name, allow_github_calendar,
             )
           }
         )
-      ),
+      )#,
       # Github calendar (Does not work now)
-      if (!is.null(github_name) & allow_github_calendar == TRUE) {
-        tagList(
-          tags$hr(),
-          tags$p(class = "text-center", tags$strong("Github Contribution")),
-          tags$div(class = "calendar", "Loading the data just for you")
-        )
-      },
-
-      tags$head(tags$script(
-        HTML('Shiny.addCustomMessageHandler("myCallbackHandler",
-         function(github_name) {
-         GitHubCalendar(".calendar", github_name, {responsive: false});
-         });
-         ')
-      ))
+      # if (!is.null(github_name) & allow_github_calendar == TRUE) {
+      #   tagList(
+      #     tags$hr(),
+      #     tags$p(class = "text-center", tags$strong("Github Contribution")),
+      #     tags$div(class = "calendar", "Loading the data just for you")
+      #   )
+      # },
+      #
+      # tags$head(tags$script(
+      #   HTML('Shiny.addCustomMessageHandler("myCallbackHandler",
+      #    function(github_name) {
+      #    GitHubCalendar(".calendar", github_name, {responsive: false});
+      #    });
+      #    ')
+      # ))
 
 
     ),

@@ -1,4 +1,4 @@
-project_box <- function(input, images, background_color, title, position, overview,
+project_box <- function(images, background_color, title, position, overview,
                         supervisors, place, tasks, box_index) {
 
   # box_index is used to create unique accordion ID

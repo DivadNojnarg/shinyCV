@@ -10,6 +10,14 @@ view_shinyCV <- function() {
   from <- system.file("App/cv_builder/www/data_cv.rds", package = "shinyCV")
   to <- system.file("App/cv_viewer/www/", package = "shinyCV")
   file.copy(from = from, to = to)
+  # copy the profile image
+  from <- system.file("App/cv_builder/www/Profile_img_saved/0.png", package = "shinyCV")
+  to <- system.file("App/cv_viewer/www/Profile_img_saved/", package = "shinyCV")
+  file.copy(from = from, to = to)
+  # copy the publications screenshots from builder to viewer
+  from <- system.file("App/cv_builder/www/Publications_img_saved/", package = "shinyCV")
+  to <- system.file("App/cv_viewer/www/Publications_img_saved/", package = "shinyCV")
+  file.copy(from = from, to = to)
 
   # launch the viewer
   shiny::runApp(appDir = system.file("App", "cv_viewer", package = "shinyCV"),

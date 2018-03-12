@@ -81,7 +81,7 @@ shinyServer(function(input, output, session) {
 
     # copy the uploaded image in the www folder of the application
     temp_path <- input$my_picture$datapath
-    copy_path <- "www/Profile_img_saved//"
+    copy_path <- "www/Profile_img_saved/"
     file.copy(from = temp_path, to = copy_path, overwrite = TRUE)
     temp_profile$my_image$datapath <- copy_path
 
@@ -1001,6 +1001,7 @@ shinyServer(function(input, output, session) {
 
 
   output$teachingUI <- renderUI({
+    req(input$teaching_type)
     if (input$section == "teaching") {
       if (input$teaching_type == "course") {
         tagList(
@@ -1130,53 +1131,52 @@ shinyServer(function(input, output, session) {
     }
     })
 
-  # render the teaching boxes
-  output$teaching <- renderUI({
-    if (input$teaching_type == "course") {
-      courses <- df$courses
-      if (!is_empty(courses)) {
-        tagList(
-          lapply(seq_along(courses$title), FUN = function(i) {
-            title <- courses$title[i]
-            topic <- courses$topic[i]
-            nb_students <- courses$nb_students[i]
-            nb_hours <- courses$nb_hours[i]
-            from <- courses$from[i]
-            to <- if (is.na(courses$to[i])) "Now" else courses$to[i]
-            place <- courses$place[i]
-            supervisor <- courses$supervisor[i]
-            syllabus <- if (is.na(courses$syllabus[i])) NULL else courses$syllabus[i]
+  # render the teaching course boxes
+  output$teaching_courses <- renderUI({
+    courses <- df$courses
+    if (!is_empty(courses)) {
+      tagList(
+        lapply(seq_along(courses$title), FUN = function(i) {
+          title <- courses$title[i]
+          topic <- courses$topic[i]
+          nb_students <- courses$nb_students[i]
+          nb_hours <- courses$nb_hours[i]
+          from <- courses$from[i]
+          to <- if (is.na(courses$to[i])) "Now" else courses$to[i]
+          place <- courses$place[i]
+          supervisor <- courses$supervisor[i]
+          syllabus <- if (is.na(courses$syllabus[i])) NULL else courses$syllabus[i]
 
-            # call the course_box function and pass it all
-            # the previous arguments
-            course_box(title, topic, nb_students, nb_hours, from, to,
-                       place, supervisor, syllabus, box_index = i)
-          })
-        )
-      }
+          # call the course_box function and pass it all
+          # the previous arguments
+          course_box(title, topic, nb_students, nb_hours, from, to,
+                     place, supervisor, syllabus, box_index = i)
+        })
+      )
+    }
+  })
 
-    } else {
-      internships <- df$internships
-      if (!is_empty(internships)) {
-        tagList(
-          lapply(seq_along(internships$title), FUN = function(i) {
-            title <- internships$title[i]
-            topic <- internships$topic[i]
-            from <- internships$from[i]
-            to <- if (is.na(internships$to[i])) "Now" else internships$to[i]
-            place <- internships$place[i]
-            supervisor <- internships$supervisor[i]
-            level <- internships$level[i]
-            advert <- if (is.na(internships$advert[i])) NULL else internships$advert[i]
+  # render the teaching internships boxes
+  output$teaching_internships <- renderUI({
+    internships <- df$internships
+    if (!is_empty(internships)) {
+      tagList(
+        lapply(seq_along(internships$title), FUN = function(i) {
+          title <- internships$title[i]
+          topic <- internships$topic[i]
+          from <- internships$from[i]
+          to <- if (is.na(internships$to[i])) "Now" else internships$to[i]
+          place <- internships$place[i]
+          supervisor <- internships$supervisor[i]
+          level <- internships$level[i]
+          advert <- if (is.na(internships$advert[i])) NULL else internships$advert[i]
 
-            # call the internship_box function and pass it all
-            # the previous arguments
-            internship_box(input, title, topic, from , to, place,
-                           supervisor, level, advert, box_index = i)
-          })
-        )
-      }
-
+          # call the internship_box function and pass it all
+          # the previous arguments
+          internship_box(input, title, topic, from , to, place,
+                         supervisor, level, advert, box_index = i)
+        })
+      )
     }
   })
 

@@ -1,14 +1,9 @@
 # load packages
 library(shiny)
 library(ygdashboard)
-library(shinyjs)
-library(shinycssloaders)
-library(shinyFeedback)
 library(shinyWidgets)
 library(ggplot2)
 library(purrr)
-library(googleVis)
-library(bsplus)
 library(stringr)
 
 # Load the template components
