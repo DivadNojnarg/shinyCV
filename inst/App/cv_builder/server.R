@@ -1022,11 +1022,11 @@ shinyServer(function(input, output, session) {
           fluidRow(
             column(6,
                    actionBttn(inputId = "submit_course", "Add course",
-                              color = "success", style = "fill", size = "md")
+                              color = "success", style = "fill", size = "sm")
             ),
             column(6,
                    actionBttn(inputId = "remove_course", "Remove course",
-                              color = "danger", style = "fill", size = "md")
+                              color = "danger", style = "fill", size = "sm")
             )
           ),
           numericInput("course_id", "Course to remove", value = 1)
@@ -1048,11 +1048,11 @@ shinyServer(function(input, output, session) {
           fluidRow(
             column(6,
                    actionBttn(inputId = "submit_internship", "Add internship",
-                              color = "success", style = "fill", size = "md")
+                              color = "success", style = "fill", size = "sm")
             ),
             column(6,
                    actionBttn(inputId = "remove_internship", "Remove internship",
-                              color = "danger", style = "fill", size = "md")
+                              color = "danger", style = "fill", size = "sm")
             )
           ),
           numericInput("internship_id", "internship to remove", value = 1)
