@@ -20,7 +20,7 @@ main_box <- function(input) {
             ),
             tabPanel(
               title = HTML(paste0(icon("university"), "Teaching")),
-              fluidRow(uiOutput("teaching_course"), uiOutput("teaching_internships"))
+              fluidRow(uiOutput("teaching_courses"), uiOutput("teaching_internships"))
             ),
             tabPanel(
               title = HTML(paste0(icon("pencil"), "Publications")),
@@ -46,7 +46,7 @@ main_box <- function(input) {
             ),
             tabPanel(
               title = HTML(paste0(icon("university"), "Teaching")),
-              fluidRow(uiOutput("teaching"))
+              fluidRow(uiOutput("teaching_courses"), uiOutput("teaching_internships"))
             ),
             tabPanel(
               title = HTML(paste0(icon("pencil"), "Publications")),
@@ -70,7 +70,7 @@ main_box <- function(input) {
             ),
             tabPanel(
               title = HTML(paste0(icon("university"), "Teaching")),
-              fluidRow(uiOutput("teaching"))
+              fluidRow(uiOutput("teaching_courses"), uiOutput("teaching_internships"))
             ),
             tabPanel(
               title = HTML(paste0(icon("microphone"), "Conferences/Talks")),
@@ -92,7 +92,7 @@ main_box <- function(input) {
             ),
             tabPanel(
               title = HTML(paste0(icon("university"), "Teaching")),
-              fluidRow(uiOutput("teaching"))
+              fluidRow(uiOutput("teaching_courses"), uiOutput("teaching_internships"))
             )
           )
         }
