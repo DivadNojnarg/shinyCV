@@ -419,7 +419,7 @@ shinyServer(function(input, output, session) {
     users <- df$users
     if (input$enable_network_box == TRUE) {
       # call the network_box function
-      network_box(input, data = users, nb_users = nrow(users))
+      network_box(data = users, nb_users = nrow(users))
     }
   })
 
@@ -477,12 +477,16 @@ shinyServer(function(input, output, session) {
         textInput("formation_supervisors", "Supervisor(s):"),
         textInput("formation_extra", label = "More details here", "Put a web link"),
         sliderInput("formation_grade", label = "Add a grade", min = 0, max = 5, value = 1),
-        actionBttn(inputId = "submit_formation", "Add Formation",
-                   color = "success", style = "fill", size = "md"),
-        br(),
-        br(),
-        actionBttn(inputId = "remove_formation", "Remove Formation",
-                   color = "danger", style = "fill", size = "md"),
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_formation", "Add Formation",
+                            color = "success", style = "fill", size = "sm")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_formation", "Remove Formation",
+                            color = "danger", style = "fill", size = "sm")
+          )
+        ),
         numericInput("formation_id", "Formation to remove", value = 1)
       )
     }
@@ -617,15 +621,18 @@ shinyServer(function(input, output, session) {
         br(),
         br(),
         h5(class = "text-center", "Project submenu"),
-        actionBttn(inputId = "submit_project", "Add Project",
-                   color = "success", style = "fill", size = "md"),
-        br(),
-        br(),
-        actionBttn(inputId = "remove_project", "Remove project",
-                   color = "danger", style = "fill", size = "md"),
-        br(),
-        br(),
-        numericInput("project_id", "Project to remove", value = 1)
+
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_project", "Add Project",
+                            color = "success", style = "fill", size = "sm")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_project", "Remove Project",
+                            color = "danger", style = "fill", size = "sm")
+          )
+        ),
+         numericInput("project_id", "Project to remove", value = 1)
       )
     }
   })
@@ -693,7 +700,7 @@ shinyServer(function(input, output, session) {
           place <- projects$place[i]
           # call the project_box function and pass it all
           # the previous arguments
-          project_box(input, images = project_images, background_color = col[i],
+          project_box(images = project_images, background_color = col[i],
                       title = title, position = position, overview = overview,
                       supervisors = supervisors, place = place, tasks = df$tasks[[i]],
                       box_index = i)
@@ -721,14 +728,16 @@ shinyServer(function(input, output, session) {
         textAreaInput(inputId = "publication_abstract", label = "Abstract",
                       "Write your abstract here"),
         textInput(inputId = "publication_pubmed", label = "Link to pubmed:"),
-        actionBttn(inputId = "submit_publication", "Add Publication",
-                   color = "success", style = "fill", size = "md"),
-        br(),
-        br(),
-        actionBttn(inputId = "remove_publication", "Remove publication",
-                   color = "danger", style = "fill", size = "md"),
-        br(),
-        br(),
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_publication", "Add Publication",
+                            color = "success", style = "fill", size = "sm")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_publication", "Remove publication",
+                            color = "danger", style = "fill", size = "sm")
+          )
+        ),
         numericInput("publication_id", "Publication to remove", value = 1)
       )
     }
@@ -749,9 +758,6 @@ shinyServer(function(input, output, session) {
   })
 
 
-
-
-
   # each time submit publication is pressed
   # add the new publication name as well as
   # other informations
@@ -766,21 +772,6 @@ shinyServer(function(input, output, session) {
 
     df$publications <- rbind(df$publications, temp_publication)
 
-    # # add the new publication screenshot if any
-    # temp_inFile <- input$publication_screenshot
-    # if (!is.null(temp_inFile)) {
-    #   temp_path <- temp_inFile$datapath
-    #   temp_screenshot <- list(
-    #     src = temp_path,
-    #     class = "img-responsive pad"
-    #   )
-    # } else {
-    #   temp_screenshot <- list(
-    #     src = NULL,
-    #     class = NULL
-    #   )
-    # }
-
     # add the new publication screenshot if any
     # copy the uploaded image in its proper www folder of the application
     temp_inFile <- input$publication_screenshot
@@ -793,8 +784,10 @@ shinyServer(function(input, output, session) {
         temp_path <- str_replace(temp_inFile$datapath, "0.png", "")
         old_name <- "0.png"
         new_name <- paste0(len, ".png")
+        # rename 0.png to len.png
         file.rename(from = paste0(temp_path, "/", old_name),
                     to = paste0(temp_path, "/", new_name))
+        # copy it to the shiny app folder (where images are saved)
         file.copy(from = paste0(temp_path, new_name), to = copy_path)
         new_path <- paste0(copy_path, "/", new_name)
 
@@ -802,7 +795,6 @@ shinyServer(function(input, output, session) {
           src = new_path,
           class = "img-responsive pad"
         )
-
       } else {
         # if df$publications_sreenshot was empty, create 0.png file
         temp_path <- temp_inFile$datapath
@@ -813,20 +805,17 @@ shinyServer(function(input, output, session) {
           src = temp_path,
           class = "img-responsive pad"
         )
-
       }
+      # does not work once input$publication_screenshot is not null
+      # since its value is only reset when the new file is uploaded
+      # shinyjs::reset() does not solve the problem.
     } else {
       temp_screenshot <- list(
         src = NULL,
         class = NULL
       )
     }
-
     df$publications_screenshots[[len + 1]] <- temp_screenshot
-  })
-
-  observe({
-    print(input$publication_screenshot$datapath)
   })
 
 
@@ -869,7 +858,7 @@ shinyServer(function(input, output, session) {
 
           # call the publication_box function and pass it all
           # the previous arguments
-          publication_box(input, reference, abstract, pubmed_link, screenshot,
+          publication_box(reference, abstract, pubmed_link, screenshot,
                           box_index = i)
         })
       )
@@ -904,12 +893,16 @@ shinyServer(function(input, output, session) {
                       "Describe your conference here", width = "200px"),
         textInput("talk_location", "Place"),
         textInput("talk_website", "Conference Website"),
-        actionBttn(inputId = "submit_talk", "Add Talk",
-                   color = "success", style = "fill", size = "md"),
-        br(),
-        br(),
-        actionBttn(inputId = "remove_talk", "Remove Talk",
-                   color = "danger", style = "fill", size = "md"),
+        fluidRow(
+          column(6,
+                 actionBttn(inputId = "submit_talk", "Add Talk",
+                            color = "success", style = "fill", size = "sm")
+          ),
+          column(6,
+                 actionBttn(inputId = "remove_talk", "Remove Talk",
+                            color = "danger", style = "fill", size = "sm")
+          )
+        ),
         numericInput("talk_id", "Talk to remove", value = 1)
       )
     }
@@ -998,6 +991,15 @@ shinyServer(function(input, output, session) {
   # Generate the teaching UI
   # if and only if the teaching
   # section is selected
+  output$teachingType <- renderUI({
+    if (input$section == "teaching") {
+      prettyRadioButtons(inputId = "teaching_type", label = "Teaching Type",
+                         choices = c("course", "internship"), inline = TRUE,
+                         animation = "pulse", bigger = TRUE)
+    }
+  })
+
+
   output$teachingUI <- renderUI({
     if (input$section == "teaching") {
       if (input$teaching_type == "course") {
@@ -1147,7 +1149,7 @@ shinyServer(function(input, output, session) {
 
             # call the course_box function and pass it all
             # the previous arguments
-            course_box(input, title, topic, nb_students, nb_hours, from, to,
+            course_box(title, topic, nb_students, nb_hours, from, to,
                        place, supervisor, syllabus, box_index = i)
           })
         )
@@ -1207,7 +1209,7 @@ shinyServer(function(input, output, session) {
     file.remove("www/data_cv.rds")
     file.remove(dir("www/Publications_img_saved/", pattern = "[0-9]\\.png$",
                     full.names = TRUE))
-    file.remove(dir("www/Profile_img_saved/", pattern = "[0-9]\\.png$",
+    file.remove(dir("www/Profile_img_saved/", pattern = "0.png",
                     full.names = TRUE))
   })
 

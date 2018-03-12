@@ -287,27 +287,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
 
       <hr/>
 
-      <div id="teaching_type" class="form-group shiny-input-radiogroup shiny-input-container shiny-input-container-inline">
-      <label class="control-label" for="teaching_type">Teaching type:</label>
-      <div class="shiny-options-group">
-      <div class="pretty p-default p-bigger p-round p-thick p-pulse">
-      <input type="radio" name="teaching_type" value="course" checked="checked"/>
-      <div class="state p-primary">
-      <label>
-      <span>course</span>
-      </label>
-      </div>
-      </div>
-      <div class="pretty p-default p-bigger p-round p-thick p-pulse">
-      <input type="radio" name="teaching_type" value="internship"/>
-      <div class="state p-primary">
-      <label>
-      <span>internship</span>
-      </label>
-      </div>
-      </div>
-      </div>
-      </div>
+      <div id="teachingType" class="shiny-html-output"></div>
 
       <div id="teachingUI" class="shiny-html-output"></div>
 

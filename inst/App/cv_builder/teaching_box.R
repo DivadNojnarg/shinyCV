@@ -1,5 +1,5 @@
 # create a course box if input$teaching_type = course
-course_box <- function(input, title, topic, nb_students, nb_hours, from, to,
+course_box <- function(title, topic, nb_students, nb_hours, from, to,
                        place, supervisor, syllabus, box_index) {
   tags$div(class = "col-sm-6",
     tags$div(

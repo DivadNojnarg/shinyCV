@@ -1,4 +1,4 @@
-publication_box <- function(input, reference, abstract, pubmed_link, screenshot, box_index) {
+publication_box <- function(reference, abstract, pubmed_link, screenshot, box_index) {
 
   # box_index is used to create ID number
   # for each publication box.

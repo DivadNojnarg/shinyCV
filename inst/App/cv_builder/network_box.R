@@ -1,4 +1,4 @@
-network_box <- function(input, data, nb_users) {
+network_box <- function(data, nb_users) {
   tags$div(
     class = "box box-primary",
     # box header
