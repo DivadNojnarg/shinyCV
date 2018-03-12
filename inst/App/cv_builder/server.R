@@ -96,7 +96,7 @@ shinyServer(function(input, output, session) {
     my_position <- my_profile$my_position
     my_age <- my_profile$my_age
     my_interests <- my_profile$my_interests
-    my_website <- my_profile$my_website_url
+    my_website <- my_profile$my_website
     my_teaser <- my_profile$my_teaser
     my_image <- my_profile$my_image
 
@@ -131,13 +131,15 @@ shinyServer(function(input, output, session) {
 
   # generate the about box
   output$aboutbox <- renderUI({
-    my_phone <- input$phone_number
-    my_mail <- input$mail
-    my_location <- input$location
-    my_linkedin <- input$linkedinlink
-    my_twitter <- input$twitterlink
-    my_facebook <- input$facebooklink
-    my_github <- input$githublink
+    input$submit_about
+    about <- df$about
+    my_phone <- about$my_phone
+    my_mail <- about$my_mail
+    my_location <- about$my_location
+    my_linkedin <- about$my_linkedin
+    my_twitter <- about$my_twitter
+    my_facebook <- about$my_facebook
+    my_github <- about$my_github
 
     # call the about_box function
     about_box(phone = my_phone, mail = my_mail, location = my_location,

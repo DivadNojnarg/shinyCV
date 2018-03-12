@@ -25,7 +25,7 @@ about_box <- function(phone, mail, location, linkedin_link,
     tags$div(
       class = "box-body",
       # tel/Mail and Web
-      tags$strong(tags$i(class = "fa fa-at margin-r-5"), "Tel/Mail & Web"),
+      tags$strong(tags$i(class = "fa fa-at margin-r-5"), "Tel & Mail"),
       if (!is.null(phone)) {
         tags$p(class = "text-muted", phone)
       },

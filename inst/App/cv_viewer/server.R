@@ -66,13 +66,12 @@ shinyServer(function(input, output, session) {
 
   # generate the profile box
   output$profilebox <- renderUI({
-    input$submit_profile
     my_profile <- df$my_profile
     my_name <- my_profile$my_name
     my_position <- my_profile$my_position
     my_age <- my_profile$my_age
     my_interests <- my_profile$my_interests
-    my_website <- my_profile$my_website_url
+    my_website <- my_profile$my_website
     my_teaser <- my_profile$my_teaser
     my_image <- my_profile$my_image
 
@@ -91,13 +90,14 @@ shinyServer(function(input, output, session) {
 
   # generate the about box
   output$aboutbox <- renderUI({
-    my_phone <- input$phone_number
-    my_mail <- input$mail
-    my_location <- input$location
-    my_linkedin <- input$linkedinlink
-    my_twitter <- input$twitterlink
-    my_facebook <- input$facebooklink
-    my_github <- input$githublink
+    about <- df$about
+    my_phone <- about$my_phone
+    my_mail <- about$my_mail
+    my_location <- about$my_location
+    my_linkedin <- about$my_linkedin
+    my_twitter <- about$my_twitter
+    my_facebook <- about$my_facebook
+    my_github <- about$my_github
 
     # call the about_box function
     about_box(phone = my_phone, mail = my_mail, location = my_location,
@@ -112,10 +112,6 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
-  observe({
-    print(df$skills)
-    })
-
   # generate the radar plot of skills
   # Secure if skill dataframe is empty
   output$skillsradar <- renderPlot({
@@ -129,15 +125,8 @@ shinyServer(function(input, output, session) {
     }
   })
 
-
   # generate the skills box
   output$skillsbox <- renderUI({
-    input$submit_project
-    input$submit_publication
-    input$submit_talk
-    input$submit_course
-    input$submit_internship
-    input$submit_user
 
     # skills and languages to pass to the box function
     my_skills <- df$skills
