@@ -81,8 +81,7 @@ shinyServer(function(input, output, session) {
 
     # copy the uploaded image in the www folder of the application
     temp_path <- input$my_picture$datapath
-    print(temp_path)
-    copy_path <- "www/"
+    copy_path <- "www/Profile_img_saved//"
     file.copy(from = temp_path, to = copy_path, overwrite = TRUE)
     temp_profile$my_image$datapath <- copy_path
 
@@ -767,22 +766,67 @@ shinyServer(function(input, output, session) {
 
     df$publications <- rbind(df$publications, temp_publication)
 
+    # # add the new publication screenshot if any
+    # temp_inFile <- input$publication_screenshot
+    # if (!is.null(temp_inFile)) {
+    #   temp_path <- temp_inFile$datapath
+    #   temp_screenshot <- list(
+    #     src = temp_path,
+    #     class = "img-responsive pad"
+    #   )
+    # } else {
+    #   temp_screenshot <- list(
+    #     src = NULL,
+    #     class = NULL
+    #   )
+    # }
+
     # add the new publication screenshot if any
+    # copy the uploaded image in its proper www folder of the application
     temp_inFile <- input$publication_screenshot
+    len <- length(df$publications_screenshots)
+    copy_path <- "www/Publications_img_saved/"
     if (!is.null(temp_inFile)) {
-      temp_path <- temp_inFile$datapath
-      temp_screenshot <- list(
-        src = temp_path,
-        class = "img-responsive pad"
-      )
+      if (len > 0) {
+        # if there is 0.png in the www folder
+        # create a 1.png file, then 2.png ... until n.png
+        temp_path <- str_replace(temp_inFile$datapath, "0.png", "")
+        old_name <- "0.png"
+        new_name <- paste0(len, ".png")
+        file.rename(from = paste0(temp_path, "/", old_name),
+                    to = paste0(temp_path, "/", new_name))
+        file.copy(from = paste0(temp_path, new_name), to = copy_path)
+        new_path <- paste0(copy_path, "/", new_name)
+
+        temp_screenshot <- list(
+          src = new_path,
+          class = "img-responsive pad"
+        )
+
+      } else {
+        # if df$publications_sreenshot was empty, create 0.png file
+        temp_path <- temp_inFile$datapath
+        file.copy(from = temp_path, to = copy_path)
+        temp_path <- paste0(copy_path, "/", "0.png")
+
+        temp_screenshot <- list(
+          src = temp_path,
+          class = "img-responsive pad"
+        )
+
+      }
     } else {
       temp_screenshot <- list(
         src = NULL,
         class = NULL
       )
     }
-    len <- length(df$publications_screenshots)
+
     df$publications_screenshots[[len + 1]] <- temp_screenshot
+  })
+
+  observe({
+    print(input$publication_screenshot$datapath)
   })
 
 
@@ -797,6 +841,13 @@ shinyServer(function(input, output, session) {
       } else {
         df$publications <- df$publications[-idx, ]
         df$publications_screenshots[[idx]] <- NULL
+        file.remove(
+          dir(
+            "www/Publications_img_saved/",
+            pattern = paste0(idx - 1, ".png"),
+            full.names = TRUE
+            )
+          )
       }
     } else {
       sendSweetAlert(session, title = "", text = "There is no publication to
@@ -1151,9 +1202,13 @@ shinyServer(function(input, output, session) {
     saveRDS(object = reactiveValuesToList(df), file = "www/data_cv.rds")
   })
 
-  # erase the whole cv
+  # erase the whole cv and the associated data
   observeEvent(input$reset,{
     file.remove("www/data_cv.rds")
+    file.remove(dir("www/Publications_img_saved/", pattern = "[0-9]\\.png$",
+                    full.names = TRUE))
+    file.remove(dir("www/Profile_img_saved/", pattern = "[0-9]\\.png$",
+                    full.names = TRUE))
   })
 
   # Custom footer
