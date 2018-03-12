@@ -1,5 +1,5 @@
-project_box <- function(images, background_color, title, position, overview,
-                        supervisors, place, tasks, box_index) {
+project_box <- function(title, position, overview, supervisors, place, tasks,
+                        images, background_color, box_index) {
 
   # box_index is used to create unique accordion ID
   # each time a new project_box is created
@@ -15,13 +15,13 @@ project_box <- function(images, background_color, title, position, overview,
         tags$div(
           # user image (random)
           class = "widget-user-image",
-          tags$img(class = "img-circle", src =
-                     sample(images), alt = "User Avatar")
+          tags$img(class = "img-circle", src = images, alt = "User Avatar")
 
         ),
         # Project Title
-        tags$h3(class = "widget-user-username",
-                HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
+        tags$h3(
+          class = "widget-user-username",
+          HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
         # Project Position
         tags$h5(class = "widget-user-desc", position)
       ),

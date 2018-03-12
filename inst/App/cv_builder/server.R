@@ -700,9 +700,9 @@ shinyServer(function(input, output, session) {
           place <- projects$place[i]
           # call the project_box function and pass it all
           # the previous arguments
-          project_box(images = project_images, background_color = col[i],
-                      title = title, position = position, overview = overview,
+          project_box(title = title, position = position, overview = overview,
                       supervisors = supervisors, place = place, tasks = df$tasks[[i]],
+                      images = project_images[i], background_color = col[i],
                       box_index = i)
         })
       )

@@ -36,7 +36,7 @@ col <- rep(c(
 ), 10)
 
 # images for the projects
-project_images = c(
+project_images = rep(c(
   "checklist.svg",
   "calendar.svg",
   "bulb.svg",
@@ -44,4 +44,4 @@ project_images = c(
   "checklist-2.svg",
   "checklist-3.svg",
   "presentation.svg"
-)
+), 10)
