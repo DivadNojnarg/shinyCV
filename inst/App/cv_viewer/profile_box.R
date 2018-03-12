@@ -24,7 +24,8 @@ profile_box <- function(name, position, age, interests, website_url, teaser,
         tags$li(
           class = "list-group-item",
           tags$i(class = "fa fa-birthday-cake margin-r-5", " Age"),
-          tags$a(class = "pull-right", age)
+          tags$a(class = "pull-right",
+                 HTML(paste0("<b>", age, "</b>")))
         ),
         # user interests
         tags$li(
