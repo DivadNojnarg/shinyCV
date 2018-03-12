@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
   output$image <- renderImage({
     my_image <- df$my_profile$my_image
     if (!is_empty(my_image)) {
-      path <- my_image$datapath
+      path <- paste0(my_image$datapath, "0.png")
       list(src = path,
            # very important to keep the adminLTE image border
            class = "profile-user-img img-responsive img-circle",
@@ -68,6 +68,7 @@ shinyServer(function(input, output, session) {
   # replace the profile data frame with the
   # current new one
   observeEvent(input$submit_profile,{
+
     temp_profile <- list(
       my_name = input$name,
       my_position = input$position,
@@ -77,6 +78,14 @@ shinyServer(function(input, output, session) {
       my_teaser = input$teaser,
       my_image = input$my_picture
     )
+
+    # copy the uploaded image in the www folder of the application
+    temp_path <- input$my_picture$datapath
+    print(temp_path)
+    copy_path <- "www/"
+    file.copy(from = temp_path, to = copy_path, overwrite = TRUE)
+    temp_profile$my_image$datapath <- copy_path
+
     df$my_profile <- temp_profile
   })
 
