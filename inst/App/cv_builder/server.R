@@ -583,7 +583,7 @@ shinyServer(function(input, output, session) {
                   summary
                 },
                 itemIcon = shiny::icon("street-view"),
-                footer = HTML('<a class="btn btn-primary btn-xs">Read more</a>'),
+                footer = tags$a(class = "btn btn-primary btn-xs", href = extra, "Read more"),
                 itemText = place
               )
             )
