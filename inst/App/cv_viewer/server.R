@@ -200,10 +200,8 @@ shinyServer(function(input, output, session) {
   # generate the user box
   output$networkbox <- renderUI({
     users <- df$users
-    if (input$enable_network_box == TRUE) {
-      # call the network_box function
-      network_box(input, data = users, nb_users = nrow(users))
-    }
+    # call the network_box function
+    network_box(input, data = users, nb_users = nrow(users))
   })
 
 
@@ -445,7 +443,7 @@ shinyServer(function(input, output, session) {
 
           # call the internship_box function and pass it all
           # the previous arguments
-          internship_box(input, title, topic, from , to, place,
+          internship_box(title, topic, from , to, place,
                          supervisor, level, advert, box_index = i)
         })
       )
@@ -462,7 +460,7 @@ shinyServer(function(input, output, session) {
   # Some users probably do not need
   # awards, talks and publications panels
   output$main_box <- renderUI({
-    main_box(input)
+    main_box(cv_mode)
   })
 
   #-------------------------------------------------------------------------
