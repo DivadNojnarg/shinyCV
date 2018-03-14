@@ -65,7 +65,7 @@ main_box <- function(cv_mode) {
         uiOutput("talk_timeline")
       )
     )
-  } else if (cv_mode == "academic_shy") {
+  } else if (cv_mode == "academic_light") {
     tabBox(
       id = "main_body", width = 12,
       tabPanel(

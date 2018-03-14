@@ -1,86 +1,67 @@
 # define server function
 shinyServer(function(input, output, session) {
 
-  # try to use the function feed_shinyCV
-  feed_datas <- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
-                             temp_network, temp_formations, temp_projects, temp_tasks,
-                             temp_publications, publications_screenshots = list(),
-                             temp_talks, temp_courses, temp_internships)
-
-  if (!is_empty(feed_datas)) {
+  # check if the user has provided its own data via
+  # feed_shinyCV
+  if (data_source == "manual") {
     df <- reactiveValues(
-      my_profile = feed_datas$my_profile,
-      about = feed_datas$about,
-      skills = feed_datas$skills,
-      languages = feed_datas$languages,
-      users = feed_datas$network,
-      formations = feed_datas$formations,
-      tasks = feed_datas$tasks,
-      projects = feed_datas$projects,
-      publications = feed_datas$publications,
-      publications_screenshots = feed_datas$publications_screenshots,
-      talks = feed_datas$talks,
-      courses = feed_datas$course,
-      internships = feed_datas$internships
+      my_profile = datas$my_profile,
+      about = datas$about,
+      skills = datas$skills,
+      languages = datas$languages,
+      users = datas$network,
+      formations = datas$formations,
+      tasks = datas$tasks,
+      projects = datas$projects,
+      publications = datas$publications,
+      publications_screenshots = datas$publications_screenshots,
+      talks = datas$talks,
+      courses = datas$course,
+      internships = datas$internships
     )
   } else {
-    df <- reactiveValues(
-      my_profile = list(),
-      about = data.frame(),
-      skills = data.frame(),
-      languages = data.frame(),
-      users = data.frame(),
-      formations = data.frame(),
-      tasks = list(),
-      projects = data.frame(),
-      publications = data.frame(),
-      publications_screenshots = list(),
-      talks = data.frame(),
-      courses = data.frame(),
-      internships = data.frame()
-    )
+    # if there are existing data
+    # initialization of data cv.
+    # If the cv has been saved previously,
+    # load the last saved state instead
+    data_cv <- "www/data_cv.rds"
+    if (file.exists(data_cv) == TRUE) {
+      # old df is not reactive
+      old_df <- readRDS(data_cv)
+      # create a new reactive df based on old values
+      df <- reactiveValues(
+        my_profile = old_df$my_profile,
+        about = old_df$about,
+        skills = old_df$skills,
+        languages = old_df$languages,
+        users = old_df$users,
+        formations = old_df$formations,
+        tasks = old_df$tasks,
+        projects = old_df$projects,
+        publications = old_df$publications,
+        publications_screenshots = old_df$publications_screenshots,
+        talks = old_df$talks,
+        courses = old_df$courses,
+        internships = old_df$internships
+      )
+    } else {
+      df <- reactiveValues(
+        my_profile = list(),
+        about = data.frame(),
+        skills = data.frame(),
+        languages = data.frame(),
+        users = data.frame(),
+        formations = data.frame(),
+        tasks = list(),
+        projects = data.frame(),
+        publications = data.frame(),
+        publications_screenshots = list(),
+        talks = data.frame(),
+        courses = data.frame(),
+        internships = data.frame()
+      )
+    }
   }
-
-  ## initialization of data cv.
-  ## If the cv has been saved previously,
-  ## load the last saved state instead
-  # data_cv <- "www/data_cv.rds"
-  # if (file.exists(data_cv) == TRUE) {
-  #   # old df is not reactive
-  #   old_df <- readRDS(data_cv)
-  #   # create a new reactive df based on old values
-  #   df <- reactiveValues(
-  #     my_profile = old_df$my_profile,
-  #     about = old_df$about,
-  #     skills = old_df$skills,
-  #     languages = old_df$languages,
-  #     users = old_df$users,
-  #     formations = old_df$formations,
-  #     tasks = old_df$tasks,
-  #     projects = old_df$projects,
-  #     publications = old_df$publications,
-  #     publications_screenshots = old_df$publications_screenshots,
-  #     talks = old_df$talks,
-  #     courses = old_df$courses,
-  #     internships = old_df$internships
-  #   )
-  # } else {
-  #   df <- reactiveValues(
-  #     my_profile = list(),
-  #     about = data.frame(),
-  #     skills = data.frame(),
-  #     languages = data.frame(),
-  #     users = data.frame(),
-  #     formations = data.frame(),
-  #     tasks = list(),
-  #     projects = data.frame(),
-  #     publications = data.frame(),
-  #     publications_screenshots = list(),
-  #     talks = data.frame(),
-  #     courses = data.frame(),
-  #     internships = data.frame()
-  #   )
-  # }
 
   # useful for temporary storage
   temp <- reactiveValues(tasks = data.frame())
