@@ -1,8 +1,10 @@
 # shinyCV
 
-- http://ionicabizau.github.io/github-calendar/example/ (integrate Github activity to the CV)
+> Amazing HTML CVs based upon adminLTE2 template
+
 - https://adminlte.io/themes/AdminLTE ( main theme)
 
+## Introduction
 
 This package uses 2 shiny apps to build awesome CVs based on the AdminLTE2 template.
 Launch the builder by using:
@@ -66,4 +68,8 @@ Below are some preview pictures of the builder mode:
 
 
 ![Teaching overview](inst/images/shinyCV_teaching.png) <br/>
+
+## Upcoming features
+
+- http://ionicabizau.github.io/github-calendar/example/ (integrate Github activity to the CV)
 
