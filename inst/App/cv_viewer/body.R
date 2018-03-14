@@ -7,13 +7,15 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "main",
-      column(4, offset = 0, style = 'padding:0px;',
+      column(3, offset = 0, style = 'padding:0px;',
              uiOutput("profilebox"),
-             uiOutput("aboutbox"),
+             uiOutput("aboutbox")
+      ),
+      column(6, offset = 0, style = 'padding:0px;', uiOutput("main_box")),
+      column(3, offset = 0, style = 'padding:0px;',
              uiOutput("skillsbox"),
              uiOutput("networkbox")
       ),
-      column(8, offset = 0, style = 'padding:0px;', uiOutput("main_box")),
       # add e new empty row to prevent previous boxes from being displayed out of
       # the dashboard footer
       fluidRow()

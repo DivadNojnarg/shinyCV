@@ -4,8 +4,7 @@ shinyServer(function(input, output, session) {
   # try to use the function feed_shinyCV
   feed_datas <- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
                              temp_network, temp_formations, temp_projects, temp_tasks,
-                             temp_publications, publications_screenshots = list(
-                               NULL, NULL, NULL, NULL, NULL),
+                             temp_publications, publications_screenshots = list(),
                              temp_talks, temp_courses, temp_internships)
 
   if (!is_empty(feed_datas)) {
@@ -334,11 +333,14 @@ shinyServer(function(input, output, session) {
           reference <- publications$reference[i]
           abstract <- publications$abstract[i]
           pubmed_link <- publications$pubmed_link[i]
-          screenshot <- if (!is.null(screenshots[[i]]$src) |
-                            !is_empty(screenshots[[i]]$src)) {
-            screenshots[[i]]$src
-          } else {
+          screenshot <- if (is_empty(screenshots)) {
             NULL
+          } else {
+            if (!is.null(screenshots[[i]]$src)) {
+              screenshots[[i]]$src
+            } else {
+              NULL
+            }
           }
           # call the publication_box function and pass it all
           # the previous arguments
