@@ -71,7 +71,7 @@ course_box <- function(title, topic, nb_students, nb_hours, from, to,
 }
 
 # create an internship box if input$teaching_type = course
-internship_box <- function(input, title, topic, from, to, place, supervisor,
+internship_box <- function(title, topic, from, to, place, supervisor,
                            level, advert, box_index) {
   tags$div(class = "col-sm-6",
     tags$div(
