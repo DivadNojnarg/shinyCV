@@ -73,7 +73,7 @@ dashboardControlbar <- function(ctrlHTML = NULL) {
             <option value="Biology">Biology</option>
             <option value="Physiology">Physiology</option>
             <option value="Neurosciences">Neurosciences</option>
-            <option value="Web-develoment">Web-develoment</option></select>
+            <option value="Web-development">Web-development</option></select>
           <script type="application/json" data-for="interests">{}</script>
         </div>
       </div>

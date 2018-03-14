@@ -77,14 +77,14 @@ internship_box <- function(input, title, topic, from, to, place, supervisor,
     tags$div(
       class = "box box-widget widget-user",
       tags$div(
-        class = "widget-user-header bg-orange-active",
+        class = "widget-user-header bg-green-active",
         # Define course title, topic and advert
         tags$h3(class = "widget-user-username",
                 tags$span(class = "badge bg-black", box_index), title),
         tags$h5(class = "widget-user-desc", topic),
         if (!is.null(advert)) {
           tags$h6(class = "widget-user-desc",
-            tags$span(class = "badge bg-black",
+            tags$span(class = "badge bg-orange",
               tags$a(href = advert, target = "_blank", " View Advert")
             )
           )
