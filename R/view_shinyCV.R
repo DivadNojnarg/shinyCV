@@ -71,7 +71,7 @@ view_shinyCV <- function(cv_mode = "basic", data_source = "manual", datas = NULL
       generate_datas_shinyCV()
       datas <<- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
                              temp_network, temp_formations, temp_projects, temp_tasks,
-                             temp_publications, publications_screenshots = list(),
+                             temp_publications, temp_publications_screenshots,
                              temp_talks, temp_courses, temp_internships)
     } else {
       datas <<- datas

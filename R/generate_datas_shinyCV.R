@@ -22,7 +22,12 @@ generate_datas_shinyCV <- function() {
     voluptate velit esse cillum dolore eu fugiat nulla pariatur.
     Excepteur sint occaecat cupidatat non proident, sunt in
     culpa qui officia deserunt mollit anim id est laborum.",
-    my_image = NULL
+    my_image = list(
+      src = system.file("App/cv_viewer/www/man.png", package = "shinyCV"),
+      # very important to keep the adminLTE image border
+      class = "profile-user-img img-responsive img-circle",
+      alt = "User profile picture"
+    )
   )
 
   # datas for about example
@@ -101,6 +106,15 @@ generate_datas_shinyCV <- function() {
     supervisors = rep("Jean Eude", 4),
     place = rep("Somewhere", 4)
   )
+
+  # datas for publications screenshots
+  demo_list <- list(
+    class = "img-responsive pad",
+    src = system.file("App/cv_viewer/www/text-lines.svg", package = "shinyCV"),
+    style = "height: 100px; display: block;
+    margin-left: auto; margin-right: auto;"
+  )
+  temp_publications_screenshots <<- list(demo_list, demo_list, demo_list)
 
  # data for publication example
   temp_publications <<- data.frame(

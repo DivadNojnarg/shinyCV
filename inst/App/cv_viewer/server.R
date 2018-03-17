@@ -76,7 +76,19 @@ shinyServer(function(input, output, session) {
   output$image <- renderImage({
     my_image <- df$my_profile$my_image
     if (!is_empty(my_image)) {
-      path <- paste0(my_image$datapath, "0.png")
+      # in demo mode, launch the app with a demo profile image
+      if (data_source == "manual") {
+        # if datas are provided by the user, we use
+        # the same path as with the demo code
+        # so the image will be that choosen by the user
+        # and not that by the demo
+        path <- my_image$src
+      } else {
+        # if the user use the from_cvbuilder mode
+        if (file.exists("www/data_cv.rds") == TRUE) {
+          path <- paste0(my_image$datapath, "0.png")
+        }
+      }
       list(src = path,
            # very important to keep the adminLTE image border
            class = "profile-user-img img-responsive img-circle",
@@ -293,10 +305,23 @@ shinyServer(function(input, output, session) {
     screenshots <- df$publications_screenshots
     lapply(seq_along(screenshots), FUN = function(i) {
       output[[paste0("screenshot", i)]] <- renderImage({
-        path <- screenshots[[i]]$src
+        if (data_source == "manual") {
+          # if datas are provided by the user, we use
+          # the same path as with the demo code
+          # so the image will be that choosen by the user
+          # and not that by the demo
+          path <- screenshots[[i]]$src
+        } else {
+          # if the user use the from_cvbuilder mode
+          if (file.exists("www/data_cv.rds") == TRUE) {
+            path <- paste0(screenshots$datapath, i - 1,".png")
+          }
+        }
+        style <- screenshots[[i]]$style
         list(
           src = path,
-          class = "img-responsive pad"
+          class = "img-responsive pad",
+          style = if (!is.null(style)) style else NULL
         )
       }, deleteFile = FALSE)
     })
