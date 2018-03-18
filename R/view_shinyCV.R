@@ -77,6 +77,10 @@ view_shinyCV <- function(cv_mode = "basic", data_source = "manual", datas = NULL
       datas <<- datas
     }
   } else if (data_source == "from_cvbuilder") {
+
+    # remove the older datas before
+    file.remove(system.file("App/cv_viewer/www/data_cv.rds", package = "shinyCV"))
+
     # copy the new version of the CV before launching the viewer
     from <- system.file("App/cv_builder/www/data_cv.rds", package = "shinyCV")
     to <- system.file("App/cv_viewer/www/", package = "shinyCV")
