@@ -86,7 +86,8 @@ shinyServer(function(input, output, session) {
       } else {
         # if the user use the from_cvbuilder mode
         if (file.exists("www/data_cv.rds") == TRUE) {
-          path <- paste0(my_image$datapath, "0.png")
+          path <- paste0(system.file("App/cv_viewer/www/Profile_img_saved/",
+                                     package = "shinyCV"), "0.png")
         }
       }
       list(src = path,
@@ -314,7 +315,8 @@ shinyServer(function(input, output, session) {
         } else {
           # if the user use the from_cvbuilder mode
           if (file.exists("www/data_cv.rds") == TRUE) {
-            path <- paste0(screenshots$datapath, i - 1,".png")
+            path <- paste0(system.file("App/cv_viewer/www/Publications_img_saved/",
+                                       package = "shinyCV"), i - 1,".png")
           }
         }
         style <- screenshots[[i]]$style
