@@ -26,7 +26,8 @@
 #'  example is generated
 #'  using \code{\link{generate_datas_shinyCV}}, so that you can still see how
 #'  a full CV looks like
-#'  \item \code{your_datas} : if datas are not NULL, datas should have the same structure as
+#'  \item \code{your_datas} : if datas are not NULL and data_source is "manual",
+#'  datas should have the same structure as
 #'  that in the list of datas returned by the \code{\link{feed_shinyCV}}
 #'  function (see examples below)
 #' }
