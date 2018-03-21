@@ -260,7 +260,6 @@ Then, you can inject these datas in feed_shinyCV() and run view_shinyCV:
 
 Below are some preview pictures of the builder mode:
 
-
 ![New design](inst/images/shinyCV_newdesign.png) <br/>
 
 
