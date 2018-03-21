@@ -5,6 +5,11 @@
 - https://adminlte.io/themes/AdminLTE ( main theme)
 - Will be released to CRAN as soon as possible
 
+```{r}
+library(devtools)
+install_github("DivadNojnarg/shinyCV")
+```
+
 ## Introduction: build your cv from the shiny interface
 
 This package uses 2 shiny apps to build awesome CVs based on the AdminLTE2 template.
