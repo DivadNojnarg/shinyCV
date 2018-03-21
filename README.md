@@ -282,5 +282,6 @@ Below are some preview pictures of the builder mode:
 
 ## Upcoming features
 - new timeline boxes
+- manually reorder panels using shinyjqui
 - implement the right sidebar in R
 - http://ionicabizau.github.io/github-calendar/example/ (integrate Github activity to the CV)
