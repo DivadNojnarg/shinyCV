@@ -18,7 +18,8 @@ Imports:
     shinyWidgets,
     ggplot2,
     purrr,
-    stringr
+    stringr,
+    rsconnect
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

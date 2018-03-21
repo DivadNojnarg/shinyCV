@@ -4,9 +4,12 @@
 \alias{view_shinyCV}
 \title{shinyCV viewer.}
 \usage{
-view_shinyCV(cv_mode = "basic", data_source = "manual", datas = NULL)
+view_shinyCV(cv_path, cv_mode = "basic", data_source = "manual",
+  datas = NULL)
 }
 \arguments{
+\item{cv_path}{The directory where your CV is stored:}
+
 \item{cv_mode}{The content to display in the CV. There are currently 5
 flavors:
 \itemize{

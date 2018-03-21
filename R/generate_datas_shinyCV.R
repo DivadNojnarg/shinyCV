@@ -3,11 +3,17 @@
 #' with the argument datas equal to NULL and data_source set to manual, this dataset
 #' will be used to show an example.
 #'
+#' @param cv_path The directory where your CV is stored
+#'
 #' @export
 #' @examples
 #' generate_data_shinyCV()
 
-generate_datas_shinyCV <- function() {
+generate_datas_shinyCV <- function(cv_path) {
+
+  if (is.null(cv_path)) {
+    stop("need to give the location of your cv files")
+  }
 
   # datas for the profile example
   temp_profile <<- list(
@@ -26,7 +32,7 @@ generate_datas_shinyCV <- function() {
     Excepteur sint occaecat cupidatat non proident, sunt in
     culpa qui officia deserunt mollit anim id est laborum.",
     my_image = list(
-      src = system.file("App/cv_viewer/www/man.png", package = "shinyCV"),
+      src = paste0(cv_path, "/www/man.png"),
       # very important to keep the adminLTE image border
       class = "profile-user-img img-responsive img-circle",
       alt = "User profile picture"
@@ -113,7 +119,7 @@ generate_datas_shinyCV <- function() {
   # datas for publications screenshots
   demo_list <- list(
     class = "img-responsive pad",
-    src = system.file("App/cv_viewer/www/text-lines.svg", package = "shinyCV"),
+    src = paste0(cv_path, "/www/text-lines.svg"),
     style = "height: 100px; display: block;
     margin-left: auto; margin-right: auto;"
   )
@@ -151,7 +157,7 @@ generate_datas_shinyCV <- function() {
                   culpa qui officia deserunt mollit anim id est laborum.", 5),
     place = rep("Somewhere", 5),
     price = c(rep("yes", 3), rep("no", 2)),
-    website = rep("http://ggogle.com", 5)
+    website = rep("http://google.com", 5)
   )
 
   # datas for course example

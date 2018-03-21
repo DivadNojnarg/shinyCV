@@ -4,7 +4,10 @@
 \alias{generate_datas_shinyCV}
 \title{Dataset for shinyCV demo.}
 \usage{
-generate_datas_shinyCV()
+generate_datas_shinyCV(cv_path)
+}
+\arguments{
+\item{cv_path}{The directory where your CV is stored}
 }
 \description{
 Create an example dataset. If the function \code{\link{view_shinyCV}} is called

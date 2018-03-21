@@ -1,6 +1,7 @@
 #' @title shinyCV viewer.
 #' @description Launch a shinyCV web application to display your beautiful CV.
 #'
+#' @param cv_path The directory where your CV is stored:
 #' @param cv_mode The content to display in the CV. There are currently 5
 #' flavors:
 #' \itemize{
@@ -226,17 +227,22 @@
 #' # in this case, the datas argument will be ignored.
 #' view_shinyCV(cv_mode = "basic", data_source = "from_cvbuilder", datas = NULL)
 
-view_shinyCV <- function(cv_mode = "basic", data_source = "manual", datas = NULL) {
+view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", datas = NULL) {
   if (is.null(cv_mode)) {
     stop("cv_mode cannot be NULL")
   }
   if (is.null(data_source)) {
     stop("data_source cannot be NULL")
   }
+  if (is.null(cv_path)) {
+    stop("need to give the location of your cv files")
+  }
 
   # recover cv mode from the function argument and set
   # it as an object accessible for the view_shinyCV function
   # set it as global variable
+  cv_path <<- cv_path
+
   cv_mode <<- match.arg(
     arg = cv_mode,
     choices = c(
@@ -259,7 +265,7 @@ view_shinyCV <- function(cv_mode = "basic", data_source = "manual", datas = NULL
   # load datas
   if (data_source == "manual") {
     if (is.null(datas)) {
-      generate_datas_shinyCV()
+      generate_datas_shinyCV(cv_path)
       datas <<- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
                              temp_network, temp_formations, temp_projects, temp_tasks,
                              temp_publications, temp_publications_screenshots,
@@ -274,23 +280,24 @@ view_shinyCV <- function(cv_mode = "basic", data_source = "manual", datas = NULL
 
     # copy the new version of the CV before launching the viewer
     from <- system.file("App/cv_builder/www/data_cv.rds", package = "shinyCV")
-    to <- system.file("App/cv_viewer/www/", package = "shinyCV")
+    to <- cv_path
     file.copy(from = from, to = to)
+
     # copy the profile image
     from <- system.file("App/cv_builder/www/Profile_img_saved/0.png", package = "shinyCV")
-    to <- system.file("App/cv_viewer/www/Profile_img_saved/", package = "shinyCV")
+    to <- cv_path
     file.copy(from = from, to = to)
+
     # copy the publications screenshots from builder to viewer
-    to <- system.file("App/cv_viewer/www/Publications_img_saved/", package = "shinyCV")
-    file_list <- list.files(system.file("App/cv_builder/www/Publications_img_saved/", package = "shinyCV"))
+    from <- system.file("App/cv_builder/www/Publications_img_saved/", package = "shinyCV")
+    to <- cv_path
+    file_list <- list.files(from)
     lapply(seq_along(file_list), FUN = function(i) {
-      from <- system.file(paste0("App/cv_builder/www/Publications_img_saved/", file_list[i]),
-                          package = "shinyCV")
+      from <- paste0(from, "/", file_list[i])
       file.copy(from, to)
     })
   }
 
   # launch the viewer
-  shiny::runApp(appDir = system.file("App", "cv_viewer", package = "shinyCV"),
-                display.mode = "normal")
+  shiny::runApp(appDir = cv_path, display.mode = "normal")
 }

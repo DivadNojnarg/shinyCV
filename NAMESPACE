@@ -3,4 +3,6 @@
 export(build_shinyCV)
 export(feed_shinyCV)
 export(generate_datas_shinyCV)
+export(init_shinyCV)
+export(publish_shinyCV)
 export(view_shinyCV)
