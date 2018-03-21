@@ -1,49 +1,225 @@
-#' Feed a shinyCV with data.
-#' This function passes all the data provided by the user to the cv viewer.
-#' Launch view_shinyCV() to see the results.
+#' @title Provide your own external datas to shinyCV.
+#' @description Feed a shinyCV with datas. This function passes all the datas
+#' provided by the user to the cv viewer. Launch \code{\link{view_shinyCV}} to
+#' see the results.
 #'
+#' @param profile The profile object should be a \strong{list} containing, in the
+#' \strong{same} order:
+#' \itemize{
+#'   \item my_name: the name, a string like \code{"John Test"}
+#'   \item my_position: the current position, a string like \code{"student"}
+#'   \item my_age: the age, a numeric value like \code{10}
+#'   \item my_interests: interests, a vector like:
+#'   \preformatted{c("Computer Sciences", "Biology", "Physiology",
+#'   "Mathematics", "Neurosciences", "Web-development")}
+#'   \item my_website: the website url, a string like \code{"http://google.com"}
+#'   \item my_teaser: the teaser, a long string (see \code{\link{view_shinyCV}} examples)
+#'   \item my_image: the profile image, a list of 3 fields:
+#'    \enumerate{
+#'      \item src: the image source, \code{"your_path/your_image"}
+#'      \item class: should be set to \code{"profile-user-img img-responsive img-circle"}
+#'      \item alt: \code{"User profile picture"}
+#'    }
+#' }
+#' None of this field is mandatory.
 #'
-#' @param profile The profile list containing the name, current position
-#' age, interests (a vector of "Computer Sciences", "Biology", "Physiology", "Mathematics",
-#' "Neurosciences", "Web-development"), website url, teaser and image of the user. None of this field
-#' is mandatory. If provided, the image field should contain the path
-#' to access the user profile image.
-#' @param about The about dataframe containing the phone number (a string "+44 650 36 47"),
-#' mail adress (a string "testatgmail.com"),
-#' location as well as social network profiles, namely, linkedin, twitter,
-#' facebook and github. None of this field is mandatory.
-#' @param skills The skills dataframe containing the skill name and its value
-#' (from 0 to 100). Each field is mandatory.
-#' @param languages The language dataframe containing the language name and value
-#' (from 0 to 100). Each field is mandatory.
-#' @param network The network dataframe containing title, sex ("male" or "female"),
-#' name, mail and phone of the network member.
-#' @param formations The formations dataframe gathering the users diploma. Fields
-#' are title, topic ("industry", "balance-scale", "database", "eyedropper", "heartbeat",
-#' "music", "money", "paw", "paint-brush", "gamepad"), from (for instance "1900-01-01"),
-#' to (for instance "1900-01-01"),
-#' summary, place, supervisor, grade (number between 0 and 5) and extra
-#' (web link for instance).
-#' @param projects The projects dataframe containg all projects done by the user.
-#' Fields are title, position, overview, supervisors and place.
-#' @param tasks The tasks associated to each project (if any). It is a list of dataframes
-#' each containing the following fields: name and status ("wip" or "completed"). The idea
-#' is that for each project, there could be some tasks associated.
-#' @param publications The publications dataframe containing the reference
-#' (Your name et al., Journal Title, year), abstract and a pubmed_link.
-#' @param publications_screenshots A list containing the screenshots of all
-#' publications (should be the path to the image).
-#' @param talks The conferences dataframe containing the title,
-#' from (for instance "1900-01-01"),
-#' to (for instance "1900-01-01"), summary, place, price ("yes" or "no")
-#' as well as website.
-#' @param courses The courses dataframe containing title, topic, nb_students (numeric),
-#' nb_hours (numeric), from (for instance "1900-01-01"), to (for instance "1900-01-01"),
-#' place, supervisor and syllabus (web link if any).
-#' @param internships The internships dataframe containing title, topic,
-#' from (for instance "1900-01-01"),
-#' to (for instance "1900-01-01"), place, supervisor,
-#' student_level ("bachelor", "master", "PhD" or "PostDoc") and advert (web link)
+#' @param about The about object should be a \strong{dataframe} containing,
+#' in the \strong{same} order:
+#' \itemize{
+#'   \item my_phone: the phone number, a string like \code{"+44 650 36 47"}
+#'   \item my_mail: the mail adress, a string like \code{"bobatgmail.com"}
+#'   \item my_location: the location, a string like \code{"Los Angeles"}
+#'   \item my_linkedin: the linkedin profile, a string like \code{"https://www.linkedin.com/feed/"}
+#'   \item my_twitter: the twitter profile, a string like \code{"https://twitter.com"}
+#'   \item my_facebook: the facebook profile, a string like \code{"https://www.facebook.com"}
+#'   \item my_github: the github profile, a string like \code{"https://github.com"}
+#' }
+#' None of this field is mandatory.
+#'
+#' @param skills The skills object should be a \strong{dataframe} containing,
+#' in the \strong{same} order:
+#'\itemize{
+#'   \item variable: the skill name, a character vector like \code{c("R", "Shiny", "HTML")}
+#'   \item value: the corresponding value between \strong{0 and 100}, a numeric
+#'   vector like \code{c("90", "90", "80")}
+#' }
+#' Each field is \strong{mandatory} to create the corresponding graph.
+#'
+#' @param languages The languages object should be a \strong{dataframe}
+#' containing, in the \strong{same} order:
+#' \itemize{
+#'   \item variable: the language name, a character vector like
+#'   \code{c("French", "English", "Spanish")}
+#'   \item value: the corresponding value between \strong{0 and 100}, a numeric
+#'   vector like \code{c("90", "90", "80")}
+#' }
+#' Each field is \strong{mandatory} to create the corresponding progress bar.
+#'
+#' @param network The network object should be a \strong{dataframe} containing,
+#' in the \strong{same} order:
+#' \itemize{
+#'   \item title: the titles of your connections, a character vector like
+#'   \code{c("Dr.", "Pr.", "")}
+#'   \item sex: the sexes of your connections, a character vector like
+#'   \code{c("male", "female", "female")}
+#'   \item name: the names of your connections, a character vector like
+#'   \code{c("Janine", "Huguette", "Jean Raymond")}
+#'   \item mail: the mail adresses of your connections, a character vector like
+#'   \code{c("janineatgmail.com", "huguetteatgmail.com", "raymondatgmail.com")}
+#'   \item phone: the phone number list of your connections, a character vector like
+#'   \code{c("+44 650 36 47", "+44 650 36 47", "+44 650 36 47")}
+#' }
+#' Only name is \strong{mandatory}.
+#'
+#' @param formations The formations object should be a \strong{dataframe}
+#' containing, in the \strong{same} order:
+#'  \itemize{
+#'   \item title: the titles of your formations, a character vector like
+#'   \code{c("Bachelor Degree", "Master Degree", "PhD in Biostatistics")}
+#'   \item topic: the main topic of your formations, a character vector like
+#'   \code{c("database", "", "")}
+#'   \item from: the starting dates of your formations, a character vector like
+#'   \code{rep("1900-01-01", 3)}
+#'   \item to: the end dates of your formations, a character vector like
+#'   \code{rep("1900-01-01", 3)}
+#'   \item summary: a quick summary of your formations, a character vector like
+#'   \code{c("My bachelor degree", "My master degree", "My PhD")}
+#'   \item place: the locations of your formations, a character vector like
+#'   \code{rep("Somewhere", 3)}
+#'   \item supervisor: your supervisors, a character vector like
+#'   \code{rep("Somebody", 3)}
+#'   \item grade: your grades between 0 and 5, a numeric vector like
+#'   \code{c(3, 4, 5)}
+#'   \item extra: provide some extra links, a character vector like
+#'   \code{c("http://link1", "http://link2", "http://link3")}
+#' }
+#' All fields are \strong{mandatory}, except extra.
+#'
+#' @param projects The projects object should be a \strong{dataframe} containing,
+#' in the \strong{same} order:
+#' \itemize{
+#'   \item title: the titles of your projects, a character vector like
+#'   \code{c("My project 1", "My_project 2", "My project 3", "My project 4")}
+#'   \item position: the positions you had during your projects, a character vector like
+#'   \code{c("Big Boss", "Slave", "Big Boss", "Slave")}
+#'   \item overview: the overview of your projects, a character vector like
+#'   \code{rep("an amazing project", 4)}
+#'   \item supervisors: the names of your supervisors, a character vector like
+#'   \code{rep("Jean Eude", 4)}
+#'   \item place: the places, a character vector like \code{rep("Somewhere", 4)}
+#' }
+#' All fields are \strong{mandatory}.
+#'
+#' @param tasks The tasks object is related to your projects.
+#' It should be a \strong{list} containing dataframes,
+#' in the \strong{same} order:
+#' \itemize{
+#'   \item project1: a dataframe containing, in the \strong{same} order:
+#'   \enumerate{
+#'      \item name: the task name, for example \code{c("task 1", "task 2")}
+#'      \item status: the task status, for example \code{rep("wip", 2)}
+#'    }
+#' }
+#' The first list is thus related to the first project and so on... Tasks objects
+#' are not mandatory but can help to describe your the related project.
+#'
+#' @param publications The publications object should be a \strong{dataframe}
+#' containing, in the \strong{same} order:
+#'  \itemize{
+#'   \item reference: the titles of your projects, a character vector like
+#'   \code{rep("Your name et al., Journal Title, 2018", 3)}
+#'   \item abstract: the overview of your projects, a character vector like
+#'   \preformatted{rep("Lorem ipsum dolor sit amet, consectetur
+#'          adipiscing elit, sed do eiusmod tempor
+#'          incididunt ut labore et dolore magna aliqua.
+#'          Ut enim ad minim veniam, quis nostrud exercitation
+#'          ullamco laboris nisi ut aliquip ex ea commodo
+#'          consequat. Duis aute irure dolor in reprehenderit in
+#'          voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+#'          Excepteur sint occaecat cupidatat non proident, sunt in
+#'          culpa qui officia deserunt mollit anim id est laborum.", 3)}
+#'   \item pubmed_link: the places, a character vector like
+#'   \code{rep("https://www.ncbi.nlm.nih.gov/pubmed", 3)}
+#' }
+#' Only reference is \strong{mandatory}.
+#'
+#' @param publications_screenshots The publications screenshots object is
+#' related to publications and should be a \strong{list} containing,
+#' in the \strong{same} order:
+#' \itemize{
+#'   \item list1: a list containing:
+#'   \enumerate{
+#'      \item src: the screenshot source, \code{"your_path/your_image"}
+#'      \item class: should be set to \code{"img-responsive pad"}
+#'      \item style: should be set to \code{"height: 100px; display: block;
+#'      margin-left: auto; margin-right: auto;"}
+#'       }
+#'    }
+#' List 1 is thus related to the first publication and so on ...
+#'
+#' @param talks The talks object should be a \strong{dataframe} containing, in
+#' the \strong{same} order:
+#'  \itemize{
+#'   \item title: the titles of your conferences, a character vector like
+#'   \code{rep("My Talk", 5)}
+#'   \item from: the starting dates of your conferences, a character vector like
+#'   \code{rep("1900-01-01", 5)}
+#'   \item to: the end date of your conferences, a character vector like
+#'   \code{rep("1900-01-01", 5)}
+#'   \item summary: the summaries of your talks, a character vector like
+#'   \preformatted{rep("Lorem ipsum dolor sit amet, consectetur
+#'          adipiscing elit, sed do eiusmod tempor
+#'          incididunt ut labore et dolore magna aliqua.
+#'          Ut enim ad minim veniam, quis nostrud exercitation
+#'          ullamco laboris nisi ut aliquip ex ea commodo
+#'          consequat. Duis aute irure dolor in reprehenderit in
+#'          voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+#'          Excepteur sint occaecat cupidatat non proident, sunt in
+#'          culpa qui officia deserunt mollit anim id est laborum.", 3)}
+#'   \item place: the locations of your conferences, a character vector like
+#'   \code{rep("Somewhere", 5)}
+#'   \item price: if you get awards or not, a character vector like
+#'   \code{c(rep("yes", 3), rep("no", 2))}
+#'   \item website: the website of these conferences,
+#'   \code{rep("http://google.com", 5)}
+#' }
+#' All fields are \strong{mandatory}, except website and to.
+#'
+#' @param courses The courses object should be a \strong{dataframe} containing,
+#' in the \strong{same} order:
+#'  \itemize{
+#'   \item title: the courses titles, a character vector like
+#'   \code{rep("My course", 4)}
+#'   \item topic:  the topics titles, a character vector like
+#'   \code{rep("my topic", 4)}
+#'   \item nb_students: the number of students, a numeric vector like
+#'   \code{c(10, 100, 4, 250)}
+#'   \item nb_hours:  the duration of each course, a numeric vector like
+#'   \code{c(5, 45, 8, 45)}
+#'   \item from:  the starting dates, \code{rep("1900-01-01", 4)}
+#'   \item to: the end dates, \code{rep("1900-01-01", 4)}
+#'   \item place: the locations, \code{rep("Somewhere", 4)}
+#'   \item supervisor: the supervisors \code{rep("Somebody", 4)}
+#'   \item syllabus: the syllabi \code{rep("http://google.com", 4)}
+#'  }
+#' All fields are \strong{mandatory}, except syllabus and to.
+#'
+#' @param internships  The internships object should be a \strong{dataframe}
+#' containing, in the \strong{same} order:
+#'  \itemize{
+#'   \item title: the courses titles, a character vector like
+#'   \code{rep("My course", 4)}
+#'   \item topic:  the topics titles, a character vector like
+#'   \code{rep("my topic", 4)}
+#'   \item from:  the starting dates, \code{rep("1900-01-01", 4)}
+#'   \item to: the end dates, \code{rep("1900-01-01", 4)}
+#'   \item place: the locations, \code{rep("Somewhere", 4)}
+#'   \item supervisor: the supervisors \code{rep("Somebody", 4)}
+#'   \item level: the level of your students,
+#'   \code{c("bachelor", "master", "PhD", "PostDoc")}
+#'   \item advert: the advert \code{rep("http://google.com", 4)}
+#'  }
+#' All fields are \strong{mandatory}, except advert and to.
 #'
 #' @export
 #' @examples
@@ -52,7 +228,7 @@
 #' generate_datas_shinyCV()
 #'
 #' feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages, temp_network, temp_formations,
-#'              temp_projects, temp_tasks, temp_publications, publications_screenshots = list(),
+#'              temp_projects, temp_tasks, temp_publications, temp_publications_screenshots,
 #'              temp_talks, temp_courses, temp_internships)
 
 feed_shinyCV <- function(profile, about, skills, languages, network,

@@ -2,12 +2,14 @@
 % Please edit documentation in R/generate_datas_shinyCV.R
 \name{generate_datas_shinyCV}
 \alias{generate_datas_shinyCV}
-\title{Create an example dataset to send to feed_shinyCV().}
+\title{Dataset for shinyCV demo.}
 \usage{
 generate_datas_shinyCV()
 }
 \description{
-Create an example dataset to send to feed_shinyCV().
+Create an example dataset. If the function \code{\link{view_shinyCV}} is called
+with the argument datas equal to NULL and data_source set to manual, this dataset
+will be used to show an example.
 }
 \examples{
 generate_data_shinyCV()

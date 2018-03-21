@@ -1,4 +1,6 @@
-#' Launch the shinyCV web application to build your beautiful CV.
+#' @title shinyCV builder.
+#' @description Launch the shinyCV web application to build your beautiful CV, without
+#' having to manually provide datas.
 #'
 #' @export
 #' @examples

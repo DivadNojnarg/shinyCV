@@ -2,12 +2,13 @@
 % Please edit documentation in R/build_shinyCV.R
 \name{build_shinyCV}
 \alias{build_shinyCV}
-\title{Launch the shinyCV web application to build your beautiful CV.}
+\title{shinyCV builder.}
 \usage{
 build_shinyCV()
 }
 \description{
-Launch the shinyCV web application to build your beautiful CV.
+Launch the shinyCV web application to build your beautiful CV, without
+having to manually provide datas.
 }
 \examples{
 build_shinyCV()

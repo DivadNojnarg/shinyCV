@@ -1080,7 +1080,6 @@ shinyServer(function(input, output, session) {
       syllabus = input$course_syllabus
     )
     df$courses <- rbind(df$courses, temp_course)
-    print(df$courses)
   })
 
   # remove a course
@@ -1117,7 +1116,6 @@ shinyServer(function(input, output, session) {
       advert = input$internship_advert
     )
     df$internships <- rbind(df$internships, temp_internship)
-    print(df$internships)
   })
 
   # remove a course
@@ -1179,7 +1177,7 @@ shinyServer(function(input, output, session) {
 
           # call the internship_box function and pass it all
           # the previous arguments
-          internship_box(input, title, topic, from , to, place,
+          internship_box(title, topic, from , to, place,
                          supervisor, level, advert, box_index = i)
         })
       )
