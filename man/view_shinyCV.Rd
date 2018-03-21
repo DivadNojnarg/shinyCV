@@ -8,21 +8,34 @@ view_shinyCV(cv_mode = "basic", data_source = "manual", datas = NULL)
 }
 \arguments{
 \item{cv_mode}{The content to display in the CV. There are currently 5
-flavors: "full" which will display the 5 tabPanels, namely formation,
-projects, teaching, publications and talks; "basic" which will display only
-formation and projects; "academic", which will display formation, projects,
-teaching and talks; "academic_light", which will display formation, projects,
-and teaching; "research", which will display formations, projects, publications
-and talks. By default, cv_mode is set to "basic".}
+flavors:
+\itemize{
+ \item "basic" which will display only formation and projects
+ \item "academic_light", which will display formation, projects, and teaching
+ \item "academic", which will display formation, projects, teaching and talks
+ \item "research", which will display formations, projects, publications and talks
+ \item "full" which will display the 5 tabPanels, namely formation,
+ projects, teaching, publications and talks
+}}
 
-\item{data_source}{If data_source is "manual", it means that datas need to be
-generated as in the example of \code{\link{feed_shinyCV}}. If you previously filled your CV
-with \code{\link{build_shinyCV}}, set data_source to "from_cvbuilder".}
+\item{data_source}{There are 2 flavors:
+ \itemize{
+ \item "manual": it means that datas need to be generated as in the example
+  of \code{\link{feed_shinyCV}}
+ \item "from_cvbuilder": If you previously filled your CV
+ with \code{\link{build_shinyCV}}
+}}
 
-\item{datas}{If data_source is "manual" and if datas are NULL, an example is generated
-using \code{\link{generate_datas_shinyCV}}, so that you can still see how a full CV looks like;
-if datas are not NULL, datas should have the same structure as that in the list of datas
-returned by the \code{\link{feed_shinyCV}} function (see examples below).}
+\item{datas}{3 flavors:
+\itemize{
+ \item NULL (default): If data_source is "manual" and if datas are NULL, an
+ example is generated
+ using \code{\link{generate_datas_shinyCV}}, so that you can still see how
+ a full CV looks like
+ \item datas: if datas are not NULL, datas should have the same structure as
+ that in the list of datas returned by the \code{\link{feed_shinyCV}}
+ function (see examples below)
+}}
 }
 \description{
 Launch a shinyCV web application to display your beautiful CV.
