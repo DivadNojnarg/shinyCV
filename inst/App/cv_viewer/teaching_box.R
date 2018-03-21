@@ -26,7 +26,7 @@ course_box <- function(title, topic, nb_students, nb_hours, from, to,
         class = "widget-user-image",
         # course image
         tags$img(class = "img-circle",
-                 src = paste0(cv_path, "www/presentation-2.svg"),
+                 src = paste0(cv_path, "/www/presentation-2.svg"),
                  alt = "Course Avatar")
       ),
       tags$div(
@@ -98,7 +98,7 @@ internship_box <- function(title, topic, from, to, place, supervisor,
         class = "widget-user-image",
         # course image
         tags$img(class = "img-circle",
-                 src = paste0(cv_path, "www/student.svg"),
+                 src = paste0(cv_path, "/www/student.svg"),
                  alt = "Student Avatar")
       ),
       tags$div(

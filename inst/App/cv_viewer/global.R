@@ -37,11 +37,11 @@ col <- rep(c(
 
 # images for the projects
 project_images = rep(c(
-  paste0(cv_path, "www/checklist.svg"),
-  paste0(cv_path, "www/calendar.svg"),
-  paste0(cv_path, "www/bulb.svg"),
-  paste0(cv_path, "www/document.svg"),
-  paste0(cv_path, "www/checklist-2.svg"),
-  paste0(cv_path, "www/checklist-3.svg"),
-  paste0(cv_path, "www/presentation.svg")
+  paste0(cv_path, "/www/checklist.svg"),
+  paste0(cv_path, "/www/calendar.svg"),
+  paste0(cv_path, "/www/bulb.svg"),
+  paste0(cv_path, "/www/document.svg"),
+  paste0(cv_path, "/www/checklist-2.svg"),
+  paste0(cv_path, "/www/checklist-3.svg"),
+  paste0(cv_path, "/www/presentation.svg")
 ), 10)
