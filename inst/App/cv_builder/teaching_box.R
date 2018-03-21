@@ -8,7 +8,7 @@ course_box <- function(title, topic, nb_students, nb_hours, from, to,
         class = "widget-user-header bg-light-blue-active",
         # Define course title, topic and syllabus
         tags$h3(class = "widget-user-username",
-                tags$span(class = "badge bg-black", box_index), title),
+                HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
         tags$h5(class = "widget-user-desc", topic),
         if (!is.null(syllabus)) {
           tags$h6(class = "widget-user-desc",
@@ -80,7 +80,7 @@ internship_box <- function(title, topic, from, to, place, supervisor,
         class = "widget-user-header bg-green-active",
         # Define course title, topic and advert
         tags$h3(class = "widget-user-username",
-                tags$span(class = "badge bg-black", box_index), title),
+                HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
         tags$h5(class = "widget-user-desc", topic),
         if (!is.null(advert)) {
           tags$h6(class = "widget-user-desc",

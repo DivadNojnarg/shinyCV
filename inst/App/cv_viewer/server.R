@@ -24,7 +24,7 @@ shinyServer(function(input, output, session) {
     # initialization of data cv.
     # If the cv has been saved previously,
     # load the last saved state instead
-    data_cv <- "www/data_cv.rds"
+    data_cv <- paste0(cv_path, "/www/data_cv.rds")
     if (file.exists(data_cv) == TRUE) {
       # old df is not reactive
       old_df <- readRDS(data_cv)
@@ -85,9 +85,9 @@ shinyServer(function(input, output, session) {
         path <- my_image$src
       } else {
         # if the user use the from_cvbuilder mode
-        if (file.exists("www/data_cv.rds") == TRUE) {
-          path <- paste0(system.file("App/cv_viewer/www/Profile_img_saved/",
-                                     package = "shinyCV"), "0.png")
+        data_path <- paste0(cv_path, "/www/data_cv.rds")
+        if (file.exists(data_path) == TRUE) {
+          path <- paste0(cv_path, "/www/Profile_img_saved/", "0.png")
         }
       }
       list(src = path,
@@ -273,6 +273,20 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
+  # render the project image
+  observe({
+    projects <- df$projects
+    lapply(seq_along(projects), FUN = function(i) {
+      output[[paste0("project_image", i)]] <- renderImage({
+        path <- project_images[i]
+        list(
+          src = path,
+          class = "img-circle"
+        )
+      }, deleteFile = FALSE)
+    })
+  })
+
   # render the project section
   output$experience <- renderUI({
     projects <- df$projects
@@ -288,7 +302,7 @@ shinyServer(function(input, output, session) {
           # the previous arguments
           project_box(title = title, position = position, overview = overview,
                       supervisors = supervisors, place = place, tasks = df$tasks[[i]],
-                      images = project_images[i], background_color = col[i], box_index = i)
+                      background_color = col[i], box_index = i)
         })
       )
     }
@@ -314,9 +328,9 @@ shinyServer(function(input, output, session) {
           path <- screenshots[[i]]$src
         } else {
           # if the user use the from_cvbuilder mode
-          if (file.exists("www/data_cv.rds") == TRUE) {
-            path <- paste0(system.file("App/cv_viewer/www/Publications_img_saved/",
-                                       package = "shinyCV"), i - 1,".png")
+          data_path <- paste0(cv_path, "/www/data_cv.rds")
+          if (file.exists(data_path) == TRUE) {
+            path <- paste0(cv_path, "/www/Publications_img_saved/", i - 1,".png")
           }
         }
         style <- screenshots[[i]]$style
@@ -409,6 +423,20 @@ shinyServer(function(input, output, session) {
   #
   #-------------------------------------------------------------------------
 
+  # render the teaching image
+  observe({
+    courses <- df$courses
+    lapply(seq_along(courses), FUN = function(i) {
+      output[[paste0("teaching_image", i)]] <- renderImage({
+        path <- paste0(cv_path, "/www/presentation-2.svg")
+        list(
+          src = path,
+          class = "img-circle"
+        )
+      }, deleteFile = FALSE)
+    })
+  })
+
   # render the teaching course boxes
   output$teaching_courses <- renderUI({
     courses <- df$courses
@@ -432,6 +460,20 @@ shinyServer(function(input, output, session) {
         })
       )
     }
+  })
+
+  # render the internship image
+  observe({
+    internships <- df$internships
+    lapply(seq_along(internships), FUN = function(i) {
+      output[[paste0("internship_image", i)]] <- renderImage({
+        path <- paste0(cv_path, "/www/student.svg")
+        list(
+          src = path,
+          class = "img-circle"
+        )
+      }, deleteFile = FALSE)
+    })
   })
 
   # render the teaching internships boxes

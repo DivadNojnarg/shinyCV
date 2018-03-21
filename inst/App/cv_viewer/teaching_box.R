@@ -1,6 +1,7 @@
 # create a course box if input$teaching_type = course
 course_box <- function(title, topic, nb_students, nb_hours, from, to,
                        place, supervisor, syllabus, box_index) {
+  image_path <-
   tags$div(class = "col-sm-6",
     tags$div(
       class = "box box-widget widget-user",
@@ -8,7 +9,7 @@ course_box <- function(title, topic, nb_students, nb_hours, from, to,
         class = "widget-user-header bg-light-blue-active",
         # Define course title, topic and syllabus
         tags$h3(class = "widget-user-username",
-                tags$span(class = "badge bg-black", box_index), title),
+                HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
         tags$h5(class = "widget-user-desc", topic),
         if (!is.null(syllabus)) {
           tags$h6(class = "widget-user-desc",
@@ -25,9 +26,10 @@ course_box <- function(title, topic, nb_students, nb_hours, from, to,
       tags$div(
         class = "widget-user-image",
         # course image
-        tags$img(class = "img-circle",
-                 src = paste0(cv_path, "/www/presentation-2.svg"),
-                 alt = "Course Avatar")
+        # tags$img(class = "img-circle",
+        #          src = paste0(cv_path, "/www/presentation-2.svg"),
+        #          alt = "Course Avatar")
+        imageOutput(paste0("teaching_image", box_index), width = "50px", height = "50px")
       ),
       tags$div(
         class = "box-footer",
@@ -80,7 +82,7 @@ internship_box <- function(title, topic, from, to, place, supervisor,
         class = "widget-user-header bg-green-active",
         # Define course title, topic and advert
         tags$h3(class = "widget-user-username",
-                tags$span(class = "badge bg-black", box_index), title),
+                HTML(paste0(title, tags$td(tags$span(class = "pull-right badge bg-black", box_index))))),
         tags$h5(class = "widget-user-desc", topic),
         if (!is.null(advert)) {
           tags$h6(class = "widget-user-desc",
@@ -97,9 +99,10 @@ internship_box <- function(title, topic, from, to, place, supervisor,
       tags$div(
         class = "widget-user-image",
         # course image
-        tags$img(class = "img-circle",
-                 src = paste0(cv_path, "/www/student.svg"),
-                 alt = "Student Avatar")
+        # tags$img(class = "img-circle",
+        #          src = paste0(cv_path, "/www/student.svg"),
+        #          alt = "Student Avatar")
+        imageOutput(paste0("internship_image", box_index), width = "50px", height = "50px")
       ),
       tags$div(
         class = "box-footer",

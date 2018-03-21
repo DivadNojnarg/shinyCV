@@ -36,7 +36,7 @@ col <- rep(c(
 ), 10)
 
 # images for the projects
-project_images = rep(c(
+project_images <- rep(c(
   paste0(cv_path, "/www/checklist.svg"),
   paste0(cv_path, "/www/calendar.svg"),
   paste0(cv_path, "/www/bulb.svg"),
