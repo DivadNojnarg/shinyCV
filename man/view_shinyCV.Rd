@@ -26,7 +26,7 @@ flavors:
  with \code{\link{build_shinyCV}}
 }}
 
-\item{datas}{3 flavors:
+\item{datas}{2 flavors:
 \itemize{
  \item \code{NULL} (default) : If data_source is "manual" and if datas are NULL, an
  example is generated

@@ -20,7 +20,7 @@
 #'  with \code{\link{build_shinyCV}}
 #' }
 #'
-#' @param datas 3 flavors:
+#' @param datas 2 flavors:
 #' \itemize{
 #'  \item \code{NULL} (default) : If data_source is "manual" and if datas are NULL, an
 #'  example is generated
