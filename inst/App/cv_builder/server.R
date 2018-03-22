@@ -4,10 +4,10 @@ shinyServer(function(input, output, session) {
   # initialization of data cv.
   # If the cv has been saved previously,
   # load the last saved state instead
-  data_cv <- "www/data_cv.rds"
-  if (file.exists(data_cv) == TRUE) {
+  datas <- "www/cv_datas.rds"
+  if (file.exists(datas) == TRUE) {
     # old df is not reactive
-    old_df <- readRDS(data_cv)
+    old_df <- readRDS(datas)
     # create a new reactive df based on old values
     df <- reactiveValues(
       my_profile = old_df$my_profile,
@@ -1205,12 +1205,12 @@ shinyServer(function(input, output, session) {
 
   # save the cv
   observeEvent(input$save,{
-    saveRDS(object = reactiveValuesToList(df), file = "www/data_cv.rds")
+    saveRDS(object = reactiveValuesToList(df), file = "www/cv_datas.rds")
   })
 
   # erase the whole cv and the associated data
   observeEvent(input$reset,{
-    file.remove("www/data_cv.rds")
+    file.remove("www/cv_datas.rds")
     file.remove(dir("www/Publications_img_saved/", pattern = "[0-9]\\.png$",
                     full.names = TRUE))
     file.remove(dir("www/Profile_img_saved/", pattern = "0.png",
