@@ -4,11 +4,15 @@
 \alias{build_shinyCV}
 \title{shinyCV builder.}
 \usage{
-build_shinyCV()
+build_shinyCV(import_datas = NULL)
+}
+\arguments{
+\item{import_datas}{\code{NULL} by default. If not, provide the path where
+your CV files are located (see \code{\link{init_shinyCV}}). It should be
+yourCV_path/www (do not forget www).}
 }
 \description{
-Launch the shinyCV web application to build your beautiful CV, without
-having to manually provide datas.
+Launch the shinyCV web application to build your beautiful CV.
 }
 \examples{
 build_shinyCV()

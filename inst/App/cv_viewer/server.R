@@ -26,7 +26,7 @@ shinyServer(function(input, output, session) {
     # load the last saved state instead
     if (!is.null(datas)) {
       # old df is not reactive
-      old_df <- readRDS(datas)
+      old_df <- datas
       # create a new reactive df based on old values
       df <- reactiveValues(
         my_profile = old_df$my_profile,
@@ -81,12 +81,16 @@ shinyServer(function(input, output, session) {
         # the same path as with the demo code
         # so the image will be that choosen by the user
         # and not that by the demo
-        path <- my_image$src
+        if (view_mode == "local") path <- my_image$src else path <- paste0(cv_path, "/www/man.png")
       } else {
         # if the user use the from_cvbuilder mode
-        data_path <- paste0(cv_path, "/www/cv_datas.rds")
-        if (file.exists(data_path) == TRUE) {
-          path <- paste0(cv_path, "/www/Profile_img_saved/", "0.png")
+        if (view_mode == "local") {
+          data_path <- paste0(cv_path, "/www/cv_datas.rds")
+          if (file.exists(data_path) == TRUE) {
+            path <- paste0(cv_path, "/www/Profile_img_saved/", "0.png")
+          }
+        } else {
+          path <- paste0(cv_path, "/www/Profile_img_saved/0.png")
         }
       }
       list(src = path,
@@ -324,11 +328,21 @@ shinyServer(function(input, output, session) {
           # the same path as with the demo code
           # so the image will be that choosen by the user
           # and not that by the demo
-          path <- screenshots[[i]]$src
+          if (view_mode == "local") {
+            path <- screenshots[[i]]$src
+          } else {
+            temp_path <- screenshots[[i]]$src
+            temp_path <- str_remove(temp_path, "/Users/macdavidgranjon/Desktop/MyShinyCV")
+            path <- paste0(cv_path, temp_path)
+          }
         } else {
           # if the user use the from_cvbuilder mode
-          data_path <- paste0(cv_path, "/www/cv_datas.rds")
-          if (file.exists(data_path) == TRUE) {
+          if (view_mode == "local") {
+            data_path <- paste0(cv_path, "/www/cv_datas.rds")
+            if (file.exists(data_path) == TRUE) {
+              path <- paste0(cv_path, "/www/Publications_img_saved/", i - 1,".png")
+            }
+          } else {
             path <- paste0(cv_path, "/www/Publications_img_saved/", i - 1,".png")
           }
         }
@@ -528,7 +542,7 @@ shinyServer(function(input, output, session) {
         "by",
         img(src = "https://www.rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png", height = "30"),
         "and with", img(src = "love.png", height = "30")),
-      subText = HTML("<b>Version</b> 0.5")
+      subText = HTML("<b>Version</b> 0.1")
     )
   })
 

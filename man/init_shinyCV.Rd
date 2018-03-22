@@ -11,7 +11,7 @@ init_shinyCV(cv_path = getwd())
 }
 \description{
 Copy the shinyCV viewer application to set it up in your desktop folder.
-Using publish_shinyCV will allow you to push your CV on shinyapps.io. If you
+Using \code{\link{publish_shinyCV}} will allow you to push your CV on shinyapps.io. If you
 want to use shiny server instead, copy the files manually.
 }
 \examples{

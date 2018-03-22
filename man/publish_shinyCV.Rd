@@ -4,7 +4,10 @@
 \alias{publish_shinyCV}
 \title{publish your CV to shinyapps.io.}
 \usage{
-publish_shinyCV()
+publish_shinyCV(cv_path)
+}
+\arguments{
+\item{cv_path}{The directory where your CV is stored}
 }
 \description{
 Send your CV to shinyapps.io. You need to have an account before,

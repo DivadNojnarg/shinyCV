@@ -1,6 +1,6 @@
 #' @title create a folder for your own CV.
 #' @description Copy the shinyCV viewer application to set it up in your desktop folder.
-#' Using publish_shinyCV will allow you to push your CV on shinyapps.io. If you
+#' Using \code{\link{publish_shinyCV}} will allow you to push your CV on shinyapps.io. If you
 #' want to use shiny server instead, copy the files manually.
 #'
 #' @param cv_path The directory where your to create your CV folder
@@ -27,7 +27,7 @@ init_shinyCV <- function(cv_path = getwd()) {
   file_list <- list.files(from)
   lapply(seq_along(file_list), FUN = function(i) {
     temp_from <- paste0(from , "/", file_list[i])
-    file.copy(temp_from, to)
+    file.copy(temp_from, to, overwrite = TRUE)
   })
 
   # copy files from the www folder
@@ -36,13 +36,13 @@ init_shinyCV <- function(cv_path = getwd()) {
   file_list <- list.files(from)
   lapply(seq_along(file_list), FUN = function(i) {
     temp_from <- paste0(from , "/", file_list[i])
-    file.copy(temp_from, to)
+    file.copy(temp_from, to, overwrite = TRUE)
   })
 
   # copy the profile image
   from <- system.file("App/cv_viewer/www/Profile_img_saved/0.png", package = "shinyCV")
   to <- paste0(main_path, "/www/Profile_img_saved")
-  file.copy(from = from, to = to)
+  file.copy(from = from, to = to, overwrite = TRUE)
 
   # copy the publications screenshots
   from <- system.file("App/cv_viewer/www/Publications_img_saved/", package = "shinyCV")
@@ -50,6 +50,6 @@ init_shinyCV <- function(cv_path = getwd()) {
   file_list <- list.files(from)
   lapply(seq_along(file_list), FUN = function(i) {
     temp_from <- paste0(from , "/", file_list[i])
-    file.copy(from, to)
+    file.copy(from, to, overwrite = TRUE)
   })
 }

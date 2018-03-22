@@ -35,10 +35,13 @@ col <- rep(c(
   "yellow"
 ), 10)
 
+# determine if the CV is in the local mode on online mode
+# shinyappas.io
+view_mode <- readRDS(file = "www/view_mode.rds")
 
 # loading the cv config which was passed to view_shinyCV
 cv_config <- readRDS(file = "www/cv_config_saved/cv_config.rds")
-cv_path <- cv_config$path
+if (view_mode == "local") cv_path <- cv_config$path else cv_path <- getwd()
 cv_mode <- cv_config$mode
 data_source <- cv_config$data_source
 

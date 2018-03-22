@@ -1,7 +1,9 @@
 #' @title shinyCV viewer.
-#' @description Launch a shinyCV web application to display your beautiful CV.
+#' @description Launch a shinyCV web application to display your beautiful CV before
+#' exporting it to shinyapps.io via \code{\link{publish_shinyCV}} or on a private
+#' shiny server.
 #'
-#' @param cv_path The directory where your CV is stored:
+#' @param cv_path The directory where your CV is stored
 #' @param cv_mode The content to display in the CV. There are currently 5
 #' flavors:
 #' \itemize{
@@ -211,7 +213,7 @@
 #'
 #'
 #' # basic shiny CV with an example dataset
-#' view_shinyCV(cv_mode = "basic", data_source = "manual", datas = NULL)
+#' preview_shinyCV(cv_path, cv_mode = "basic", data_source = "manual", datas = NULL)
 #'
 #' # academic shiny CV with a dataset provided by the user
 #' # See the feed_shinyCV help section to build a correct dataset
@@ -220,14 +222,14 @@
 #'                      formations, projects, tasks, publications,
 #'                      publications_screenshots,
 #'                      talks, courses, internships)
-#' view_shinyCV(cv_mode = "academic", data_source = "manual", datas = feed_datas)
+#' preview_shinyCV(cv_path, cv_mode = "academic", data_source = "manual", datas = feed_datas)
 #'
 #'
 #' # full shiny CV with datas taken from the shiny interface build_shinyCV()
 #' # in this case, the datas argument will be ignored.
-#' view_shinyCV(cv_mode = "basic", data_source = "from_cvbuilder", datas = NULL)
+#' preview_shinyCV(cv_path, cv_mode = "basic", data_source = "from_cvbuilder", datas = NULL)
 
-view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", datas = NULL) {
+preview_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", datas = NULL) {
   if (is.null(cv_mode)) {
     stop("cv_mode cannot be NULL")
   }
@@ -238,9 +240,7 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
     stop("need to give the location of your cv files")
   }
 
-  # recover cv mode from the function argument and set
-  # it as an object accessible for the view_shinyCV function
-  # set it as global variable
+  # recover arguments
   cv_path <- cv_path
 
   cv_mode <- match.arg(
@@ -262,14 +262,23 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
     )
   )
 
+  # the preview_shinyCV function load your cv in your computer cv_path
+  # contrary to publish_shinyCV which send it to shinyapps.io
+  view_mode <- "local"
+  saveRDS(view_mode, file = paste0(cv_path, "/www/view_mode.rds"))
+
   # save the cv config in a RDS file in the www folder
   cv_config <- list(
     path = cv_path,
     mode = cv_mode,
     data_source = data_source
   )
-  dir.create(path = paste0(cv_path, "/www/cv_config_saved"))
-  saveRDS(object = cv_config, file = paste0(cv_path, "/www/cv_config_saved/cv_config.rds"))
+
+  cv_config_path <- paste0(cv_path, "/www/cv_config_saved")
+  if (!dir.exists(cv_config_path)) {
+    dir.create(path = cv_config_path)
+  }
+  saveRDS(object = cv_config, file = paste0(cv_config_path, "/cv_config.rds"))
 
   # load datas
   if (data_source == "manual") {
@@ -279,6 +288,7 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
                              temp_network, temp_formations, temp_projects, temp_tasks,
                              temp_publications, temp_publications_screenshots,
                              temp_talks, temp_courses, temp_internships)
+      # save data so that they can be loaded in the shinyapp
       saveRDS(object = datas, file = paste0(cv_path, "/www/cv_datas.rds"))
     } else {
       datas <- datas
@@ -288,24 +298,23 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
 
     # copy the new version of the CV before launching the viewer
     from <- system.file("App/cv_builder/www/cv_datas.rds", package = "shinyCV")
-    to <- cv_path
-    file.copy(from = from, to = to)
+    to <- paste0(cv_path, "/www")
+    file.copy(from = from, to = to, overwrite = TRUE)
 
     # copy the profile image to your local CV folder
     from <- system.file("App/cv_builder/www/Profile_img_saved/0.png", package = "shinyCV")
-    to <- cv_path
-    file.copy(from = from, to = to)
+    to <- paste0(cv_path, "/www/Profile_img_saved")
+    file.copy(from = from, to = to, overwrite = TRUE)
 
     # copy the publications screenshots from builder to your local CV folder
     from <- system.file("App/cv_builder/www/Publications_img_saved/", package = "shinyCV")
-    to <- cv_path
+    to <- paste0(cv_path, "/www/Publications_img_saved")
     file_list <- list.files(from)
     lapply(seq_along(file_list), FUN = function(i) {
       from <- paste0(from, "/", file_list[i])
-      file.copy(from, to)
+      file.copy(from, to, overwrite = TRUE)
     })
   }
-
   # launch the viewer
   shiny::runApp(appDir = cv_path, display.mode = "normal")
 }

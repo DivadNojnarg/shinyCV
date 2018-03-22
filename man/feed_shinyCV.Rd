@@ -228,7 +228,7 @@ All fields are \strong{mandatory}, except advert and to.}
 }
 \description{
 Feed a shinyCV with datas. This function passes all the datas
-provided by the user to the cv viewer. Launch \code{\link{view_shinyCV}} to
+provided by the user to the cv viewer. Launch \code{\link{preview_shinyCV}} to
 see the results.
 }
 \examples{
