@@ -12,5 +12,5 @@ publish_shinyCV <- function(cv_path) {
   setwd(cv_path)
   view_mode <- "online"
   saveRDS(view_mode, file = paste0(cv_path, "/www/view_mode.rds"))
-  deployApp()
+  rsconnect::deployApp()
 }
