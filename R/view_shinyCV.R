@@ -241,9 +241,9 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
   # recover cv mode from the function argument and set
   # it as an object accessible for the view_shinyCV function
   # set it as global variable
-  cv_path <<- cv_path
+  cv_path <- cv_path
 
-  cv_mode <<- match.arg(
+  cv_mode <- match.arg(
     arg = cv_mode,
     choices = c(
       "basic",
@@ -254,7 +254,7 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
     )
   )
 
-  data_source <<- match.arg(
+  data_source <- match.arg(
     arg = data_source,
     choices = c(
       "manual",
@@ -262,21 +262,32 @@ view_shinyCV <- function(cv_path, cv_mode = "basic", data_source = "manual", dat
     )
   )
 
+  # save the cv config in a RDS file in the www folder
+  cv_config <- list(
+    path = cv_path,
+    mode = cv_mode,
+    data_source = data_source
+  )
+  dir.create(path = paste0(cv_path, "/www/cv_config_saved"))
+  saveRDS(object = cv_config, file = paste0(cv_path, "/www/cv_config_saved/cv_config.rds"))
+
   # load datas
   if (data_source == "manual") {
     if (is.null(datas)) {
       generate_datas_shinyCV(cv_path)
-      datas <<- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
+      datas <- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages,
                              temp_network, temp_formations, temp_projects, temp_tasks,
                              temp_publications, temp_publications_screenshots,
                              temp_talks, temp_courses, temp_internships)
+      saveRDS(object = datas, file = paste0(cv_path, "/www/cv_datas.rds"))
     } else {
-      datas <<- datas
+      datas <- datas
+      saveRDS(object = datas, file = paste0(cv_path, "/www/cv_datas.rds"))
     }
   } else if (data_source == "from_cvbuilder") {
 
     # copy the new version of the CV before launching the viewer
-    from <- system.file("App/cv_builder/www/data_cv.rds", package = "shinyCV")
+    from <- system.file("App/cv_builder/www/cv_datas.rds", package = "shinyCV")
     to <- cv_path
     file.copy(from = from, to = to)
 

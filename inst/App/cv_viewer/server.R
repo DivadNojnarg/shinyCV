@@ -24,10 +24,9 @@ shinyServer(function(input, output, session) {
     # initialization of data cv.
     # If the cv has been saved previously,
     # load the last saved state instead
-    data_cv <- paste0(cv_path, "/www/data_cv.rds")
-    if (file.exists(data_cv) == TRUE) {
+    if (!is.null(datas)) {
       # old df is not reactive
-      old_df <- readRDS(data_cv)
+      old_df <- readRDS(datas)
       # create a new reactive df based on old values
       df <- reactiveValues(
         my_profile = old_df$my_profile,
@@ -85,7 +84,7 @@ shinyServer(function(input, output, session) {
         path <- my_image$src
       } else {
         # if the user use the from_cvbuilder mode
-        data_path <- paste0(cv_path, "/www/data_cv.rds")
+        data_path <- paste0(cv_path, "/www/cv_datas.rds")
         if (file.exists(data_path) == TRUE) {
           path <- paste0(cv_path, "/www/Profile_img_saved/", "0.png")
         }
@@ -328,7 +327,7 @@ shinyServer(function(input, output, session) {
           path <- screenshots[[i]]$src
         } else {
           # if the user use the from_cvbuilder mode
-          data_path <- paste0(cv_path, "/www/data_cv.rds")
+          data_path <- paste0(cv_path, "/www/cv_datas.rds")
           if (file.exists(data_path) == TRUE) {
             path <- paste0(cv_path, "/www/Publications_img_saved/", i - 1,".png")
           }

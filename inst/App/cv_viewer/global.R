@@ -35,6 +35,16 @@ col <- rep(c(
   "yellow"
 ), 10)
 
+
+# loading the cv config which was passed to view_shinyCV
+cv_config <- readRDS(file = "www/cv_config_saved/cv_config.rds")
+cv_path <- cv_config$path
+cv_mode <- cv_config$mode
+data_source <- cv_config$data_source
+
+# loading the datas
+datas <- readRDS(file = "www/cv_datas.rds")
+
 # images for the projects
 project_images <- rep(c(
   paste0(cv_path, "/www/checklist.svg"),
