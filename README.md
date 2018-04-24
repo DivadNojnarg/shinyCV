@@ -7,7 +7,7 @@
 
 ## Package Installation
 
-```
+``` r
 library(devtools)
 install_github("DivadNojnarg/shinyCV")
 library(shinyCV)
@@ -21,7 +21,7 @@ This package offers you two ways of creating nice CVs based on the AdminLTE2 tem
 
 1. Launch the builder by using:
 
-```
+``` r
 build_shinyCV()
 ```
 
@@ -33,14 +33,14 @@ The saved files are stored in a "data_cv.rds" as well as in the
 
 2. Initialization of your main CV folder.
 
-```
+``` r
 init_shinyCV(cv_path = your_path)
 ```
 which will create a folder where all your CV datas and images will be stored.
 
 3. At any time, you can preview your cv by running the dedicated function:
 
-```
+``` r
 preview_shinyCV(cv_path, cv_mode = "basic", data_source = "from_cvbuilder", datas = NULL)
 ```
 
@@ -63,7 +63,7 @@ Be careful, it will not work if you do not have a shinyapps.io account. See
 [here](https://shiny.rstudio.com/articles/shinyapps.html) to configure your shinyapps.io account.
 As soon as you are ready:
 
-```
+``` r
 publish_shinyCV(cv_path)
 ```
 where **cv_path** is again the folder where all your CV files are stored. Again,
@@ -83,7 +83,7 @@ the CV will be imported in the builder and you will be able to work as before.
 
 In summary:
 
-```
+``` r
 # you want to reinstall or update shinyCV package
 library(devtools)
 install_github("DivadNojnarg/shinyCV")
@@ -105,14 +105,14 @@ The workflow is similar to that when you use the builder interface.
 
 1. Initialization of your main CV folder.
 
-```
+``` r
 init_shinyCV(cv_path = your_path)
 ```
 which will create a folder where all your CV datas and images will be stored.
 
 2. Preview your cv by running the dedicated function:
 
-```
+``` r
 preview_shinyCV(cv_path, cv_mode = "basic", data_source = "manual", datas = NULL)
 ```
 Notice that the **data_source** argument is set to manual and **datas** are NULL.
@@ -123,7 +123,7 @@ which allows users to provide their own datas, according to a specific structure
 If you do not have any data, you can preview shiny CV will load a demo dataset.
 Below is an example of these datas:
 
-```
+``` r
 # datas for the profile example
   temp_profile <- list(
     my_name = "Jean Bob",
@@ -298,7 +298,7 @@ Below is an example of these datas:
 It is up to you to modify this structure to create your own datas.
 Then, you can inject these datas in feed_shinyCV() and run view_shinyCV:
 
-```
+``` r
  feed_datas <- feed_shinyCV(temp_profile, temp_about, temp_skills, temp_languages, 
                             temp_network, temp_formations, temp_projects, temp_tasks, 
                             temp_publications, publications_screenshots = list(),
@@ -318,7 +318,7 @@ Be careful, it will not work if you do not have a shinyapps.io account. See
 [here](https://shiny.rstudio.com/articles/shinyapps.html) to configure your shinyapps.io account.
 As soon as you are ready:
 
-```
+``` r
 publish_shinyCV(cv_path)
 ```
 where **cv_path** is again the folder where all your CV files are stored. Again,
